@@ -24,6 +24,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 
 type AdminNavItem = {
   label: string;
@@ -89,55 +90,61 @@ export function AdminWorkspaceShell({
         <Link href="/admin" aria-label="Platform admin">
           <Logo size="sm" />
         </Link>
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <button
-                type="button"
-                className="grid size-9 place-items-center rounded-lg border bg-card outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
-                aria-label="Open admin navigation"
-              />
-            }
-          >
-            <Menu className="size-4" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-[min(20rem,calc(100vw-2rem))] p-1.5">
-            <DropdownMenuGroup>
-              <DropdownMenuLabel>Platform admin</DropdownMenuLabel>
-              {navItems.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <DropdownMenuItem
-                    key={item.href}
-                    className={cn(item.active && "bg-accent font-medium")}
-                    onClick={() => router.push(item.href)}
-                  >
-                    <Icon className="size-4" />
-                    <span className="flex-1">{item.label}</span>
-                    {item.badge != null && item.badge > 0 ? (
-                      <span className="rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold text-primary-foreground">
-                        {item.badge}
-                      </span>
-                    ) : null}
-                  </DropdownMenuItem>
-                );
-              })}
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => void signOutAction()} variant="destructive">
-              <LogOut className="size-4" />
-              Sign out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex items-center gap-2">
+          <NotificationBell />
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={
+                <button
+                  type="button"
+                  className="grid size-9 place-items-center rounded-lg border bg-card outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
+                  aria-label="Open admin navigation"
+                />
+              }
+            >
+              <Menu className="size-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-[min(20rem,calc(100vw-2rem))] p-1.5">
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>Platform admin</DropdownMenuLabel>
+                {navItems.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <DropdownMenuItem
+                      key={item.href}
+                      className={cn(item.active && "bg-accent font-medium")}
+                      onClick={() => router.push(item.href)}
+                    >
+                      <Icon className="size-4" />
+                      <span className="flex-1">{item.label}</span>
+                      {item.badge != null && item.badge > 0 ? (
+                        <span className="rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold text-primary-foreground">
+                          {item.badge}
+                        </span>
+                      ) : null}
+                    </DropdownMenuItem>
+                  );
+                })}
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => void signOutAction()} variant="destructive">
+                <LogOut className="size-4" />
+                Sign out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 flex-col border-r bg-card lg:flex">
-        <div className="border-b px-5 py-5">
-          <Link href="/admin" className="inline-flex outline-none focus-visible:ring-2 focus-visible:ring-ring">
-            <Logo size="md" />
-          </Link>
-          <p className="mt-1 pl-[2.625rem] text-xs text-muted-foreground">Platform admin</p>
+        <div className="flex items-start justify-between gap-3 border-b px-5 py-5">
+          <div>
+            <Link href="/admin" className="inline-flex outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              <Logo size="md" />
+            </Link>
+            <p className="mt-1 pl-10.5 text-xs text-muted-foreground">Platform admin</p>
+          </div>
+          <NotificationBell />
         </div>
 
         <div className="border-b p-3">

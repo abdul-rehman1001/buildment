@@ -37,6 +37,7 @@ import {
 import { cn } from "@/lib/utils";
 import { helpUiCopy } from "@/shared/lib/help-ui-copy";
 import { SurfaceSwitcher } from "@/components/workspace/surface-switcher";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import type { InstructorAccessView } from "@/shared/lib/instructor-access";
 
 const LAST_COURSE_KEY = "buildment:mentor:last-course";
@@ -184,54 +185,60 @@ export function MentorWorkspaceSidebar({
     <>
       <div className="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-background/95 px-4 backdrop-blur lg:hidden">
         <Logo size="sm" />
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <button
-                type="button"
-                className="grid size-9 place-items-center rounded-lg border bg-card outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
-                aria-label="Open mentor workspace navigation"
-              />
-            }
-          >
-            <Menu className="size-4" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-[min(21rem,calc(100vw-2rem))] p-1.5">
-            <MobileItems label="Workspace" items={workspaceItems} router={router} />
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuLabel>Course context</DropdownMenuLabel>
-              {courses.length > 0 ? (
-                courses.map((course) => (
-                  <DropdownMenuItem
-                    key={course.id}
-                    className={cn("py-2", course.id === selectedCourse?.id && "bg-accent font-medium")}
-                    onClick={() => chooseCourse(course)}
-                  >
-                    <span className="min-w-0 flex-1 truncate">{course.title}</span>
-                    <span className="text-[10px] capitalize text-muted-foreground">
-                      {course.status.toLowerCase()}
-                    </span>
-                  </DropdownMenuItem>
-                ))
-              ) : (
-                <DropdownMenuItem onClick={() => router.push("/courses")}>Create your first course</DropdownMenuItem>
-              )}
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <MobileItems items={[...courseItems, ...insightItems]} router={router} />
-            <DropdownMenuSeparator />
-            <MobileItems items={workflowItems} router={router} />
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex items-center gap-2">
+          <NotificationBell />
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={
+                <button
+                  type="button"
+                  className="grid size-9 place-items-center rounded-lg border bg-card outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
+                  aria-label="Open mentor workspace navigation"
+                />
+              }
+            >
+              <Menu className="size-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-[min(21rem,calc(100vw-2rem))] p-1.5">
+              <MobileItems label="Workspace" items={workspaceItems} router={router} />
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>Course context</DropdownMenuLabel>
+                {courses.length > 0 ? (
+                  courses.map((course) => (
+                    <DropdownMenuItem
+                      key={course.id}
+                      className={cn("py-2", course.id === selectedCourse?.id && "bg-accent font-medium")}
+                      onClick={() => chooseCourse(course)}
+                    >
+                      <span className="min-w-0 flex-1 truncate">{course.title}</span>
+                      <span className="text-[10px] capitalize text-muted-foreground">
+                        {course.status.toLowerCase()}
+                      </span>
+                    </DropdownMenuItem>
+                  ))
+                ) : (
+                  <DropdownMenuItem onClick={() => router.push("/courses")}>Create your first course</DropdownMenuItem>
+                )}
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <MobileItems items={[...courseItems, ...insightItems]} router={router} />
+              <DropdownMenuSeparator />
+              <MobileItems items={workflowItems} router={router} />
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 border-r bg-card lg:flex lg:flex-col">
-        <div className="border-b px-5 py-5">
-          <Link href="/workspace" className="inline-flex outline-none focus-visible:ring-2 focus-visible:ring-ring">
-            <Logo size="md" />
-          </Link>
-          <p className="mt-1 pl-[2.625rem] text-xs text-muted-foreground">Mentor workspace</p>
+        <div className="flex items-start justify-between gap-3 border-b px-5 py-5">
+          <div>
+            <Link href="/workspace" className="inline-flex outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              <Logo size="md" />
+            </Link>
+            <p className="mt-1 pl-10.5 text-xs text-muted-foreground">Mentor workspace</p>
+          </div>
+          <NotificationBell />
         </div>
 
         <div className="border-b p-3">

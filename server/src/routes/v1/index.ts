@@ -13,6 +13,7 @@ import inviteRoutes from "./invites.js";
 import teachRoutes from "./teach.js";
 import adminRoutes from "./admin.js";
 import activityRoutes from "./activity.js";
+import notificationRoutes from "./notifications.js";
 
 // First-party API, versioned. Everything here answers with the { success, data } envelope.
 const router = Router();
@@ -31,5 +32,6 @@ router.use("/invites", inviteRoutes);
 router.use("/teach", teachRoutes);
 router.use("/admin", adminRoutes);
 router.use("/activity", activityRoutes);
+router.use("/notifications", notificationRoutes);
 
 export default router;
