@@ -3,8 +3,8 @@ import { ADMIN_ERROR_CODES } from "../../shared/api/admin.js";
 import { prisma } from "../../db/prisma.js";
 import { ConflictError, NotFoundError } from "../../utils/errors.js";
 import type { GrantInstructorBody } from "../../validations/admin.js";
-import { notifyUserGrantedInstructorByAdmin, notifyUserInstructorAccessDecision } from "../email/admin-notifications.js";
-import { queueEmail } from "../email/queue.js";
+import { notifyUserGrantedInstructorByAdmin, notifyUserInstructorAccessDecision } from "../notifications/events.js";
+import { dispatchNotification } from "../notifications/service.js";
 
 // Accounts and the instructor capability. Granting instructor tools promotes a
 // learner to MENTOR (admins keep their role) and records an approved request so
@@ -82,13 +82,14 @@ export async function grantInstructorByEmail(input: GrantInstructorBody): Promis
     select: { id: true, name: true },
   });
 
+  const grantedAt = new Date();
   await prisma.instructorAccessRequest.upsert({
     where: { userId: user.id },
-    create: { userId: user.id, status: "APPROVED", reviewedAt: new Date() },
-    update: { status: "APPROVED", reviewedAt: new Date() },
+    create: { userId: user.id, status: "APPROVED", reviewedAt: grantedAt },
+    update: { status: "APPROVED", reviewedAt: grantedAt },
   });
 
-  queueEmail(() => notifyUserGrantedInstructorByAdmin({ email: input.email, name: user.name ?? input.name ?? null }));
+  await dispatchNotification(() => notifyUserGrantedInstructorByAdmin({ userId: user.id, grantedAt }));
 }
 
 async function requirePendingInstructorRequest(requestId: string) {
@@ -113,7 +114,7 @@ export async function approveInstructorRequest(admin: { id: string }, requestId:
       data: { status: "APPROVED", reviewedById: admin.id, reviewedAt: new Date() },
     }),
   ]);
-  queueEmail(() => notifyUserInstructorAccessDecision({ userId: request.userId, approved: true }));
+  await dispatchNotification(() => notifyUserInstructorAccessDecision({ userId: request.userId, approved: true }));
 }
 
 export async function rejectInstructorRequest(admin: { id: string }, requestId: string): Promise<void> {
@@ -122,5 +123,5 @@ export async function rejectInstructorRequest(admin: { id: string }, requestId: 
     where: { id: request.id },
     data: { status: "REJECTED", reviewedById: admin.id, reviewedAt: new Date() },
   });
-  queueEmail(() => notifyUserInstructorAccessDecision({ userId: request.userId, approved: false }));
+  await dispatchNotification(() => notifyUserInstructorAccessDecision({ userId: request.userId, approved: false }));
 }
