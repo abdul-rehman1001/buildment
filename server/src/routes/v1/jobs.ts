@@ -7,5 +7,6 @@ const router = Router();
 router.use(requireCronSecret);
 
 router.post("/inactivity-nudge", jobs.inactivityNudge);
+router.post("/app-activity-cleanup", jobs.appActivityCleanup);
 
 export default router;

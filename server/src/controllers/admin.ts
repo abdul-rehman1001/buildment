@@ -4,6 +4,8 @@ import * as overview from "../services/admin/overview.js";
 import * as organizations from "../services/admin/organizations.js";
 import * as courseRequests from "../services/admin/course-requests.js";
 import * as users from "../services/admin/users.js";
+import * as appActivity from "../services/activity/reports.js";
+import type { AppActivityUsersQuery } from "../validations/activity.js";
 import type {
   AllocationsBody,
   ApproveCourseRequestBody,
@@ -96,4 +98,15 @@ export async function approveInstructorRequest(req: Request, res: Response) {
 export async function rejectInstructorRequest(req: Request, res: Response) {
   await users.rejectInstructorRequest(req.user!, param(req, "requestId"));
   noContent(res);
+}
+
+// GET /api/v1/admin/app-activity?days=7
+export async function getAppActivity(req: Request, res: Response) {
+  const { days } = req.query as unknown as { days: number };
+  ok(res, await appActivity.loadAppActivityOverview(days));
+}
+
+// GET /api/v1/admin/app-activity/users?days=7&limit=50&offset=0&inactiveForDays=&userId=
+export async function listAppActivityUsers(req: Request, res: Response) {
+  ok(res, await appActivity.listAppActivityUsers(req.query as unknown as AppActivityUsersQuery));
 }

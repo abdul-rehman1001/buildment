@@ -1,6 +1,7 @@
 import { env, isProduction, isTest } from "../config/env.js";
 import { logger } from "../utils/logger.js";
 import { runInactivityNudges } from "../services/jobs/inactivity-nudges.js";
+import { pruneAppActivity } from "../services/activity/app-activity.js";
 
 // Background jobs run inside the API process on a fixed daily time, so a
 // deployment needs no external cron. The /api/v1/jobs endpoints stay for
@@ -15,6 +16,12 @@ export type ScheduledJob = {
   run: () => Promise<unknown>;
 };
 
+/**
+ * Runs right after the UTC day boundary (the reporting timezone), so the rolling app-activity
+ * window drops its oldest day as soon as a new one starts. One indexed DELETE a day.
+ */
+const APP_ACTIVITY_CLEANUP_HOUR_UTC = 0;
+
 const HOUR_MS = 60 * 60 * 1000;
 const DAY_MS = 24 * HOUR_MS;
 
@@ -27,7 +34,10 @@ export function nextRunAt(hourUtc: number, from: Date = new Date()): Date {
 }
 
 export function defaultJobs(): ScheduledJob[] {
-  return [{ name: "inactivity-nudges", hourUtc: env.INACTIVITY_NUDGE_HOUR_UTC, run: runInactivityNudges }];
+  return [
+    { name: "inactivity-nudges", hourUtc: env.INACTIVITY_NUDGE_HOUR_UTC, run: runInactivityNudges },
+    { name: "app-activity-cleanup", hourUtc: APP_ACTIVITY_CLEANUP_HOUR_UTC, run: () => pruneAppActivity() },
+  ];
 }
 
 /**

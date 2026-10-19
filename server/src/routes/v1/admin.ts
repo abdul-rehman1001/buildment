@@ -2,7 +2,8 @@ import { Router } from "express";
 import * as admin from "../../controllers/admin.js";
 import { authenticate } from "../../middlewares/authenticate.js";
 import { requireAdmin } from "../../middlewares/require-admin.js";
-import { validate, validateBody, validateParams } from "../../middlewares/validate.js";
+import { validate, validateBody, validateParams, validateQuery } from "../../middlewares/validate.js";
+import { appActivityOverviewQuery, appActivityUsersQuery } from "../../validations/activity.js";
 import {
   allocationsBody,
   approveCourseRequestBody,
@@ -34,6 +35,10 @@ router.post("/course-requests/:requestId/approve", validate({ params: requestIdP
 router.post("/course-requests/:requestId/reject", validateParams(requestIdParams), admin.rejectCourseRequest);
 
 router.get("/users", admin.listUsers);
+
+router.get("/app-activity", validateQuery(appActivityOverviewQuery), admin.getAppActivity);
+router.get("/app-activity/users", validateQuery(appActivityUsersQuery), admin.listAppActivityUsers);
+
 router.patch("/users/:userId/instructor-access", validate({ params: userIdParams, body: instructorAccessBody }), admin.setInstructorAccess);
 router.post("/instructors", validateBody(grantInstructorBody), admin.grantInstructor);
 router.post("/instructor-access-requests/:requestId/approve", validateParams(requestIdParams), admin.approveInstructorRequest);
