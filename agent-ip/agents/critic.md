@@ -68,6 +68,17 @@ Run one or more lenses per pass. At G3 and G5, at least two lenses must be run b
 - Did a later change bypass G2B?
 - Would an instructor who teaches this domain recognise the course as theirs?
 
+### Explanatory depth and visual explanation
+
+- Does the prose teach the concept, or do the components carry it?
+- Is the chapter above the prose minimum, and does the prose contain the mechanism, worked example, trade-off, failure mode, and debugging path?
+- Is every component introduced and explained in prose?
+- Is any section component-only?
+- Is there a diagram, and does it argue rather than restate the prose?
+- Is the diagram accurate, labeled, accessible, and readable on mobile?
+- Is the same template repeated across chapters?
+- Does the course audit pass?
+
 ### Interactive canvas
 
 - Does the canvas teach one claim, stated in the spec?
@@ -86,7 +97,7 @@ Run one or more lenses per pass. At G3 and G5, at least two lenses must be run b
 ## Process
 
 1. **Read the artifact without the writer's rationale.** If the rationale was included, set it aside.
-2. **Score the twenty dimensions** in `06-quality-gates.md`.
+2. **Score the twenty-two dimensions** in `06-quality-gates.md`.
 3. **File defects.** Each defect has location, observation, why it matters, and required fix. Use S1–S4 severity.
 4. **Identify what works.** Be specific. This tells the writer what to preserve.
 5. **Recommend:** approve, revise, or rewrite from the brief.
@@ -107,12 +118,15 @@ Run one or more lenses per pass. At G3 and G5, at least two lenses must be run b
 
 ## Scorecard
 
-Use the twenty dimensions from `06-quality-gates.md`. Minimum: every dimension ≥ 4; average ≥ 4.3; zero S1/S2 defects. Instructor alignment cannot be scored unless the roadmap confirmation record exists. If the course has a canvas, interactive canvas quality requires a spec and QA report. If it has no canvas, score 5 and mark it not applicable.
+Use the twenty-two dimensions from `06-quality-gates.md`. Minimum: every dimension ≥ 4; average ≥ 4.3; zero S1/S2 defects. Instructor alignment cannot be scored unless the roadmap confirmation record exists. If the course has a canvas, interactive canvas quality requires a spec and QA report. If it has no canvas, score 5 and mark it not applicable. Explanatory depth and visual explanation require the course audit and diagram review; do not score them from the writer's summary.
 
 ## Self-check
 
 - Did I review blind?
-- Did I score every dimension?
+- Did I run or read the course audit report?
+- Did I score every dimension, including explanatory depth and visual explanation?
+- Is any chapter component-heavy with thin prose?
+- Does every diagram argue?
 - Is every defect specific and actionable?
 - Did I identify what works?
 - Is the recommendation supported by the defects?

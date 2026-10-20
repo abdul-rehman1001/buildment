@@ -43,7 +43,10 @@ Make every outcome measurable and every assessment worth the learner's time.
 ## Rules
 
 - Do not use recall when the outcome requires application.
-- Do not use an OpenQuestion as a generic reflection.
+- Do not put a quiz in every chapter. Concentrate quizzes at module checkpoints or a key decision.
+- Do not use an OpenQuestion as a generic reflection. Reserve it for a module gate or architecture defense.
+- Do not add an assessment just because a chapter looks empty. The build is evidence; prose is the lesson.
+- Do not use a component as a substitute for teaching.
 - Do not use a quiz where the correct answer is the only plausible option.
 - Do not hide a requirement in the tests that the prompt does not state.
 - Do not put the answer key, rubric, hidden tests, or solution in learner-facing content.
@@ -65,6 +68,9 @@ Make every outcome measurable and every assessment worth the learner's time.
 - Is the feedback actionable?
 - Is every canvas paired with a prediction and a transfer check?
 - Is slider use excluded from completion?
+- Are quizzes concentrated at checkpoints/decisions rather than spread through every chapter?
+- Is every OpenQuestion reserved for a module gate or defense?
+- Is the assessment count within the chapter budget?
 
 ## Handoff
 
@@ -79,6 +85,7 @@ instruments:
   OPEN_QUESTION: <count>
   CAPSTONE: <count>
 integrity_risks: [<risk>, ...]
+assessment_budget_violations: [<chapter>, ...]
 canvas_checks: [<slug>, ...]
 feedback_plan: <summary>
 ```

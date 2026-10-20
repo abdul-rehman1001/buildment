@@ -36,6 +36,88 @@ Example of the standard:
 
 The second version teaches a decision. The first version fills space.
 
+## Prose depth and component budget
+
+A chapter is not done because it has the right components. It is done when the prose teaches the idea and the components prove that the learner engaged with it.
+
+### Minimum prose
+
+- **Concept or build chapter:** at least **1,200 prose words**, excluding code fences, tables, bullet lists, JSX components, and frontmatter.
+- **Checkpoint or gate:** at least **700 prose words**.
+- **Module introduction:** 900–1,500 prose words.
+- If a chapter is below the minimum, it is usually missing one of: the problem, the mechanism, a worked example, the trade-off, a failure mode, or the debugging path. Add the missing thinking; do not pad with adjectives.
+
+### Component budget
+
+Per chapter:
+
+- At most **6 top-level components** and **25 total JSX tags**.
+- At most **3 assessment interactions** (quiz + predict + open question combined).
+- No component-only section. Every component sits inside an explanation.
+- At most one diagram.
+- At most one `BigWordAlert`, and only for a genuinely new, load-bearing term.
+- At most one quiz at a checkpoint or decision point; not after every section.
+- At most one `OpenQuestion`, and only at a module gate or architecture defense.
+
+Per module:
+
+- One `LearningObjectives` at the module introduction, not in every chapter.
+- One `ChapterRecap` at the module gate, not after every chapter.
+- One `RealWorldEvent`.
+- One `MustRead` or `InterestingRead`.
+- One or two diagrams, with at least one in a concept-heavy chapter.
+
+If a component can be removed without reducing understanding, remove it. The audit script at `agent-ip/scripts/audit-course.mjs` enforces the measurable parts.
+
+## Worked examples
+
+Programming novices need worked examples before independent production. Use two kinds:
+
+- **Process-oriented:** show the reasoning and the steps, not only the final code. Use sub-goal labels and comments that explain *why*.
+- **Product-oriented:** show a complete or partial solution and ask the learner to adapt it to a new case.
+
+The research-backed pattern:
+
+1. Teach the concept with a short explanation.
+2. Show a process-oriented worked example with sub-goal labels.
+3. Pair it with a similar practice problem.
+4. Show a second example in a different context so the learner sees the structure, not the surface.
+5. Fade the support: later chapters give a partial example or only acceptance criteria.
+
+Keep the example integrated. Do not split the code, the explanation, and the diagram across three separate sections; the learner has to hold them in working memory. Put the explanation next to the code and the diagram next to the relationship it explains.
+
+Worked examples are for novices. Once the learner can perform the task, remove the example and give a harder problem. Over-scaffolding an experienced learner is extraneous load.
+
+## Diagrams must argue
+
+At least one diagram per module, and one in every concept-heavy chapter. A diagram must make a relationship, flow, boundary, or state change legible in a way prose cannot. If it only restates the paragraph above it, cut it.
+
+- Use Excalidraw-style static SVG for conceptual architecture, ERDs, and annotated flows.
+- Use live Mermaid/State/Entity/Trace diagrams when the structure should stay theme-aware or easier to maintain.
+- Introduce the diagram in prose, then explain what to notice, then state the takeaway.
+- Label arrows and include a legend when color or shape encodes meaning.
+- Provide alt text or `<title>`/`<desc>`.
+- See `11-visual-explanations.md` for the full standard.
+
+## Chapter audit
+
+Before a chapter goes to review, run:
+
+```bash
+node agent-ip/scripts/audit-course.mjs courses/<course-slug>
+```
+
+The chapter must pass:
+
+- prose depth;
+- top-level component count;
+- total JSX tag count;
+- assessment interaction count;
+- diagram coverage;
+- list-heavy check.
+
+A chapter that fails the audit is not ready for a critic. The writer fixes the structure, not the score.
+
 ## Paragraph shape
 
 - One idea per paragraph.

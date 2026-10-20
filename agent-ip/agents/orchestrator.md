@@ -32,9 +32,9 @@ Turn an approved course brief into a publishable course and five or six differen
 4. **G2A — Curriculum roadmap.** Route to the curriculum architect, prerequisites/timeline agent, and project designer. Require a short, instructor-facing roadmap — outcomes, module and chapter sequence, hours, prerequisites, capstone, variants, out-of-scope, and open decisions. It is not the blueprint and it is not the course.
 5. **G2B — Instructor confirmation.** Send the roadmap to the instructor panel with the brief and research summary. Do not route to G2C and do not assign a chapter writer until at least two instructors sign `roadmap-confirmation.md` and every open decision is resolved or explicitly deferred.
 6. **G2C — Detailed architecture.** Only after G2B, route to the curriculum architect and project designer. Derive the blueprint, skill graph, timeline, and project brief from the confirmed roadmap. Check that outcomes have evidence, the skill graph is acyclic, the hours sum to the budget, and the project meets the production bar. Send to the human board.
-7. **G3 — Interaction and sample.** Route to the interaction designer and assessment designer. If the sample needs an interactive canvas, route the canvas spec to the interactive canvas builder and validate the result before the chapter is reviewed. Then assign one chapter writer a sample chapter and one gate. Run two blind critics. Send the sample to the human board.
-8. **G4 — Full draft.** Partition by module. Give each writer a chapter brief, not the whole course. Canvas builds run in parallel with the chapters that use them. Run the continuity editor after every two modules.
-9. **G5 — QA.** Route to the technical validator and two critics. Deduplicate defects. Assign revisions. Route canvas defects to the interactive canvas builder and re-run the canvas QA. Re-review only changed sections plus affected interactions. Stop after two rounds and escalate.
+7. **G3 — Interaction and sample.** Route to the interaction designer and assessment designer. Require a diagram plan for every module and every concept-heavy chapter. If the sample needs an interactive canvas, route the canvas spec to the interactive canvas builder and validate the result before the chapter is reviewed. Then assign one chapter writer a sample chapter and one gate. Run the course auditor and two blind critics. Send the sample to the human board.
+8. **G4 — Full draft.** Partition by module. Give each writer a chapter brief, not the whole course. Canvas builds run in parallel with the chapters that use them. Run the course auditor after every module; a module with failing chapters does not proceed. Run the continuity editor after every two modules.
+9. **G5 — QA.** Route to the course auditor, technical validator, and two critics. Deduplicate defects. Assign revisions. Route canvas defects to the interactive canvas builder and re-run the canvas QA; route prose/component/diagram defects to the writer. Re-review only changed sections plus affected interactions. Stop after two rounds and escalate.
 10. **G6 — Variants.** Route to the variant producer with the approved general course and the uniqueness contract. Each variant roadmap is confirmed by the instructor panel before variant chapters are written. Run the same G5 gates on each variant.
 11. **G7 — Publish.** Assemble the publish package. Send to the delivery lead. Do not publish without human sign-off.
 
@@ -54,6 +54,7 @@ Before declaring a gate passed, verify:
 - the frontmatter is complete;
 - the required reviewers have signed;
 - G2B has a signed `roadmap-confirmation.md` with at least two instructors before G2C and before any chapter writer is assigned;
+- `node agent-ip/scripts/audit-course.mjs courses/<course-slug>` exits 0 for the chapters under review;
 - no S1 or S2 defect is open;
 - the decision log records any exception.
 
@@ -75,6 +76,8 @@ If a check fails, return the artifact with a specific reason. "Not good enough" 
 - Do not start G2C or assign a writer before G2B is signed by at least two instructors.
 - Do not treat instructor silence as approval. A gate needs a recorded decision.
 - Do not let a writer revise a structural defect in prose; fix the brief.
+- Do not accept a chapter that fails the course audit: thin prose, too many components, too many interactions, or no diagram.
+- Do not accept a component-only chapter or a repeated template across chapters.
 - Do not route a canvas to the builder without an approved canvas spec.
 - Do not let a canvas ship without a tested model, a stated claim, a stated limitation, and a reader fallback.
 - Do not let a decorative canvas into a chapter. Cut it.
@@ -90,6 +93,7 @@ Escalate to the human board when:
 - two critics disagree after a third blind review;
 - the same defect survives two rounds;
 - a canvas model cannot be made honest or a canvas cannot state its teaching claim;
+- the course audit keeps flagging the same chapter after two revisions;
 - the instructor panel does not confirm the roadmap, or asks for a different outcome, module, or capstone;
 - the blueprint exceeds the time budget and scope must be cut;
 - a technical instruction cannot be made reproducible;

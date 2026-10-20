@@ -46,6 +46,22 @@ Some concepts are best taught by letting the learner manipulate a small causal m
 
 See `10-interactive-canvases.md` for the design language, model contract, platform integration, catalog, placement rules, and QA. The builder agent is `agents/interactive-canvas-builder.md`.
 
+## Visual explanations
+
+Diagrams are not decoration. A diagram must make a relationship, flow, boundary, or state change legible. Use Excalidraw-style static SVG for conceptual architecture, ERDs, and annotated flows; use live Mermaid/State/Entity/Trace components when the diagram should stay theme-aware or easier to maintain.
+
+See `11-visual-explanations.md` for the Excalidraw design rules, SVG export workflow, accessibility, placement, and QA.
+
+## Course audit
+
+The audit is executable, not a vibe check:
+
+```bash
+node agent-ip/scripts/audit-course.mjs courses/<course-slug>
+```
+
+It measures prose depth, top-level and total component counts, assessment interactions, diagram coverage, and list-heavy chapters. It exits non-zero when a chapter misses the threshold. Run it at G3 and G5; the course auditor files defects from the result.
+
 ## How to use this folder
 
 1. **Human intake.** Complete `08-templates.md` → Course Brief. State the audience, the outcome, the constraints, the variants, and the non-goals.
@@ -94,7 +110,9 @@ agent-ip/
 ├── 08-templates.md                 ← briefs, maps, reports, checklists
 ├── 09-review-and-governance.md     ← human review, versioning, sign-off
 ├── 10-interactive-canvases.md      ← simulators/visualisers, design language, QA
-├── 11-architect-requirements.md    ← the architect's required capabilities and where each lives
+├── 11-visual-explanations.md       ← Excalidraw/SVG/live diagrams, accessibility, QA
+├── scripts/
+│   └── audit-course.mjs            ← prose depth, component density, diagram coverage
 └── agents/
     ├── orchestrator.md
     ├── research.md
@@ -105,6 +123,7 @@ agent-ip/
     ├── interactive-canvas-builder.md
     ├── assessment-designer.md
     ├── chapter-writer.md
+    ├── course-auditor.md
     ├── technical-validator.md
     ├── critic.md
     ├── variant-producer.md
@@ -113,7 +132,9 @@ agent-ip/
 
 ## Non-negotiables
 
-- **Prose carries the teaching.** Bullets summarise; they do not replace explanation.
+- **Prose carries the teaching.** Bullets summarise; they do not replace explanation. A concept/build chapter needs at least 1,200 prose words, excluding code, lists, tables, and components; a checkpoint/gate needs at least 700.
+- **Components are checkpoints, not the lesson.** No component-only sections. Every component sits inside an explanation, not instead of one. A chapter may have at most 6 top-level components, 25 total JSX tags, and 3 assessment interactions.
+- **A diagram must argue.** At least one diagram per module, and one in every concept-heavy chapter. Use Excalidraw-style SVG for conceptual/ER/flow diagrams and live Mermaid/State/Trace for dynamic ones. A diagram that restates the paragraph is decoration.
 - **Specific beats generic.** Every example names a real product, a real constraint, or a real failure mode.
 - **One hard thing at a time.** Complexity is sequenced, not dumped.
 - **Every interaction earns its place.** If it does not produce evidence of understanding, cut it.
