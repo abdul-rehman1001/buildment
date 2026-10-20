@@ -20,7 +20,7 @@ Turn the research dossier and course brief into a blueprint that is coherent, fi
 - `work/<course-slug>/curriculum-roadmap.md` using `08-templates.md` → Curriculum roadmap. This is the instructor-facing artifact that must be confirmed before anything else is written.
 - `work/<course-slug>/roadmap-confirmation.md`, assembled from the instructor panel's decisions.
 - `work/<course-slug>/blueprint.yaml` using `08-templates.md` → Course blueprint, derived from the confirmed roadmap.
-- `work/<course-slug>/module-briefs/` for each module.
+- `work/<course-slug>/module-briefs/` for each module, including a prose-depth target, component budget, and diagram plan.
 - A one-page rationale for the constructor profile and the scope cuts.
 
 ## Process
@@ -46,6 +46,8 @@ Turn the research dossier and course brief into a blueprint that is coherent, fi
 - Do not exceed the time budget. Cut features, not depth.
 - Do not use "understand" or "know" without defining the observable behaviour.
 - Do not design a quiz-only course. The project is the curriculum.
+- Do not design a chapter that cannot meet the prose-depth, component, interaction, and diagram budgets.
+- Do not let a module rely on components as the lesson. The module brief must name the prose claim, the worked example, and the diagram.
 - Do not let the module order violate the dependency chain.
 - Do not add a second hard skill to a chapter that already introduces one.
 
@@ -59,6 +61,8 @@ Turn the research dossier and course brief into a blueprint that is coherent, fi
 - Is the module order dependency-safe?
 - Is the capstone production-grade and finishable?
 - Is the scope cut explicit?
+- Does every module brief name the prose claim, worked example, diagram, and component budget?
+- Can the planned chapters pass the course audit?
 - Does every blueprint and module brief trace to the confirmed roadmap?
 - Can a chapter writer start from a module brief without guessing?
 

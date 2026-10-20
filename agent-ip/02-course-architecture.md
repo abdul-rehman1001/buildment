@@ -171,6 +171,25 @@ Every chapter follows the same skeleton. The depth changes; the skeleton does no
 
 Chapters that are pure quizzes or gates compress steps 1–8. They must not introduce new conceptual content.
 
+### Prose depth and component budget
+
+The skeleton is not a component checklist. A concept or build chapter needs at least **1,200 prose words**, excluding code, lists, tables, and components; a checkpoint or gate needs at least **700**. Components are checkpoints inside the explanation, not the explanation itself.
+
+- At most 6 top-level components, 25 total JSX tags, and 3 assessment interactions per chapter.
+- `LearningObjectives` at the module introduction, not every chapter.
+- `ChapterRecap` at the module gate, not every chapter.
+- `BigWordAlert` only for a genuinely new, load-bearing term.
+- `OpenQuestion` only at a module gate or architecture defense.
+- Quizzes at checkpoints or decision points, not after every section.
+- No component-only sections.
+- Run `node agent-ip/scripts/audit-course.mjs courses/<course-slug>` before review.
+
+### Diagrams and worked examples
+
+At least one diagram per module and one per concept-heavy chapter. Use Excalidraw-style static SVG for conceptual architecture, ERDs, and annotated flows; use live Mermaid/State/Entity/Trace for dynamic diagrams. Introduce the diagram in prose, explain what to notice, then state the takeaway.
+
+Every new concept needs a worked example and a practice problem. Use a process-oriented example for novices, then a product-oriented example, and fade the support over time. The build chapter must include a failure mode and a debugging path, not only a happy-path snippet.
+
 ## Prerequisites and the skill graph
 
 Every chapter declares:

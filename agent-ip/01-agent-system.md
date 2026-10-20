@@ -26,6 +26,7 @@ If the same agent does all four in one pass, the critique becomes a self-review 
 | **Interactive Canvas Builder** | Build small simulators/visualisers (HTML/CSS, SVG, Canvas 2D) from an approved canvas spec | canvas component, model, tests, spec | Yes |
 | **Assessment Designer** | Design evidence, rubrics, answer keys, and feedback | `assessment-plan.yaml` | Yes |
 | **Chapter Writer** | Write prose-first chapters from approved briefs | chapter drafts | No |
+| **Course Auditor** | Measure prose depth, component density, interaction budget, and diagram coverage | `course-audit.md` with defects | Yes |
 | **Technical Validator** | Run the code, verify versions, links, and reproducibility | `technical-validation.md` | Yes |
 | **Critic** | Blind review across pedagogy, slop, assessment, continuity | `critique.md` with defects | Yes |
 | **Variant Producer** | Derive 5–6 differentiated variants | variant courses + diff report | Yes |
@@ -92,7 +93,7 @@ Human review is mandatory here. If the detailed architecture contradicts the con
 
 Outputs: `interaction-map.yaml`, `assessment-plan.yaml`, one complete sample chapter, one sample gate, and — where the sample needs one — a canvas spec and a built canvas.
 
-Exit criteria: the sample chapter meets the authoring standards; every interaction has a purpose; the density budget is respected; the assessment actually measures the outcome; the sample can be imported and rendered; any canvas has a tested model, a stated teaching claim, a stated limitation, and a reader fallback.
+Exit criteria: the sample chapter meets the authoring standards; every interaction has a purpose; the density budget is respected; the assessment actually measures the outcome; the sample can be imported and rendered; any canvas has a tested model, a stated teaching claim, a stated limitation, and a reader fallback; the course audit passes for the sample and the planned chapter set.
 
 Human review is mandatory here. If the sample is wrong, every chapter will be wrong.
 
@@ -112,7 +113,7 @@ Exit criteria: every chapter has a brief, a build step, a verification step, and
 
 Outputs: `technical-validation.md`, `critique.md`, `scorecard.yaml`.
 
-Exit criteria: all commands run; all links resolve; all MDX compiles; all code exercises pass their tests; every canvas passes the model, SVG/theme, accessibility, performance, mobile, and reader-integration checks in `06-quality-gates.md`; no S1 or S2 defects remain; the scorecard meets the thresholds.
+Exit criteria: all commands run; all links resolve; all MDX compiles; all code exercises pass their tests; every canvas passes the model, SVG/theme, accessibility, performance, mobile, and reader-integration checks in `06-quality-gates.md`; the course audit passes for every chapter; no S1 or S2 defects remain; the scorecard meets the thresholds.
 
 ### G6 — Variants
 
@@ -173,6 +174,7 @@ An agent should receive the smallest context that lets it do its job well. Dumpi
 | Interactive canvas builder | Canvas spec, chapter claim, design language, platform registry | Existing canvases, chart patterns | Full course prose |
 | Assessment designer | Outcomes, blueprint, interaction map | Prior assessments | Writer's rationale |
 | Chapter writer | Confirmed roadmap, chapter brief, outcomes, interaction map, adjacent summaries, style guide | Source dossier | Other writers' full drafts |
+| Course auditor | Course source, audit script, authoring standards, visual standard, chapter briefs | Blueprint, prior audits | Writer's rationale |
 | Technical validator | Chapter, project brief, environment spec | Test suite | Writer's rationale |
 | Critic | Artifact, rubric, source dossier | Adjacent chapters | Writer's rationale, other critics' scores |
 | Variant producer | General course, variant brief, diff contract | Research | Unapproved drafts |
@@ -253,4 +255,5 @@ The course factory is working when:
 - a critic can find defects without being told what to look for;
 - a variant can be generated and proved distinct without a full rewrite;
 - every canvas has a tested model, a stated teaching claim, a stated limitation, a reader fallback, and a safe SVG/HTML rendering;
+- the course audit passes for every chapter before G3 and G5;
 - every published course can be traced back to its brief, research, blueprint, critiques, and sign-off.

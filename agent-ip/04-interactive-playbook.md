@@ -34,6 +34,27 @@ Before adding any interaction, answer three questions:
 
 An interaction that cannot answer question one is decoration.
 
+## Prose first, components second
+
+Components are checkpoints inside an explanation, not the explanation. A chapter that is mostly cards, quizzes, and callouts with a few sentences between them is a template, not a lesson. The learner should be able to learn the concept from the prose even if every component were removed.
+
+The budget:
+
+| Item | Per chapter | Per module |
+|---|---|---|
+| Prose words (concept/build) | ≥ 1,200 | — |
+| Prose words (checkpoint/gate) | ≥ 700 | — |
+| Top-level components | ≤ 6 | — |
+| Total JSX tags | ≤ 25 | — |
+| Assessment interactions | ≤ 3 | — |
+| `LearningObjectives` | only at module start | 1 |
+| `BigWordAlert` | ≤ 1, only for a load-bearing term | as needed |
+| `ChapterRecap` | only at a gate | 1 |
+| `OpenQuestion` | only at a gate/defense | ≤ 1 |
+| Diagrams | ≤ 1 | ≥ 1 |
+
+No component-only section. If a component can be removed without reducing understanding, remove it. Run `node agent-ip/scripts/audit-course.mjs courses/<course-slug>` before review; a chapter that fails the audit is not ready.
+
 ## Assessment blocks
 
 Assessment blocks create a `Response` and count toward chapter completion. Use them when the learner must commit to an answer.
@@ -343,6 +364,18 @@ Placement:
 
 Platform status: the current MDX allowlist has no generic canvas slot. Until `InteractiveCanvas` is added to the allowlist and a registry, a canvas is a preview, not an embeddable course element. Do not invent the tag in a chapter.
 
+## Diagram plan
+
+Every module needs at least one diagram; every concept-heavy chapter needs one where a relationship, flow, or state is central. Choose the format before writing:
+
+- conceptual architecture, ERD, annotated flow → Excalidraw-style static SVG;
+- state machine → `StateMachine` or `MermaidDiagram`;
+- request lifecycle → `TraceRequest`;
+- layered boundary → `ArchitectureDiagram`;
+- entity relationships → `EntityDiagram`.
+
+Introduce the diagram in prose, explain what to notice, and state the takeaway. Do not create a diagram-only section. See `11-visual-explanations.md`.
+
 ## Placement matrix
 
 | Chapter archetype | Required | Optional | Never |
@@ -359,16 +392,17 @@ Platform status: the current MDX allowlist has no generic canvas slot. Until `In
 
 Per chapter:
 
-- At most one `BigWordAlert`.
+- At most one `BigWordAlert`, and only for a load-bearing term.
 - At most one diagram of any kind.
 - At most two `Callout`s.
 - At most one `Predict`.
-- At most one quiz chapter's worth of `Quiz` blocks (three to five questions).
-- At most one `OpenQuestion`, and only when the answer deserves review.
+- At most one quiz at a checkpoint or decision point. A quiz chapter may have three to five questions; a normal chapter should not have a quiz after every section.
+- At most one `OpenQuestion`, and only at a module gate or architecture defense.
 - At most one `CodeExercise`, and only when the build does not already prove the skill.
 - At most one interactive canvas. It counts as a high-effort interaction.
 - At most one `InterestingRead`.
 - At most one `RealWorldEvent`.
+- At most three assessment interactions total (quiz + predict + open question).
 - Never two high-effort interactions back to back. Put a build or a prose bridge between them.
 
 Per module:

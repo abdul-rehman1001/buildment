@@ -105,6 +105,35 @@ Use this whenever a chapter includes an interactive canvas. The full contract is
 - [ ] Static SVG assets are sanitized, optimised, and hosted locally.
 - [ ] Visual regression passes in light, dark, and mobile widths.
 
+## Course audit
+
+The audit is executable. Run it at G3 and G5:
+
+```bash
+node agent-ip/scripts/audit-course.mjs courses/<course-slug>
+```
+
+It checks, per chapter:
+
+- prose words (≥ 1,200 concept/build, ≥ 700 checkpoint/gate);
+- top-level components (≤ 6);
+- total JSX tags (≤ 25);
+- assessment interactions (≤ 3);
+- diagram coverage (≥ 1 per concept/build chapter; ≥ 1 per module);
+- list-heavy chapters.
+
+The course auditor files a defect for every chapter that fails. A course with a failing audit does not pass G3 or G5.
+
+### Audit review questions
+
+- Can the learner learn the concept from the prose alone?
+- Is every component introduced and explained in prose?
+- Does every module have at least one diagram that argues?
+- Are the interactions concentrated at checkpoints and decisions, not spread as a template?
+- Does each build chapter have file paths, acceptance criteria, a failure test, and a debugging path?
+- Does each concept have a worked example and a practice problem?
+- Are the trade-offs and alternatives explicit?
+
 ## The scorecard
 
 Score each dimension from 1 to 5.
@@ -139,6 +168,8 @@ Score each dimension from 1 to 5.
 18. **Learner agency and curiosity.** The learner makes real decisions and wants to know what happens next.
 19. **Instructor alignment.** The confirmed roadmap is reflected in the course; the instructors recognise the sequence, outcomes, and capstone as theirs.
 20. **Interactive canvas quality.** The model is correct and tested; the controls and output are legible; the design is simple; the canvas teaches one claim; the learner can state the claim and transfer it. If the course has no canvas, score 5 and mark it not applicable.
+21. **Explanatory depth.** The prose teaches the mechanism, the trade-offs, a worked example, and the failure modes. Components support the explanation; they do not replace it. The prose-depth audit passes.
+22. **Visual explanation quality.** Diagrams are necessary, accurate, accessible, labeled, and make a relationship, flow, or state change legible. A diagram that restates the prose is a defect.
 
 ### Thresholds
 
@@ -310,6 +341,9 @@ Before publish, the critic tries to break the course:
 11. **The instructor.** Would an instructor who teaches this domain recognise the sequence, outcomes, and capstone as their course? If not, the roadmap was not genuinely confirmed.
 12. **The slider.** Can a learner spend ten minutes moving controls and still fail to state the claim or apply it in a new case? If yes, the canvas is entertainment, not teaching.
 13. **The SVG author.** Can an author inject a script, `foreignObject`, event handler, external href, or remote asset through an SVG? If yes, the sanitizer or component contract is broken.
+14. **The skimmer.** Can a learner skip the prose, click the components, and still pass? If yes, the components are the lesson, not the checkpoints.
+15. **The bullet counter.** Is the chapter mostly bullets, cards, and code with little explanation? The audit will show it; the fix is prose, not more components.
+16. **The diagram decorator.** Does the diagram only restate the paragraph above it? If yes, cut it or make it argue.
 
 ## Defect severity
 
@@ -343,6 +377,7 @@ The publish package contains:
 - the project brief;
 - the interaction map and assessment plan;
 - the canvas specs and canvas QA reports, if any;
+- the course audit report and diagram assets;
 - the final chapters;
 - the technical validation report;
 - the critique reports and scorecards;

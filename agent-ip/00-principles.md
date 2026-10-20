@@ -68,6 +68,28 @@ A quiz, diagram, code exercise, or open question consumes attention and time. It
 
 An interactive canvas is the most expensive interaction we build. It earns its place only when a small causal model is the best way to teach the claim: inputs the learner can manipulate, an output that changes immediately, and a limit the model can state honestly. It must be simple — neutral surfaces, one accent, semantic color only, direct labels, no gradients or decorative motion. It may be rendered with HTML/CSS, inline SVG, or Canvas 2D; SVG is the default for vector visuals, while HTML owns the controls. Raw author SVG is never injected into MDX. If the learner cannot state the claim after using it, the canvas is decoration and it should be cut. See `10-interactive-canvases.md`.
 
+### Prose is the lesson; components are checkpoints
+
+A course is not a sequence of quizzes, callouts, and cards. The explanation is the lesson. Components are checkpoints that help the learner notice, practise, or verify something the prose has already taught.
+
+The rule:
+
+- A concept or build chapter needs at least **1,200 prose words**, excluding code, lists, tables, and components. A checkpoint or gate needs at least **700**.
+- A chapter may have at most **6 top-level components**, **25 total JSX tags**, and **3 assessment interactions**.
+- No component-only section. A component must be introduced and explained in prose.
+- `LearningObjectives` appears once per module, not in every chapter.
+- `BigWordAlert` is reserved for a genuinely new, load-bearing term; not every chapter.
+- `ChapterRecap` appears at a module gate, not after every chapter.
+- `OpenQuestion` is reserved for a module gate or an architecture defense, not a generic takeaway.
+- Quizzes belong at checkpoints or a decision point, not after every section.
+- If removing a component would not reduce the learner's understanding, remove it.
+
+An audit script exists at `agent-ip/scripts/audit-course.mjs`. A chapter that cannot pass it is not ready for review.
+
+### A diagram must argue
+
+A diagram is not decoration. It must make a relationship, flow, boundary, or state change legible in a way prose cannot. At least one diagram is required per module and per concept-heavy chapter. Use Excalidraw-style static SVG for conceptual architecture, ERDs, and annotated flows; use live Mermaid/State/Entity/Trace diagrams when the structure should stay theme-aware or easier to maintain. A diagram that restates the paragraph above it is decoration. See `11-visual-explanations.md`.
+
 ### 10. The learner must be able to defend the work
 
 Every course ends with a defense: a demo, a walkthrough, a set of viva questions, or an architecture review. The learner should be able to explain:

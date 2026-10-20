@@ -394,6 +394,9 @@ roadmap_confirmed: true
 ## Outcome
 <One observable sentence.>
 
+## Prose target
+<≥ 1,200 prose words for a concept/build chapter; ≥ 700 for a checkpoint/gate. List what the prose must cover: problem, mechanism, worked example, trade-offs, failure modes, debugging.>
+
 ## Hook
 <The concrete problem or failure.>
 
@@ -401,19 +404,31 @@ roadmap_confirmed: true
 <The minimum theory. Name the mechanism, not only the vocabulary.>
 
 ## Worked example
-<An adjacent case, solved with reasoning.>
+<An adjacent case, solved with reasoning. Process-oriented for novices; product-oriented when the learner is ready.>
 
 ## Decision
-<The trade-off the learner must make. Alternatives and consequences.>
+<The trade-off the learner must make. Alternatives and the consequence of each.>
+
+## Alternatives and tools
+<Credible alternatives, open-source/managed options, when to switch, operational cost.>
 
 ## Build
-<The task. Interfaces, constraints, acceptance criteria.>
+<The task. File paths, interfaces, constraints, acceptance criteria.>
+
+## Failure modes
+<What breaks, how to detect it, and the debugging path.>
 
 ## Verify
 <Command/test/screenshot, including one failure mode.>
 
 ## Interactions
 <Exact blocks and placement. Link to interaction-map.yaml.>
+
+## Component budget
+<Top-level components ≤ 6; total JSX tags ≤ 25; assessment interactions ≤ 3. State what was removed and why.>
+
+## Diagram
+<Diagram plan: Excalidraw/SVG, Mermaid, Entity, State, Architecture, or Trace. The claim it argues, placement, alt text, legend.>
 
 ## Canvas
 <Canvas spec slug, or "none". State the teaching claim and why the canvas is better than a static diagram.>
@@ -661,6 +676,8 @@ dimensions:
   learner_agency: 0
   instructor_alignment: 0
   interactive_canvas_quality: 0   # score 5 if the course has no canvas
+  explanatory_depth: 0
+  visual_explanation_quality: 0
 
 average: 0
 blocking_defects: 0
@@ -677,6 +694,51 @@ Minimum: every dimension ≥ 4; average ≥ 4.3; zero S1/S2 defects.
 | Date | Decision | Alternatives | Why | Owner |
 |---|---|---|---|---|
 | | | | | |
+```
+
+## 13A. Course audit report
+
+```yaml
+---
+artifact: course-audit
+course: <slug>
+version: 1
+owner: course-auditor
+script: agent-ip/scripts/audit-course.mjs
+---
+
+# Course audit — <course>
+
+## Summary
+| Metric | Value | Threshold | Pass |
+|---|---|---|---|
+| Chapters | | — | |
+| Prose words | | — | |
+| Chapters below prose minimum | | 0 | |
+| Chapters above component budget | | 0 | |
+| Chapters above interaction budget | | 0 | |
+| Chapters missing a diagram | | 0 | |
+| List-heavy chapters | | 0 | |
+
+## Per-chapter results
+| Chapter | Type | Prose | Top-level components | Total tags | Interactions | Diagrams | Flags |
+|---|---|---:|---:|---:|---:|---:|---|
+| | | | | | | | |
+
+## Defects
+
+### S2
+- location:
+  observation:
+  required fix:
+
+### S3
+- location:
+  observation:
+  suggested fix:
+
+## Recommendation
+<approve | revise | rewrite from brief>
 ```
 
 ## 14A. Interactive canvas spec

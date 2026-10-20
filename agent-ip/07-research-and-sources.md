@@ -138,6 +138,57 @@ The same e-learning analysis that documents AI slop is explicit about what AI ca
 - The delivery lead signs publish (`README.md`).
 - The review board includes a learner advocate (`09-review-and-governance.md`).
 
+### 9. Worked examples reduce extraneous load for novices
+
+The Raspberry Pi Foundation's pedagogy summary on worked examples finds that novices benefit from a model solution because it reduces the load on working memory and helps them form schemas. Process-oriented examples (showing the steps and reasoning) are especially useful for complete novices; product-oriented examples work better once the learner has some experience. The recommended sequence is worked example → similar practice problem → a second example in a different context → faded support.
+
+**Rules derived:**
+
+- Every new concept gets a worked example and a practice problem.
+- Show the reasoning, not only the final code.
+- Use sub-goal labels and integrated explanations, not split attention.
+- Fade the example as the learner gains competence.
+- Do not over-scaffold an experienced learner.
+
+Source: Raspberry Pi Foundation, "Pedagogy Quick Read 2 — Worked Examples" (2023).
+
+### 10. Components can become extraneous load
+
+The interaction playbook already treats components as a cost. The audit makes that concrete: too many cards, quizzes, and callouts with thin prose create extraneous load and train the learner to click rather than read. Cognitive-load theory calls for reducing extraneous load so working memory is available for the actual schema.
+
+**Rules derived:**
+
+- Prose is the lesson; components are checkpoints.
+- A chapter that fails the prose-depth audit is not ready, even if every component is present.
+- Interactions are concentrated at checkpoints and decisions.
+- No component-only sections.
+
+### 11. Excalidraw diagrams have a craft standard
+
+Excalidraw's technical-diagram guidance is specific: align to a grid, flow left-to-right for processes, top-to-bottom for hierarchies, use the 60-30-10 color rule, keep two or three accents, use semantic colors, standard shapes, bound arrows, labeled flows, `roughness: 0` for technical docs, and avoid crowded layouts and missing legends.
+
+**Rules derived:**
+
+- `11-visual-explanations.md` adopts those layout, color, type, shape, and arrow rules.
+- A diagram must have a teaching claim, not just a layout.
+- Static SVGs are sanitized, optimized, hosted locally, and consumed through a `diagram` fence or `VisualDiagram`.
+- Diagrams are checked at mobile width and with a text alternative.
+
+Source: Excalidraw design best practices (agent skill reference).
+
+### 12. SVG needs an explicit accessibility pattern
+
+SVG accessibility depends on intent: decorative SVGs should be hidden from assistive tech; meaningful SVGs need `role="img"` with a label or `<title>`/`<desc>`; interactive shapes need focusability, keyboard handlers, and accessible names. Charts need a text or table alternative.
+
+**Rules derived:**
+
+- Static diagrams: `<title>`/`<desc>` plus alt text on the block.
+- Live diagrams: title, legend/direct labels, and a text alternative.
+- Interactive SVG: HTML controls where possible; keyboard-reachable shapes with names and focus.
+- Charts: provide a data table or text summary.
+
+Source: ImageToSVG, "SVG Accessibility: Complete Guide" (2025).
+
 ## Learning-science summary
 
 | Principle | What it means for the course | Where it is enforced |
@@ -156,6 +207,10 @@ The same e-learning analysis that documents AI slop is explicit about what AI ca
 | Self-determination | Support autonomy, competence, relatedness | Real decisions, demos, mentor review |
 | Performance vs learning | Judge durable capability, not in-lesson fluency | Capstone defense, delayed checks |
 | Exploration without assessment | A canvas can create a fluency illusion; require prediction and transfer | Canvas QA, assessment plan |
+| Worked examples | Model the reasoning for novices, pair with practice, fade support | Chapter anatomy, authoring standards |
+| Component density | Too many components with thin prose creates extraneous load | Course audit, interactive playbook |
+| Diagram craft | Diagrams need hierarchy, alignment, semantic color, labels, and a claim | Visual explanations, diagram QA |
+| SVG accessibility | Meaningful SVGs need a text alternative; interactive shapes need keyboard access | Visual explanations, accessibility checklist |
 
 ## How to cite in learner-facing content
 
@@ -230,3 +285,6 @@ What still needs a human or a subject-matter expert.
 - Brunmair, M., & Richter, T. (2019). "Similarity matters: A meta-analysis of interleaved learning and its moderators." Psychological Bulletin, 145(11), 1029–1052. — https://doi.org/10.1037/bul0000209
 - "Desirable Difficulty: Theory and application of intentionally challenging learning" (PubMed) — https://pubmed.ncbi.nlm.nih.gov/35950522/
 - InnerDrive, "The Expertise Reversal Effect and scaffolding support" — https://www.innerdrive.co.uk/blog/expertise-reversal-effect-scaffolding/
+- Raspberry Pi Foundation, "Pedagogy Quick Read 2 — Worked Examples" (2023) — https://static.raspberrypi.org/files/curriculum/quickreads/2-Pedagogy_Summary_Worked_Examples_V6_2023.pdf
+- Excalidraw design best practices — https://github.com/rnjn/cc-excalidraw-skill/blob/main/best-practices.md
+- ImageToSVG, "SVG Accessibility: Complete Guide" (2025) — https://imagetosvg.com/blog/svg-accessibility-guide

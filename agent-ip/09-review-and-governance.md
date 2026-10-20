@@ -17,6 +17,7 @@ It also protects the IP. The methodology, the critique rubric, the variant map, 
 | **Instructor panel** (2+ mentors) | Confirm the curriculum roadmap, sequence, hours, and capstone before writing; re-confirm material roadmap changes | Yes |
 | **Editor** | Voice, structure, prose quality, anti-slop | Yes |
 | **Simulation reviewer** | Model correctness, teaching clarity, visual simplicity, and SVG accessibility/security of interactive canvases | Yes |
+| **Course auditor** | Prose depth, component density, interaction budget, diagram coverage, and chapter structure | Yes |
 | **Platform engineer** | Import, rendering, blocks, deployment | Yes |
 | **Learner advocate** | Prerequisite realism, time budget, frustration points | Yes |
 | **Curriculum architect** | Outcomes, evidence, sequencing | Yes |
@@ -32,9 +33,9 @@ A review needs at least three roles for the sample chapter and full draft. The G
 | G2A | Curriculum roadmap | Before instructor review |
 | G2B | Instructor roadmap confirmation | Before the blueprint and before any chapter |
 | G2C | Blueprint, skill graph, timeline, project brief | Before writing |
-| G3 | Interaction map, assessment plan, one sample chapter, canvas specs if any | Before the full draft |
+| G3 | Interaction map, assessment plan, one sample chapter, canvas specs if any, course audit | Before the full draft |
 | G4 | Full draft, module by module | During writing |
-| G5 | Technical and pedagogical QA, including canvas QA | Before variants |
+| G5 | Technical and pedagogical QA, including canvas QA and full course audit | Before variants |
 | G6 | Variant roadmaps, variants, and diff report | Before publish |
 | G7 | Publish package | Final |
 
@@ -113,6 +114,7 @@ Do not leave two competing rules in the folder. If a rule is replaced, remove th
 |---|---|---|---|---|---|
 | Typo or formatting | ✓ | | | | |
 | Chapter rewrite | ✓ | ✓ | | | |
+| Chapter/audit restructure | ✓ | ✓ | ✓ | | |
 | New chapter | ✓ | ✓ | ✓ | | |
 | New module | ✓ | ✓ | ✓ | ✓ | |
 | New interactive canvas | | ✓ | ✓ | | ✓ |
@@ -144,6 +146,7 @@ Within two weeks of launch, review:
 
 - completion rate by module;
 - the chapters with the most support questions;
+- the chapters the course audit still flags for thin prose or component density;
 - the assessments with the highest failure or lowest discrimination;
 - the builds with the most environment failures;
 - the open questions with the most generic answers;

@@ -49,11 +49,18 @@ Turn the chapter brief into prose that teaches a decision, shows a specific exam
 
 - Do not start if the roadmap is not confirmed by the instructor panel. If you are assigned without a signed `roadmap-confirmation.md`, stop and report it to the orchestrator.
 - Write only the chapter the brief describes. Do not change the sequence, outcomes, capstone, or variants.
-- Prose first. Open with two to four sentences of explanation. Use bullets only for lists.
+- **Prose depth is non-negotiable.** Write at least 1,200 prose words for a concept/build chapter and 700 for a checkpoint/gate, excluding code, lists, tables, and components. If the chapter is short, add the missing problem, mechanism, worked example, trade-off, failure mode, or debugging path — not filler.
+- **Respect the component budget.** At most 6 top-level components, 25 total JSX tags, and 3 assessment interactions. No component-only sections. Every component sits inside an explanation.
+- **One diagram minimum** for a concept/build chapter. Use Excalidraw-style SVG for conceptual/ER/flow, live Mermaid/State/Entity/Trace for dynamic diagrams. Introduce the diagram in prose, explain what to notice, then state the takeaway.
+- **Teach with a worked example.** Use a process-oriented example for a novice, pair it with a practice problem, and fade the support later. Show the reasoning, not only the final code.
+- Do not repeat `LearningObjectives`, `BigWordAlert`, `ChapterRecap`, or quizzes in every chapter. Follow the module budget.
+- Open with two to four sentences of explanation. Use bullets only for lists.
 - Specific beats generic. Name the product, actor, constraint, number, and failure.
 - One idea per paragraph. Two to five sentences.
 - Explain why before what. Do not open with a definition.
 - Show one worked example for a different case; do not show the capstone solution.
+- Add alternatives, tools, and open-source options where the chapter makes a technical choice.
+- Add a failure-mode/debugging section to every build chapter.
 - Every technical claim is sourced or verified. Do not guess an API or a version.
 - Use the approved interactions only. Do not invent components or props.
 - If the chapter includes an approved interactive canvas, write the four copy blocks: **What this shows**, **Try this**, **What changed**, and **Limits of the model**. Describe the relationship, not the UI. Put a prediction before the canvas and a transfer check after it.
@@ -79,6 +86,11 @@ Turn the chapter brief into prose that teaches a decision, shows a specific exam
 
 - Is the roadmap confirmed by the instructor panel?
 - Does the chapter match the confirmed roadmap and the chapter brief?
+- Does the chapter meet the prose-depth target (≥ 1,200 concept/build, ≥ 700 checkpoint/gate)?
+- Is the chapter within the component budget (≤ 6 top-level, ≤ 25 tags, ≤ 3 interactions)?
+- Is there at least one diagram that argues, with a text alternative?
+- Is there a worked example and a practice problem?
+- Is there a failure mode and a debugging path?
 - Does the opening name a concrete problem?
 - Is the outcome observable?
 - Is there a decision, not only a definition?
@@ -91,7 +103,9 @@ Turn the chapter brief into prose that teaches a decision, shows a specific exam
 - Does the canvas copy describe the relationship rather than the UI?
 - Is every technical claim verified?
 - Is any sentence generic enough to appear in another course?
+- Could a learner learn the concept from the prose without the components?
 - Could a learner explain this chapter to a colleague afterwards?
+- Did I run `node agent-ip/scripts/audit-course.mjs` and clear the chapter's flags?
 
 ## Handoff
 
