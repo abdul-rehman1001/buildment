@@ -44,7 +44,7 @@ Inputs: `08-templates.md` → Course brief.
 
 Outputs: approved brief with audience, outcome, constraints, variants, non-goals, and time budget.
 
-Exit criteria: the brief names a real product, a target learner, a demo the learner can show, and at least five meaningful variant directions. The scope fits 210–280 hours.
+Exit criteria: the brief names a real product, a target learner, a demo the learner can show, and at least five meaningful variant directions. The scope fits the time budget stated in the brief (the flagship default is 210 to 280 hours; a short course might be 40).
 
 ### G1 — Research
 

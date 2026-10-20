@@ -28,7 +28,7 @@ Turn the research dossier and course brief into a blueprint that is coherent, fi
 1. **State the outcomes.** Use observable verbs. For each, name the evidence and the assessment level (application, analysis, evaluation, creation).
 2. **Choose the constructor profile.** Build-first, case-first, systems-first, decision-first, or debug-first. Justify it against the learner and the domain.
 3. **Design the module and chapter spine at roadmap level.** Use the archetypes in `02-course-architecture.md`. Order by dependency: foundations, core loop, second persona, hardening, performance, deploy, defense. Give every chapter a title and a one-line outcome, not a full brief.
-4. **Allocate hours.** Give every module and chapter a budget. Sum the estimates from the prerequisites/timeline agent. The core path must not exceed 210 hours.
+4. **Allocate hours.** Give every module and chapter a budget. Sum the estimates from the prerequisites/timeline agent. The core path must not exceed the budget in the brief (210 hours for the flagship default).
 5. **Define the capstone and the variants.** What the learner ships, demos, and defends; how the variants differ on the six dimensions.
 6. **Cut scope.** Name what is out of scope and why. Depth over coverage.
 7. **Write the curriculum roadmap and stop.** Produce the short instructor-facing artifact. Do not write the blueprint, the module briefs, or any chapter.
@@ -55,7 +55,7 @@ Turn the research dossier and course brief into a blueprint that is coherent, fi
 - Have at least two instructors signed `roadmap-confirmation.md`?
 - Is every outcome observable and assessed?
 - Does every chapter serve an outcome?
-- Does the hour total fit 210–280 hours?
+- Does the hour total fit the budget in the brief?
 - Is the module order dependency-safe?
 - Is the capstone production-grade and finishable?
 - Is the scope cut explicit?

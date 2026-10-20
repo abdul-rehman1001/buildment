@@ -31,7 +31,7 @@ Prove that a learner can move from the entry prerequisites to the capstone witho
 2. **Check for cycles.** A cycle means two chapters assume each other. Fix the order or move the shared concept earlier.
 3. **Check for dangling requirements.** Every `requires` edge must point to an earlier chapter or an entry prerequisite.
 4. **Estimate hours at roadmap level.** For each chapter: reading, guided build, independent build, verification, reflection, buffer. Sum by module and by week. Give these estimates to the curriculum architect for `curriculum-roadmap.md`.
-5. **Fit the budget.** Core path ≤ 210 hours; stretch path ≤ 280. If the core exceeds the budget, propose cuts to the curriculum architect.
+5. **Fit the budget.** Core and stretch paths fit the budget in the brief (flagship default: core 210 hours, stretch 280). If the core exceeds the budget, propose cuts to the curriculum architect.
 6. **Wait for G2B.** Do not build the detailed timeline or chapter-level graph until the instructor panel confirms the roadmap. Instructors may change the sequence or the prerequisites.
 7. **After confirmation, build the detailed graph and timeline.** Use the confirmed roadmap as the source of truth.
 8. **Design the diagnostic.** A short entry check that maps a learner to core, repair, or stretch.
@@ -55,7 +55,7 @@ Prove that a learner can move from the entry prerequisites to the capstone witho
 - Did I provide roadmap-level estimates and prerequisites before G2B?
 - Is the skill graph acyclic?
 - Does every chapter's `requires` point backward?
-- Does the core path fit 210 hours?
+- Does the core path fit the budget in the brief?
 - Does the stretch path fit 280?
 - Is the diagnostic short and actionable?
 - Is the repair path targeted?
