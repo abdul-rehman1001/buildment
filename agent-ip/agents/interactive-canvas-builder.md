@@ -21,20 +21,20 @@ You may render with HTML/CSS, inline SVG, or Canvas 2D. Use HTML for controls an
 
 ## Outputs
 
-- A colocated canvas implementation:
+- A canvas folder with its data and spec, for one of the existing renderers (sequence, state machine, factor):
 
 ```
 frontend/src/canvas/<slug>/
-  Component.tsx
-  model.ts
-  model.test.ts
+  data.ts
   spec.md
 ```
 
-If the visualisation uses vector geometry, `Component.tsx` returns a React SVG component. Static SVG assets, if unavoidable, are sanitized, optimised, hosted locally, and rendered through the component.
+- If no renderer fits the model, a new renderer under `frontend/src/canvas/renderers/<kind>/` with a pure `model.ts` and tests in `frontend/tests/unit/canvas/`, built on the shared primitives in `frontend/src/canvas/primitives/`.
 
-- A registry entry in `frontend/src/canvas/registry.ts`.
-- A preview route or story for review.
+If the visualisation uses vector geometry, the renderer returns a React SVG component. Static SVG assets, if unavoidable, are sanitized, optimised, hosted locally, and rendered through the component.
+
+- The slug in `server/src/shared/canvas/slugs.ts` (then `pnpm sync-shared`) and a registry entry in `frontend/src/canvas/registry.ts`.
+- A check on the preview page, `/workspace/canvases`, which lists every registered canvas.
 - A completed canvas QA report with the technical validator (`08-templates.md` → Canvas QA report).
 - The four copy blocks for the chapter: What this shows, Try this, What changed, Limits of the model.
 

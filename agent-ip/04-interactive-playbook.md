@@ -21,8 +21,8 @@ Known gaps that agents must not paper over:
 - `CodeExercise` supports JavaScript only. Do not promise Python, TypeScript, or a browser sandbox that is not implemented.
 - `BigWordAlert` is a static card. `GlossaryTerm` is the inline click-to-reveal element. AI expansion of a term is a proposed platform feature, not a current capability.
 - `Checklist` and `LearningLog` are components, not graded block types. They persist to the learner's account but do not gate progress by themselves.
-- There is no generic `InteractiveCanvas` slot yet. A canvas is a standalone preview until the platform adds the allowlist entry and registry. See `10-interactive-canvases.md`.
-- There is no generic inline SVG component yet. Static SVG can go through `VisualDiagram` as an image URL; interactive SVG needs a registered component. Never put raw author SVG in MDX.
+- `InteractiveCanvas` exists, but only for registered slugs (`server/src/shared/canvas/slugs.ts`). A new canvas is a code change: data and a spec for one of the three renderers (sequence, state machine, factor), or a new renderer. See `10-interactive-canvases.md`.
+- There is no generic inline SVG component for authors. Static SVG can go through `VisualDiagram` as an image URL; interactive SVG comes only through a registered canvas. Never put raw author SVG in MDX.
 
 ## The interaction question
 
@@ -380,7 +380,7 @@ Placement:
 - A canvas counts as a high-effort interaction. Do not put it back to back with an `OpenQuestion` or a `CodeExercise`.
 - Pair it with a prediction before and a short check after. Do not count slider use as completion.
 
-Platform status: the current MDX allowlist has no generic canvas slot. Until `InteractiveCanvas` is added to the allowlist and a registry, a canvas is a preview, not an embeddable course element. Do not invent the tag in a chapter.
+Platform status: `<InteractiveCanvas slug="..." />` is allowlisted, and publishing rejects any slug that is not registered. Do not invent a slug in a chapter: the canvas must be built and registered first. Mentors can preview every registered canvas at `/workspace/canvases`.
 
 ## Diagram plan
 
@@ -495,7 +495,7 @@ Does the learner need to commit to an answer?
 | Diagram | `<MermaidDiagram chart={...} title="..." />` |
 | Request trace | `<TraceRequest title="...">...</TraceRequest>` |
 | API lab | `<ApiRequestPanel title="...">...</ApiRequestPanel>` |
-| Interactive canvas | `<InteractiveCanvas slug="rate-limiter" />` — only after the platform adds the allowlist entry and registry |
+| Interactive canvas | `<InteractiveCanvas slug="weighted-matrix-two-offers" />`, registered slugs only |
 | Inline SVG visual | A registered SVG component; never raw `<svg>` in MDX |
 
 ## Validation

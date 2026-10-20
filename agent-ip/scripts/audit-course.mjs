@@ -88,6 +88,7 @@ for (const file of files) {
     (body.match(/<MermaidDiagram\b/g) ?? []).length +
     (body.match(/<TraceRequest\b/g) ?? []).length +
     (body.match(/^```diagram$/gm) ?? []).length;
+  const canvases = (body.match(/<InteractiveCanvas\b/g) ?? []).length;
   const bullets = (body.match(/^\s*[-*]\s+/gm) ?? []).length;
 
   const minProse = isGate ? 700 : 1200;
@@ -96,6 +97,8 @@ for (const file of files) {
   if (topLevel.length > 6) flags.push(`components ${topLevel.length}>6`);
   if (tags.length > 25) flags.push(`tags ${tags.length}>25`);
   if (interactions > 3) flags.push(`interactions ${interactions}>3`);
+  if (canvases > 1) flags.push(`canvases ${canvases}>1`);
+  if (canvases > 0 && isGate) flags.push("canvas in gate");
   if (!isGate && diagrams < 1) flags.push("no diagram");
   if (bullets > Math.max(12, paras.length) && bullets > paras.length * 1.5) {
     flags.push("list-heavy");
