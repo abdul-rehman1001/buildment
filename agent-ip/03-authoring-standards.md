@@ -307,6 +307,8 @@ These are hard failures. The slop critic will file them as defects.
 - A fake statistic. If you need a number, source it or label it as illustrative.
 - A question that the chapter never answers.
 - An interaction that tests reading comprehension of the paragraph above.
+- A quiz, prediction, or knowledge check where the correct option is the longest by default, or where length otherwise gives the answer away.
+- Distractors written as short labels while the correct option is a full explanation.
 - A link with no reason to click it.
 - A "further reading" list that is longer than the chapter.
 - An AI-style triple: three short paragraphs that each restate the same point in different words.

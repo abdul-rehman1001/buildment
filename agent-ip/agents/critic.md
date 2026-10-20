@@ -37,6 +37,7 @@ Run one or more lenses per pass. At G3 and G5, at least two lenses must be run b
 
 - Does each question measure the stated outcome?
 - Are the distractors plausible?
+- Does option length or grammar give the answer away (for example, the correct option is always the longest)?
 - Is the answer unambiguous?
 - Is the feedback useful?
 - Could a learner pass by guessing or copying?

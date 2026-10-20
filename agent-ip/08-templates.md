@@ -516,6 +516,8 @@ outcomes:
           1: <observable>
 ```
 
+Before sign-off, check every `QUIZ`, `PREDICT`, and knowledge-check set: the correct option must not be the longest by default, option lengths must be comparable, and the correct position must vary. A set where the longest option is correct in half or more of the questions is not ready.
+
 ## 10. Variant diff
 
 ```yaml
