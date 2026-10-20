@@ -156,6 +156,30 @@ Within two weeks of launch, review:
 
 Within one month, update the course and the IP if a pattern appears. A single learner's problem may be personal; three learners with the same problem is a course defect.
 
+## Feedback by type of person
+
+Each group sees the course differently, so collect and act on their feedback separately.
+
+| Who | What they tell us | How we collect it | Who acts on it |
+|---|---|---|---|
+| Learners | Confusing chapters, wrong answer keys, time per chapter, what they would cut | Reader feedback, quiz statistics, a short end-of-module question | Course owner; answer-key defects within a week |
+| Mentors | Where open answers are weak, where learners ask for help, review load | Review queue notes, help inbox themes | Course owner and assessment designer |
+| Instructors | Sequence, outcomes, time budget, what is missing | Roadmap confirmation and post-launch review | Curriculum architect |
+| IP owners and the architect | Patterns across courses that should become rules | Review of agent output and critiques | IP change, see Changing the IP |
+| Partners and employers | Whether graduates can do the job | Interviews after placement | Course brief for the next version |
+
+## Continuing a course
+
+A course is not finished at launch.
+
+- **New versions.** Fixes from post-launch review go into a new version (see Versioning). Learners already enrolled keep their progress.
+- **Follow-up courses.** Each course names its natural next course: for a variant, the specialization course on its hardest constraint; for a soft-skills course, the next course in the series.
+- **New modules.** A module added later goes through the same roadmap confirmation as the original course.
+
+## How the IP learns
+
+The agents follow this IP; the IP improves from the review of their output. When the architect or an IP owner corrects the same kind of mistake twice, it becomes a rule here, with an example, in the same change that fixes the course. The architect has final say on the IP; IP owners maintain it day to day.
+
 ## The governance promise
 
 The system is working when:

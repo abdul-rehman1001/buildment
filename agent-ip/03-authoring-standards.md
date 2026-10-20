@@ -197,6 +197,8 @@ Use this shape:
 
 The platform has `ComparePanel` / `CompareColumn` for two-way comparisons and tables for multi-option inventories. Use them when the content is genuinely comparative; do not force every explanation into a table.
 
+Include an uncommon alternative when it is credible, even if it is not the usual advice: a boring technology that is enough, a managed service instead of a self-hosted one, or not building the feature at all. Say why most teams do not choose it and when they should.
+
 Avoid false balance. If one option is clearly better for this project, say so. Presenting every choice as equally valid teaches indecision.
 
 ## Tools, frameworks, and open source

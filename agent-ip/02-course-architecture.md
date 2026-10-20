@@ -118,7 +118,17 @@ The profile changes the opening move and the rhythm, not the production bar. Eve
 
 ## Time budget
 
-The course is sized for 3–4 weeks at roughly 10 hours per day.
+Every course has a time budget, set in the course brief and confirmed with the roadmap. The factory keeps the course inside it: the prerequisites/timeline agent rejects a blueprint whose core path exceeds the budget, and chapters are sized to fit it, not the other way round.
+
+| Course type | Typical budget | Example |
+|---|---|---|
+| Flagship engineering course | 210 to 280 hours over 3 to 4 weeks | The general course and its variants |
+| Short course or specialization | 30 to 60 hours | A 40-hour course on one hard constraint |
+| Soft-skills course | 8 to 20 hours | Decision-making, communication |
+
+The numbers below are the flagship default. Scale the shares, not the rigor, for a smaller budget.
+
+The flagship course is sized for 3 to 4 weeks at roughly 10 hours per day.
 
 - **Core path:** 210 hours — the minimum a learner must complete to finish.
 - **Stretch path:** 280 hours — optional depth, extra polish, and portfolio work.
@@ -134,7 +144,7 @@ Allocate the core path roughly as follows:
 | Review, reflection, and defense | 5% | 10 |
 | Buffer | 5% | 11 |
 
-These are planning targets, not a promise. The prerequisites/timeline agent must sum chapter estimates and reject a blueprint that exceeds 210 hours for the core path.
+These are planning targets, not a promise. The prerequisites/timeline agent must sum chapter estimates and reject a blueprint whose core path exceeds the budget in the brief (210 hours for the flagship default).
 
 ## Course shape
 
@@ -238,6 +248,22 @@ A variant must differ from the general course and from every other variant on at
 A variant that changes only names, colours, and seed data is rejected. A variant may reuse the same tech stack; it may not reuse the same product story. An interactive canvas counts as product evidence: reusing the same canvas with different labels is a reskin.
 
 The variant producer writes a `variant-diff.md` that states, for each dimension, what changed and why. Two reviewers must be able to explain the differences without reading the diff.
+
+## Combinations
+
+A fellow's course is a combination of three layers. Only the first changes the product; the other two make each fellow's path and portfolio their own.
+
+| Layer | What it changes | Counts toward variant uniqueness? |
+|---|---|---|
+| **Industry or use case** (the variant) | Domain, user journey, hardest constraint, data model, hero feature, capstone | Yes |
+| **Specialization or special interest** | One stretch module or a follow-up course on a deeper topic, such as payments, search, realtime, offline-first mobile or AI features | No; it adds evidence on top of the core |
+| **Design elements** (personalization) | Brand style, project name, wordmark and accent colour chosen by the fellow | No; on its own it is a reskin |
+
+Rules:
+
+- A specialization adds stretch hours inside the budget or becomes its own short course. It never replaces a core module.
+- A variant's hardest constraint is the natural first specialization for fellows who finish that variant.
+- Personalization is chosen at enrollment and stored with the enrollment, so mentors see it in review. Assignment caps keep two fellows from shipping the same combination.
 
 ## Worked example: event ticketing
 

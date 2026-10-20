@@ -91,7 +91,8 @@ Rules:
 - Test application, not recall. Put the learner in a scenario with a decision.
 - Every distractor must be plausible to someone who half-understands the idea.
 - Do not use "all of the above", joke options, or options that are obviously wrong by length.
-- Include an explanation in the chapter prose or the block config. The importer's MCQ fence does not currently accept an explanation field; put the explanation in prose immediately after the quiz or use the editor's block config when authoring in-app.
+- Give an explanation for every option, right or wrong. The MCQ fence takes `explanations:` (one string per option, in option order) and an optional overall `explanation:`; the learner sees them after answering. `content:audit` fails a course with a `course.yaml` when an MCQ lacks one reason per option.
+- Keep the right option from standing out: similar lengths, varied positions. The audit warns when the right option is more than 1.25 times the longest wrong one.
 - Three to five questions per quiz chapter. One quiz per concept cluster, not one per section.
 - The `short` type in the `quiz` fence becomes an `OPEN_QUESTION` block, not a quiz. Use it only when the answer deserves human review.
 
@@ -345,6 +346,23 @@ The current components are static. The proposed enhancement is a "Explain more" 
 - The action is optional, not a gate.
 
 Until that ships, author `GlossaryTerm` and `BigWordAlert` with complete static definitions. Do not write copy that assumes an AI expansion exists.
+
+## Learning maps and study aids
+
+These help a learner see where they are and review what they learned. They do not prove understanding on their own, so pair each one with a check.
+
+| Aid | What it is for | Platform today |
+|---|---|---|
+| **Roadmap** (roadmap.sh style) | Show the course or module as a path of milestones, with the current one marked | `Roadmap` block (` ```roadmap ` fence) for a linear path. A branching skill map with optional and required nodes is a platform gap |
+| **Mind map** | Show how a module's ideas connect, at the start (preview) or the gate (review) | Works now as a ` ```mermaid ` fence with a `mindmap` diagram (the reader ships Mermaid 11). Keep it to one level of children per branch so it fits a phone |
+| **Study guide** (NotebookLM style) | A short summary, key terms and five review questions per module | Write it as a normal chapter or a gate section. An AI-generated guide is a platform proposal, under the same contract as the Big Word Alert expansion: authored text is ground truth |
+| **Audio overview** (NotebookLM style) | A short spoken summary for review away from the screen | Platform proposal. Must be optional, small (audio only, under 5 MB), with a transcript, because many learners are on weak connections |
+
+Rules:
+
+- One map per module at most. A map that repeats the table of contents is decoration.
+- Place a mind map at the module's set-the-scene (to preview) or its gate (to review), not mid-chapter.
+- Every study aid has a text version. Never make audio or video the only way to review.
 
 ## Custom interactive canvases
 

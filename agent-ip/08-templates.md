@@ -217,8 +217,9 @@ roadmap_confirmed: true
 <Link to skill-graph.yaml. State the entry prerequisites and the repair path.>
 
 ## Time budget
-- Core: <hours> / 210
-- Stretch: <hours> / 280
+- Budget from the brief: <hours> (flagship default 210 core, 280 stretch)
+- Core: <hours> / <budget>
+- Stretch: <hours> / <stretch budget>
 - Contingency: <hours>
 
 ## Interaction grammar
