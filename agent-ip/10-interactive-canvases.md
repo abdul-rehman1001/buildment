@@ -150,18 +150,24 @@ If the real system is too complex to model honestly, do not fake it. Use a stati
 
 ## The build contract
 
-- A client component, colocated with its model and tests:
+- Data for a registered renderer, with its spec, plus the renderer's model and tests:
 
 ```
 frontend/src/canvas/
-  registry.ts
-  InteractiveCanvas.tsx
-  rate-limiter/
-    Component.tsx
-    model.ts
-    model.test.ts
-    spec.md
+  registry.ts                 # slug -> spec, the closed set
+  InteractiveCanvas.tsx       # the MDX tag; picks the renderer by spec.kind
+  primitives/                 # stepper, step controls, tones, flow pulse, frame
+  renderers/
+    sequence/                 # lanes and numbered arrows (request flows)
+    state-machine/            # states, transitions, refused requests
+    factor/                   # flip a factor: weighted sum, model.ts
+  weighted-matrix-two-offers/
+    data.ts                   # the spec the renderer draws
+    spec.md                   # the canvas spec (08-templates.md, 14A)
+frontend/tests/unit/canvas/   # model, stepper and registry tests
 ```
+
+- Most canvases need only `data.ts` and `spec.md` for an existing renderer. A new kind of model gets a new renderer folder with a pure `model.ts` and tests; that is a code change with its own review.
 
 - No network calls. Data is bundled or passed as safe props.
 - No arbitrary JS in MDX. The learner-facing MDX references a registered canvas by slug.
@@ -283,17 +289,18 @@ SVG is executable content in a browser context. Treat author-supplied SVG as unt
 
 ## Platform integration
 
-The current platform has no generic canvas slot. Until one exists, a canvas is a preview, not an embeddable course element.
+The platform has a canvas slot. This is the contract, and where each part lives:
 
-The recommended contract:
-
-1. Add `InteractiveCanvas` to the MDX allowlist in `server/src/shared/mdx/component-allowlist.ts`.
-2. Add `InteractiveCanvas` to the reader component map in `frontend/src/mdx/components.tsx`.
-3. Add `frontend/src/canvas/registry.ts` mapping a stable slug to a registered component.
-4. The MDX tag is `<InteractiveCanvas slug="rate-limiter" />`. The component looks up the slug and renders the registered widget. An unknown slug renders a safe fallback, not an error.
+1. `InteractiveCanvas` is in the MDX allowlist (`server/src/shared/mdx/component-allowlist.ts`) and the reader component map (`frontend/src/mdx/components.tsx`).
+2. The allowed slugs are listed once, in `server/src/shared/canvas/slugs.ts` (copied to the frontend by `pnpm sync-shared`). `frontend/src/canvas/registry.ts` maps each slug to its spec, and a test keeps the two lists equal.
+3. The MDX tag is `<InteractiveCanvas slug="weighted-matrix-two-offers" />`, self-closing, with a plain string slug. The component looks up the slug and renders the registered canvas. An unknown slug renders a quiet note, not an error.
+4. Publishing a chapter (and `pnpm content:validate:source`) rejects a missing, expression-valued or unregistered slug, and a canvas tag with children. No arbitrary component name from MDX.
 5. The canvas is versioned by slug and spec. A breaking change gets a new slug; existing courses keep working.
-6. The page server validates the slug against the registry before rendering. No arbitrary component name from MDX.
+6. The reader renders the starting state on the server, so the canvas is readable before its script loads on a slow connection.
 7. The canvas never receives learner PII or secrets.
+8. Mentors can inspect every registered canvas at `/workspace/canvases`, in light and dark mode and at phone width, without importing a course.
+
+To add a canvas: add its slug to `slugs.ts` and run `pnpm sync-shared`, add a folder with `data.ts` and `spec.md` under `frontend/src/canvas/`, and add one line to the registry.
 
 This preserves the existing security model: MDX can only reach allowlisted components, and the canvas registry is a closed set.
 
