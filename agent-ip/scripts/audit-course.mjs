@@ -74,28 +74,32 @@ for (const file of files) {
   const paras = paragraphs(body);
   const proseWords = paras.join(" ").split(/\s+/).filter(Boolean).length;
 
-  const tags = body.match(/<[A-Z][A-Za-z0-9]*/g) ?? [];
+  const proseBody = stripCode(body);
+  const tags = proseBody.match(/<[A-Z][A-Za-z0-9]*/g) ?? [];
   const unique = [...new Set(tags.map((tag) => tag.slice(1)))];
   const topLevel = unique.filter((name) => !CHILD_COMPONENTS.has(name));
   const interactions =
     (body.match(/^```quiz$/gm) ?? []).length +
     (body.match(/^```predict$/gm) ?? []).length +
     (body.match(/^```openquestion$/gm) ?? []).length;
+  // A dedicated quiz chapter may contain three to five questions; the docs
+  // treat that set as one assessment instrument, not as N interactions.
+  const interactionLimit = /-quiz\.md$/.test(file) ? 5 : 3;
   const diagrams =
-    (body.match(/<ArchitectureDiagram\b/g) ?? []).length +
-    (body.match(/<EntityDiagram\b/g) ?? []).length +
-    (body.match(/<StateMachine\b/g) ?? []).length +
-    (body.match(/<MermaidDiagram\b/g) ?? []).length +
-    (body.match(/<TraceRequest\b/g) ?? []).length +
-    (body.match(/^```diagram$/gm) ?? []).length;
-  const bullets = (body.match(/^\s*[-*]\s+/gm) ?? []).length;
+    (proseBody.match(/<ArchitectureDiagram\b/g) ?? []).length +
+    (proseBody.match(/<EntityDiagram\b/g) ?? []).length +
+    (proseBody.match(/<StateMachine\b/g) ?? []).length +
+    (proseBody.match(/<MermaidDiagram\b/g) ?? []).length +
+    (proseBody.match(/<TraceRequest\b/g) ?? []).length +
+    (proseBody.match(/^```diagram$/gm) ?? []).length;
+  const bullets = (proseBody.match(/^\s*[-*]\s+/gm) ?? []).length;
 
   const minProse = isGate ? 700 : 1200;
   const flags = [];
   if (proseWords < minProse) flags.push(`prose ${proseWords}<${minProse}`);
   if (topLevel.length > 6) flags.push(`components ${topLevel.length}>6`);
   if (tags.length > 25) flags.push(`tags ${tags.length}>25`);
-  if (interactions > 3) flags.push(`interactions ${interactions}>3`);
+  if (interactions > interactionLimit) flags.push(`interactions ${interactions}>${interactionLimit}`);
   if (!isGate && diagrams < 1) flags.push("no diagram");
   if (bullets > Math.max(12, paras.length) && bullets > paras.length * 1.5) {
     flags.push("list-heavy");

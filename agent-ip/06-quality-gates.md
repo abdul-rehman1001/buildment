@@ -209,6 +209,7 @@ Run at least two independent critics at G3 and G5. They review blind: the artifa
 - Does each question measure the stated outcome?
 - Are the distractors plausible?
 - Is the answer unambiguous?
+- Does option length give the answer away (for example, the correct option is always the longest)?
 - Is the feedback useful?
 - Could a learner pass by guessing?
 - Is the answer key server-side only?
@@ -246,6 +247,8 @@ The slop critic files a defect for any of these:
 - [ ] An unsupported superlative.
 - [ ] A quiz that tests the paragraph above.
 - [ ] A quiz where the correct answer is the only plausible option.
+- [ ] A quiz, prediction, or knowledge check where the correct option is the longest by default, or where option length otherwise gives the answer away.
+- [ ] A set where the correct option is the longest in half or more of the questions.
 - [ ] An open question used as a generic reflection.
 - [ ] A diagram that restates the prose.
 - [ ] A `BigWordAlert` on a term the learner already knows.
@@ -294,6 +297,7 @@ The technical validator runs, not reads.
 - [ ] Every assessment maps to an outcome.
 - [ ] The assessment level matches the outcome level.
 - [ ] MCQ distractors are plausible and mutually exclusive.
+- [ ] Option lengths are balanced; the correct answer is not systematically the longest.
 - [ ] The correct answer is unambiguous to an expert.
 - [ ] Open-question rubrics are specific enough for inter-rater agreement.
 - [ ] Code tests cover the failure mode.

@@ -63,6 +63,7 @@ Turn the chapter brief into prose that teaches a decision, shows a specific exam
 - Add a failure-mode/debugging section to every build chapter.
 - Every technical claim is sourced or verified. Do not guess an API or a version.
 - Use the approved interactions only. Do not invent components or props.
+- When writing quiz, prediction, or knowledge-check options, keep every option at a similar length. Never make the correct option the longest or the only full sentence; length must not reveal the answer.
 - If the chapter includes an approved interactive canvas, write the four copy blocks: **What this shows**, **Try this**, **What changed**, and **Limits of the model**. Describe the relationship, not the UI. Put a prediction before the canvas and a transfer check after it.
 - Do not write "have fun", "play around", or "explore the magic". Do not describe every control; the canvas should be self-evident.
 - Do not add a new concept that the brief did not include. If the chapter needs it, report the gap to the orchestrator.
@@ -99,6 +100,7 @@ Turn the chapter brief into prose that teaches a decision, shows a specific exam
 - Does the build have acceptance criteria?
 - Does the verify step include a failure test?
 - Is every interaction approved and within budget?
+- Are option lengths balanced across every quiz and prediction, so the correct answer is not the longest by default?
 - If a canvas is present, are the four copy blocks written, the prediction before it, and the transfer check after it?
 - Does the canvas copy describe the relationship rather than the UI?
 - Is every technical claim verified?

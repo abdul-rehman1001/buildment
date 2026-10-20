@@ -141,6 +141,7 @@ agent-ip/
 - **Depth over coverage.** A smaller course taught deeply beats a broad course taught shallowly.
 - **Withhold solutions, not context.** Learners get constraints, interfaces, and acceptance tests — not a complete implementation to paste.
 - **Every technical claim is verified.** Versions, commands, APIs, and links are run or checked before publish.
+- **Option length is never the answer.** In quizzes, predictions, and knowledge checks, the correct option must not be the longest by default, and distractors must be written at a comparable length. If the correct option is the longest in half or more of a set, rewrite the set.
 - **No AI slop.** The forbidden patterns in `00-principles.md` are hard failures, not preferences.
 - **Human sign-off is final.** Automation prepares the decision; it does not make it.
 - **Instructors confirm the roadmap before we write the course.** No blueprint, sample chapter, or general course until the instructor panel signs the roadmap. This is the cheapest place to prevent a course that nobody wants to teach.

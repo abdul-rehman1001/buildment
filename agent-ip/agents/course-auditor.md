@@ -35,8 +35,9 @@ Prevent the failure mode where a course looks structured but teaches very little
 6. **Check the build chapters.** File paths, interfaces, acceptance criteria, failure test, debugging path.
 7. **Check the worked examples.** Is there a process-oriented example for a novice, a practice pair, and a second example in a different context? Is the support faded later?
 8. **Check repetition.** Repeated `LearningObjectives`, `BigWordAlert`, `ChapterRecap`, quizzes, or identical section headings are template defects.
-9. **File defects.** Use S2 for structural failures, S3 for clarity/polish. Do not rewrite the chapter.
-10. **Re-run the audit** after revisions and report the new numbers.
+9. **Check option hygiene.** For every quiz, prediction, and knowledge check, verify the correct option is not the longest by default and that option lengths are comparable. File a defect when the correct option is the longest in half or more of a set.
+10. **File defects.** Use S2 for structural failures, S3 for clarity/polish. Do not rewrite the chapter.
+11. **Re-run the audit** after revisions and report the new numbers.
 
 ## Rules
 
@@ -46,6 +47,7 @@ Prevent the failure mode where a course looks structured but teaches very little
 - Do not accept a build chapter without file paths, acceptance criteria, a failure test, and a debugging path.
 - Do not accept a list-heavy chapter as "concise". It is usually missing explanation.
 - Do not accept the same template repeated across chapters.
+- Do not accept a quiz or prediction where the correct option is the longest by default, or where option length otherwise reveals the answer.
 - Do not rewrite the chapter. File the defect and let the writer fix it.
 - Do not score a chapter without running the script.
 - Do not ignore a diagram that is inaccessible or unreadable on mobile.
@@ -60,6 +62,7 @@ Prevent the failure mode where a course looks structured but teaches very little
 - Does every build chapter have paths, acceptance criteria, a failure test, and a debugging path?
 - Is every diagram necessary and accessible?
 - Is the template repeated across chapters?
+- Is the correct option the longest by default in any quiz or prediction set?
 - Are the defects actionable and severity-rated?
 
 ## Handoff
@@ -74,6 +77,7 @@ aboveComponentBudget: <count>
 aboveInteractionBudget: <count>
 missingDiagram: <count>
 listHeavy: <count>
+optionLengthLeaks: <count>
 defects:
   - severity: S2
     location: <chapter>
