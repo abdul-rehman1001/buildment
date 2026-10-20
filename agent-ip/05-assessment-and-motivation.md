@@ -45,7 +45,7 @@ Design rules:
 - Every distractor must be plausible. If a learner can eliminate three options by length or grammar, the question is not measuring understanding.
 - Avoid "all of the above", "none of the above", and joke options.
 - Do not test a fact that the learner can look up in ten seconds unless the fact is a decision input.
-- Include an explanation. For the importer's MCQ fence, put the explanation in the prose immediately after the quiz; in the in-app editor, use the block's explanation field.
+- Include an explanation for every option. The importer's MCQ fence takes an `explanations:` list, one reason per option; in the in-app editor, use the block's explanation field.
 - Three to five questions per quiz chapter. More than that is a test, not a check.
 
 ### Code exercise
@@ -190,6 +190,17 @@ Adaptivity should reduce unnecessary time, not create a maze.
 - **Self-check.** A learner can test understanding before a gate without needing a mentor.
 
 Do not branch on learning styles. There is no credible evidence that matching instruction to a "visual" or "auditory" style improves learning. Branch on prior knowledge and demonstrated performance.
+
+## Attention, pacing and support
+
+Learners have limited attention, and many study around work, family and unreliable power or internet. Design for the attention they actually have.
+
+- **Short units.** A chapter is 10 to 25 minutes. A learner who loses power mid-chapter should lose at most one short section, and every interaction saves on its own.
+- **Productive days.** Learners have different days and times when they study well. The platform should learn this from activity (with consent) and schedule reminders and deadlines around it, never at night in the learner's time zone.
+- **Reminders.** A reminder names the next small step ("finish chapter 3.2, about 15 minutes"), not a guilt message. The platform already sends inactivity nudges; they should use the learner's productive days and stop after a few unanswered reminders, handing over to a mentor.
+- **Adaptive help.** When a learner is stuck (repeated wrong answers, long inactivity on one chapter, a help request), offer the next hint, a repair chapter, or a mentor, in that order.
+- **Hand-holding that fades.** Early modules give worked examples, checklists and templates; later modules remove them on purpose. Say so in the chapter, so the learner sees it as progress, not as missing help.
+- **Engagement means engagement with the work.** Use the motivation rules above: progress on evidence, cohort showcases, streaks with grace days. Never punish a learner for a power cut or a family emergency.
 
 ## Integrity and AI use
 

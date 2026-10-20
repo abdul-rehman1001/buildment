@@ -30,7 +30,7 @@ A learner who finishes a course has:
 - produced evidence a mentor can inspect;
 - and can explain the system without notes.
 
-The course must be hard enough to produce that outcome and structured enough that a determined learner can finish it in 3–4 weeks at roughly 10 hours per day (210–280 focused hours).
+The course must be hard enough to produce that outcome and structured enough that a determined learner can finish it in 3–4 weeks at roughly 10 hours per day (210–280 focused hours). That is the default for a flagship engineering course. Every course states its own time budget in the brief, for example 40 hours for a short course, and the whole factory works to that number (see `02-course-architecture.md` → Time budget).
 
 ## The instructor roadmap gate
 
@@ -94,6 +94,7 @@ agent-ip/
 ├── 08-templates.md                 ← briefs, maps, reports, checklists
 ├── 09-review-and-governance.md     ← human review, versioning, sign-off
 ├── 10-interactive-canvases.md      ← simulators/visualisers, design language, QA
+├── 11-architect-requirements.md    ← the architect's required capabilities and where each lives
 └── agents/
     ├── orchestrator.md
     ├── research.md
