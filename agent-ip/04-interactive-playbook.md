@@ -67,6 +67,19 @@ Assessment blocks create a `Response` and count toward chapter completion. Use t
 | `CODE` | Auto-graded, completion | Working code against tests | Small, focused implementation or completion drills | Full features; syntax drills; hidden multi-step requirements |
 | `MUST_READ` | Completion on confirmation | The learner read a required source | Primary documentation or article needed for the next build | Busywork; paywalled or unstable links |
 
+### Option-length hygiene
+
+Option length is never evidence of correctness. The most common test-wiseness leak in generated courses is "the longest option is the right one": the correct answer is written as a full explanation while every distractor is a short label, so a learner can pass without understanding the concept.
+
+Apply this rule to every option-based check: `QUIZ` MCQ, `PREDICT`, and any knowledge-check question embedded in a lesson.
+
+- **Do not make the correct option the longest.** If the correct answer needs more words to be precise, shorten it or write the distractors at a comparable level of specificity.
+- **Balance all options.** Keep the spread small: the correct option should not be more than about 10% longer than the longest distractor. If one option is a full sentence, every option is a full sentence. If one is a short label, every option is a short label.
+- **Do not pad distractors with filler** just to match a long correct answer. Rewrite the question and all options at the same level of detail.
+- **Vary the position.** Do not put the correct answer first, last, or in the same slot in every question.
+- **Audit the set, not only the question.** If the correct option is the longest in half or more of a quiz or prediction set, rewrite the set even when each individual question is close. Repeating "longest = correct" teaches the learner a shortcut, not the concept.
+- **Never treat length as a grading rule.** Do not write an instruction that says to choose the longest option, and do not generate or accept an answer key that way.
+
 ### `QUIZ`
 
 MCQ is the default. It is fast, auto-graded, and useful for checking a decision before the learner builds on it.
@@ -78,9 +91,9 @@ Authoring fence:
 type: mcq
 question: "A buyer holds the last seat for 10 minutes. A second buyer tries to buy it at minute 4. What should the API return?"
 options:
-  - "201 Created with a second ticket"
-  - "409 Conflict until the hold expires or is released"
-  - "200 OK and overwrite the first hold"
+  - "201 Created, a second ticket"
+  - "409 Conflict, the hold stands"
+  - "200 OK, overwrite the hold"
   - "500 Internal Server Error"
 correct: 1
 ```
@@ -90,9 +103,10 @@ Rules:
 
 - Test application, not recall. Put the learner in a scenario with a decision.
 - Every distractor must be plausible to someone who half-understands the idea.
-- Do not use "all of the above", joke options, or options that are obviously wrong by length.
+- Do not use "all of the above", joke options, or options whose length or grammar gives the answer away. See **Option-length hygiene** above.
+- Do not write the correct option as the only full sentence while distractors are short labels.
 - Give an explanation for every option, right or wrong. The MCQ fence takes `explanations:` (one string per option, in option order) and an optional overall `explanation:`; the learner sees them after answering. `content:audit` fails a course with a `course.yaml` when an MCQ lacks one reason per option.
-- Keep the right option from standing out: similar lengths, varied positions. The audit warns when the right option is more than 1.25 times the longest wrong one.
+- Keep the right option from standing out: similar lengths, varied positions. The audit warns when the correct option is the longest and when it is more than 1.25 times the longest wrong one.
 - Three to five questions per quiz chapter. One quiz per concept cluster, not one per section.
 - The `short` type in the `quiz` fence becomes an `OPEN_QUESTION` block, not a quiz. Use it only when the answer deserves human review.
 
@@ -107,9 +121,9 @@ Authoring fence:
 prompt: "The API returns 201 before the confirmation email is sent. What is the most likely reason?"
 options:
   - id: async
-    label: "The email is queued and handled by a worker"
+    label: "Email delivery is queued for a worker"
   - id: bug
-    label: "The email code is missing from the handler"
+    label: "The email send call was never added"
 correctOptionId: async
 explanation: "The handler returns as soon as the order is committed; the worker owns delivery and retries."
 allowRetry: true
@@ -120,6 +134,7 @@ Rules:
 
 - Exactly two or three options. The platform schema requires at least two.
 - One option must be defensible; the others must be plausible.
+- Option labels follow the same length rules as quiz options: the defensible option must not be the longest by default. See **Option-length hygiene** above.
 - The prompt must be specific to the current decision. Do not reuse a generic prompt.
 - Use it at most once per chapter. More than that turns prediction into a gimmick.
 - Do not use Predict for factual recall. Use Quiz.
@@ -420,7 +435,7 @@ Per chapter:
 - At most one interactive canvas. It counts as a high-effort interaction.
 - At most one `InterestingRead`.
 - At most one `RealWorldEvent`.
-- At most three assessment interactions total (quiz + predict + open question).
+- At most three assessment interactions total (quiz + predict + open question). A dedicated quiz chapter may contain three to five quiz questions; treat that set as one assessment instrument for this budget, not as three to five separate interactions.
 - Never two high-effort interactions back to back. Put a build or a prose bridge between them.
 
 Per module:

@@ -43,6 +43,8 @@ Design rules:
 
 - Put the question in a scenario. "A buyer holds the last seat; a second buyer arrives at minute 4. What should the API return?" is better than "What is a hold?"
 - Every distractor must be plausible. If a learner can eliminate three options by length or grammar, the question is not measuring understanding.
+- Option length must not predict correctness. Do not make the correct answer the longest option, and do not write distractors as short labels while the correct answer is a full explanation. Keep lengths comparable and vary the position of the correct answer. The same rule applies to predictions and knowledge checks.
+- If the correct option is the longest in half or more of a quiz set, rewrite the set even when each question is close. That pattern teaches "pick the longest option", not the concept.
 - Avoid "all of the above", "none of the above", and joke options.
 - Do not test a fact that the learner can look up in ten seconds unless the fact is a decision input.
 - Include an explanation for every option. The importer's MCQ fence takes an `explanations:` list, one reason per option; in the in-app editor, use the block's explanation field.
@@ -218,6 +220,8 @@ Before an assessment ships:
 - Is the scenario specific to this product?
 - Are the distractors plausible?
 - Is the answer unambiguous to an expert?
+- Are option lengths balanced, so the correct answer is not identifiable by being the longest?
+- Is the correct option the longest in half or more of the set? If so, rewrite the set.
 - Is there an explanation or rubric?
 - Is the difficulty appropriate for the prerequisite level?
 - Could a learner pass by guessing or by copying?

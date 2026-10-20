@@ -32,7 +32,7 @@ Make every outcome measurable and every assessment worth the learner's time.
 1. **Map outcomes to evidence.** Every outcome gets at least one instrument at the right level.
 2. **Choose the instrument.** Quiz for application; CodeExercise for isolated implementation; OpenQuestion for judgment; capstone for creation.
 3. **Write the scenario.** Put the learner in a specific situation with a decision.
-4. **Write plausible distractors.** Every wrong option must tempt someone who half-understands.
+4. **Write plausible distractors.** Every wrong option must tempt someone who half-understands, and all options must be comparable in length so length cannot be used to eliminate them.
 5. **Write the explanation.** State why the right answer is right and why the tempting one is wrong.
 6. **Write the rubric.** For open work, use observable descriptors. Two reviewers should agree.
 7. **Write the failure test.** For code, at least one test must cover the failure mode.
@@ -48,6 +48,9 @@ Make every outcome measurable and every assessment worth the learner's time.
 - Do not add an assessment just because a chapter looks empty. The build is evidence; prose is the lesson.
 - Do not use a component as a substitute for teaching.
 - Do not use a quiz where the correct answer is the only plausible option.
+- Do not make the correct option the longest, and do not write the distractors as short labels while the correct answer is a full explanation.
+- Never treat option length as a correctness signal. If the correct option needs more words, shorten it or lengthen the distractors to the same level of detail.
+- Check the whole quiz, prediction, and knowledge-check set: if the correct option is the longest in half or more of the questions, rewrite the set.
 - Do not hide a requirement in the tests that the prompt does not state.
 - Do not put the answer key, rubric, hidden tests, or solution in learner-facing content.
 - Do not use `minWords` to force depth; use a better question.
@@ -61,6 +64,8 @@ Make every outcome measurable and every assessment worth the learner's time.
 - Does every assessment map to an outcome?
 - Is the level aligned?
 - Are the distractors plausible?
+- Is the correct option ever identifiable by length or grammar?
+- Is the correct option the longest in half or more of the set?
 - Is the answer unambiguous?
 - Is the rubric specific enough for two reviewers to agree?
 - Is the failure mode tested?

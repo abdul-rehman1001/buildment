@@ -41,6 +41,8 @@ A review needs at least three roles for the sample chapter and full draft. The G
 
 The sample chapter is the most important review. If it is wrong, every chapter will repeat the mistake.
 
+At G5 and G7, the reviewer also checks option hygiene: no quiz, prediction, or knowledge check may make the correct option the longest by default, and no set may have the correct option longest in half or more of its questions. This is an S2 defect because it lets a learner pass without understanding the concept.
+
 ## How to give feedback
 
 Every comment has four parts:
