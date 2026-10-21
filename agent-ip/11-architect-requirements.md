@@ -102,7 +102,7 @@ Corrections from the architect and IP owners become rules, so the same mistake i
 | Personalization layer, not a variant: 6 brand styles plus project name, wordmark and accent | `02-course-architecture.md` → Combinations; `work/multi-vendor-marketplace/personalization-layer.md` | In IP; choice at enrollment is a platform gap |
 | Cap of 2 fellows per variant and style, random draw for anyone undecided | `02-course-architecture.md` → Combinations; `work/multi-vendor-marketplace/personalization-layer.md` → Assignment and the draw | In IP; seat cap and draw are a platform gap |
 | A variant's hardest constraint becomes the fellow's specialization in follow-on courses | `02-course-architecture.md` → Combinations; `09-review-and-governance.md` → Continuing a course | In IP |
-| `%%product.name%%` variant placeholder rules | `03-authoring-standards.md` → Variant placeholders and `08-templates.md` → 10A. Variant intake, both in open PR #21 | Not on `main` until PR #21 merges |
+| `%%product.name%%` variant placeholder rules | `03-authoring-standards.md` → Variant placeholders; `08-templates.md` → 10A. Variant intake | In IP; shipped in PR #21 |
 
 ## 11. Reference builds
 
@@ -145,8 +145,9 @@ Corrections from the architect and IP owners become rules, so the same mistake i
 
 | Requirement | Where it lives | Status |
 |---|---|---|
-| Signals are flags for mentors, not automatic penalties | `05-assessment-and-motivation.md` → Quiz integrity signals | In IP; signals are a platform gap |
-| Camera snapshots optional per course, with consent, private storage and deletion after 30 days | `05-assessment-and-motivation.md` → Quiz integrity signals | In IP; snapshots are a platform gap |
+| Signals are flags for mentors only, never penalties; the learner sees no flag count | `05-assessment-and-motivation.md` → Quiz integrity signals | In IP; signals shipped in PR #23 |
+| Camera stills optional per course, with consent, private storage and deletion after 30 days; camera off never blocks a submit | `05-assessment-and-motivation.md` → Quiz integrity signals | In IP; snapshots shipped in PR #23 |
+| Full screen requested, never required; copy, paste and right-click blocked and logged | `05-assessment-and-motivation.md` → Quiz integrity signals | In IP; a separate code PR is restoring this policy |
 | The web cannot block screenshots | `05-assessment-and-motivation.md` → Quiz integrity signals | In IP |
 
 ## 16. Verification before a PR
