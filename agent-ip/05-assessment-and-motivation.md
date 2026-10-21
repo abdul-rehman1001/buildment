@@ -227,6 +227,12 @@ Learners have limited attention, and many study around work, family and unreliab
 - **The defense is the integrity check.** A learner who cannot explain their own system has not completed the outcome, regardless of the artifact.
 - **Do not design assessments that a model can pass without doing the work.** Ask for the learner's specific trade-offs, failures, and evidence.
 
+### Quiz integrity signals
+
+- **Signals are flags for mentors, not penalties.** Leaving the tab, pasting into an answer or answering very fast is shown to the mentor as context. A signal never changes a score, locks a quiz or fails a learner on its own. A dropped connection or a power cut can look like any of them, so the mentor talks to the learner before acting.
+- **Camera snapshots are optional per course,** and off unless the course turns them on with a stated reason. The learner gives explicit consent before any snapshot is taken. Snapshots are stored privately, visible only to the course's mentors and admins, and deleted after 30 days.
+- **The web cannot block screenshots.** Never promise learners or mentors that it can. Make a screenshot useless instead: scenarios tied to the learner's own build, and the defense.
+
 ## Assessment review checklist
 
 Before an assessment ships:
