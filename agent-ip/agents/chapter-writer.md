@@ -51,7 +51,7 @@ Turn the chapter brief into prose that teaches a decision, shows a specific exam
 - Write only the chapter the brief describes. Do not change the sequence, outcomes, capstone, or variants.
 - **Prose depth is non-negotiable.** Write at least 1,200 prose words for a concept/build chapter and 700 for a checkpoint/gate, excluding code, lists, tables, and components. If the chapter is short, add the missing problem, mechanism, worked example, trade-off, failure mode, or debugging path — not filler.
 - **Respect the component budget.** At most 6 top-level components, 25 total JSX tags, and 3 assessment interactions. No component-only sections. Every component sits inside an explanation.
-- **One diagram minimum** for a concept/build chapter. Use Excalidraw-style SVG for conceptual/ER/flow, live Mermaid/State/Entity/Trace for dynamic diagrams. Introduce the diagram in prose, explain what to notice, then state the takeaway.
+- **One diagram minimum** for a concept/build chapter. Start HLD topology and request flow with Mermaid; use State/Entity/Trace for their specific relationships and static SVG when precise composition is necessary. Name public/private boundaries and important connections. Introduce the diagram in prose, explain what to notice, then state the takeaway.
 - **Teach with a worked example.** Use a process-oriented example for a novice, pair it with a practice problem, and fade the support later. Show the reasoning, not only the final code.
 - Do not repeat `LearningObjectives`, `BigWordAlert`, `ChapterRecap`, or quizzes in every chapter. Follow the module budget.
 - Open with two to four sentences of explanation. Use bullets only for lists.
@@ -65,6 +65,7 @@ Turn the chapter brief into prose that teaches a decision, shows a specific exam
 - Use the approved interactions only. Do not invent components or props.
 - When writing quiz, prediction, or knowledge-check options, keep every option at a similar length. Never make the correct option the longest or the only full sentence; length must not reveal the answer.
 - If the chapter includes an approved interactive canvas, write the four copy blocks: **What this shows**, **Try this**, **What changed**, and **Limits of the model**. Describe the relationship, not the UI. Put a prediction before the canvas and a transfer check after it.
+- For an HLD behavior-under-change outcome, use only the approved registered canvas. If the brief has no canvas, use its documented worked trace or report the missing plan; do not replace the behavior with an unexplained static topology.
 - Do not write "have fun", "play around", or "explore the magic". Do not describe every control; the canvas should be self-evident.
 - Do not add a new concept that the brief did not include. If the chapter needs it, report the gap to the orchestrator.
 - Do not put optional enrichment in a gate or quiz chapter.

@@ -88,7 +88,7 @@ An audit script exists at `agent-ip/scripts/audit-course.mjs`. A chapter that ca
 
 ### A diagram must argue
 
-A diagram is not decoration. It must make a relationship, flow, boundary, or state change legible in a way prose cannot. At least one diagram is required per module and per concept-heavy chapter. Use Excalidraw-style static SVG for conceptual architecture, ERDs, and annotated flows; use live Mermaid/State/Entity/Trace diagrams when the structure should stay theme-aware or easier to maintain. A diagram that restates the paragraph above it is decoration. See `11-visual-explanations.md`.
+A diagram is not decoration. It must make a relationship, flow, boundary, or state change legible in a way prose cannot. At least one diagram is required per module and per concept-heavy chapter. Start HLD topology and request-flow diagrams with live Mermaid; use Entity/State/Trace for their specific relationships and static SVG when precise composition is necessary. Reserve interactive canvases for a causal change the learner needs to explore. A diagram that restates the paragraph above it is decoration. See `11-visual-explanations.md`.
 
 ### 10. The learner must be able to defend the work
 

@@ -367,7 +367,7 @@ roadmap_confirmed: true
 <Which quizzes, predicts, open questions, code exercises, diagrams, reads.>
 
 ## Canvases
-<Canvas slugs and the chapters that use them, or "none".>
+<Canvas slugs and the chapters that use them, or "none". For HLD-heavy modules, name each behavior-under-change outcome and record a canvas slug/spec or why Mermaid plus a worked trace is sufficient.>
 
 ## Gate
 <Checklist + LearningLog. State the evidence, not the activity.>
@@ -429,10 +429,10 @@ roadmap_confirmed: true
 <Top-level components ≤ 6; total JSX tags ≤ 25; assessment interactions ≤ 3. State what was removed and why.>
 
 ## Diagram
-<Diagram plan: Excalidraw/SVG, Mermaid, Entity, State, Architecture, or Trace. The claim it argues, placement, alt text, legend.>
+<Diagram plan: Mermaid first for HLD topology/request paths; otherwise Entity, State, Architecture, Trace, or static SVG as appropriate. State the claim, placement, public/private boundaries where relevant, labeled connections, text alternative, and legend.>
 
 ## Canvas
-<Canvas spec slug, or "none". State the teaching claim and why the canvas is better than a static diagram.>
+<Canvas spec slug, or "none". For HLD, name the changing condition and observed consequence, then state why a model-backed canvas is needed or why Mermaid plus a worked trace is enough. Do not name an unregistered slug.>
 
 ## Reflect
 <Retrieval or learning-log prompt.>
@@ -462,6 +462,11 @@ chapters:
         placement: after-hook
         purpose: Define hold vs sale
         budget: 1
+      - type: DIAGRAM
+        component: MermaidDiagram
+        placement: after-mechanism
+        purpose: Show the request path to the inventory transaction boundary
+        budget: 1
       - type: CANVAS
         slug: seat-hold-race
         placement: before-transaction
@@ -471,9 +476,14 @@ chapters:
         placement: end
         purpose: Verify the learner can state the invariant and the failure mode
         budget: 1
+    diagram_plan:
+      format: MermaidDiagram
+      claim: The hold API changes availability before payment completes
+      boundaries: Browser, API, and inventory transaction
+      canvas_decision: seat-hold-race models concurrent requests; see its spec
     density:
       big_word_alerts: 1
-      diagrams: 0
+      diagrams: 1
       callouts: 1
       predicts: 0
       quizzes: 0
