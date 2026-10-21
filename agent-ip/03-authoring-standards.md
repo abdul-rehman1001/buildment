@@ -12,6 +12,32 @@ This document governs how course prose is written. It applies to every chapter, 
 
 A useful test: read the paragraph aloud. If it sounds like a person explaining a decision to a colleague, it passes. If it sounds like a template, rewrite it.
 
+## Audience: the fellowship
+
+Our learners are fellows in Gaza, on a fellowship. English is usually their second language. Many learn on a phone, on weak or expensive mobile data, around power cuts. Write and build for that learner first.
+
+### Plain English
+
+- **Short sentences.** One idea per sentence, about 20 words or fewer.
+- **Common words.** "Use", not "utilise". "Start", not "commence".
+- **Define jargon on first use,** in one plain sentence. Use `GlossaryTerm` inline, or `BigWordAlert` for the chapter's central term (`04-interactive-playbook.md` → `GlossaryTerm` versus `BigWordAlert`).
+- **Explain or replace idioms and business phrases.** "Ballpark figure" means nothing to a reader who has never heard it.
+- **No wordplay or sarcasm** that only works for native speakers.
+
+### Light pages
+
+- **Few heavy images.** Prefer a live diagram, a small SVG or text. Compress every image and give it alt text.
+- **No autoplay video or audio.** Video is optional, short, captioned and has a transcript. The text path teaches the same thing.
+- **No large download to start a chapter.** State the size of any file a learner must fetch.
+- **Save progress often.** Every interaction saves on its own; a lost connection costs at most one short section (`05-assessment-and-motivation.md` → Attention, pacing and support).
+
+### Hardship with care
+
+- Scenarios may include power cuts, lost connections, displacement or studying while working. Never as a joke, never for drama.
+- **Never force a learner to share personal hardship.** A prompt that invites it is optional, offers a neutral alternative, and is never graded or scored.
+- If a learner shares hardship anyway, the mentor answers the person first and grades only the work the prompt asked for.
+- **Wellbeing and harassment contacts are a real person:** a named coordinator or mentor and a way to reach them that works on a phone. Never only a form, a bot or a model.
+
 ## Prose first
 
 The primary teaching surface is prose. Bullets are for inventories, comparisons, steps, and prerequisites. They are not a substitute for explanation.
@@ -322,6 +348,8 @@ These are hard failures. The slop critic will file them as defects.
 - A link with no reason to click it.
 - A "further reading" list that is longer than the chapter.
 - An AI-style triple: three short paragraphs that each restate the same point in different words.
+- An em dash (U+2014) or en dash (U+2013) anywhere: prose, headings, options, explanations, code comments, UI copy, commit messages, PR text and changes to this IP. Use a comma, colon, full stop or parentheses, and write ranges as "3 to 4". Check before you commit: `git diff | rg "^\+.*[\x{2013}\x{2014}]"` must print nothing. Older IP text that still has them is cleaned when its section is next edited.
+- AI or tool attribution in course content, commits or PRs: no "Generated with" footer, no `Co-Authored-By` line for a model or tool, no note that a model wrote the text. The people who review the work own it.
 
 ## Length budgets
 
@@ -349,6 +377,15 @@ A chapter that exceeds the budget usually has two ideas. Split it or cut one.
 - Caption video and provide transcripts where the platform supports them.
 - Write instructions that do not depend on a mouse.
 - Test the core journey at a mobile width and with keyboard navigation before publish.
+
+### Readability
+
+These apply to the reader, every block and every canvas, in the light AND the dark theme.
+
+- **Line length about 70 characters.** Keep body text to roughly 65 to 75 characters per line.
+- **Body text 17 to 18px,** with a line height around 1.7. Smaller text is for captions, labels and hints only.
+- **Contrast.** Body text at least 7:1 against its background. Small text (captions, labels, table headers) at least 4.5:1. Measure both themes.
+- **Never fade paragraph text with opacity** (`opacity-90`, `text-foreground/85`). Paragraphs use the full text colour; the muted token is for captions, hints and subtitles. Faded text fails on cheap screens and in sunlight.
 
 ## Final check
 

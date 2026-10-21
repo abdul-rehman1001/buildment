@@ -263,7 +263,26 @@ Rules:
 
 - A specialization adds stretch hours inside the budget or becomes its own short course. It never replaces a core module.
 - A variant's hardest constraint is the natural first specialization for fellows who finish that variant.
-- Personalization is chosen at enrollment and stored with the enrollment, so mentors see it in review. Assignment caps keep two fellows from shipping the same combination.
+- Personalization is chosen at enrollment and stored with the enrollment, so mentors see it in review.
+- **Personalization is a layer, not a variant.** It sits on top of the variant and never counts toward the uniqueness contract.
+- **Six brand styles:** Fresh, Bold street, Editorial, Night market, Heritage and Clean pro. Each is a pre-checked palette, font set and shape language. On top of the style, the fellow adds their own project name, a wordmark and one accent colour, and the accent must pass the contrast rules.
+- **Cap and draw.** At most 2 fellows per variant and style combination. Fellows who do not choose are placed by a seeded random draw that fills the emptiest combination first. The full procedure and cohort-size rules are in `work/multi-vendor-marketplace/personalization-layer.md` → Assignment and the draw.
+
+## Reference builds
+
+Every course and every variant has one full reference build: the product built to the course, end to end. They live in `github.com/AQIB-NAWAB/buildment-courses`, one folder per course and variant, `<course>/<NN-variant>/`, each with `client/`, `server/` and `docs/` (for example `multi-vendor-course/01-food-marketplace/`).
+
+A reference build has three jobs:
+
+1. **Answer key.** The assessment designer and the critics cross-check every quiz, prediction and open-question model answer against it. If the course says one thing and the code does another, one of them is wrong.
+2. **Mentor help.** Mentors use it to unblock a learner and to judge an answer. It is mentor material: never link it from a chapter (`00-principles.md` → What we reveal and what we withhold).
+3. **Base for each variant.** A variant's reference build starts from the general course's build and changes what `variant-diff.md` says changes. It does not start from an empty repository.
+
+Rules:
+
+- **Course text and reference code agree** on language, test runner, endpoint paths, when records are created, which features exist, and currency. `06-quality-gates.md` → Reference consistency checks this at G5 and G7.
+- **Fix a mismatch in one change,** on whichever side is wrong, and record the decision in the decision log. Never leave a known mismatch for learners to find.
+- **One brand config in the reference UI.** The client reads its product name, logo, colour role tokens (page, surface, ink, muted, accent, success, warning, error), fonts and dark-mode palette from a single config. A brand style or a fellow's personalization (Combinations above) changes that config, not the components.
 
 ## Worked example: event ticketing
 

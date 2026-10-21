@@ -262,6 +262,8 @@ The slop critic files a defect for any of these:
 - [ ] An unverified command or API.
 - [ ] A placeholder such as "TODO", "coming soon", or "add details here".
 - [ ] An AI-style triple that repeats the same point three times.
+- [ ] An em dash or en dash anywhere in the content.
+- [ ] AI or tool attribution in the content, a commit or a PR.
 
 ## Technical validation checklist
 
@@ -293,6 +295,30 @@ The technical validator runs, not reads.
 - [ ] Rate limits, auth checks, and validation are present where the chapter claims they are.
 - [ ] The performance claim is measured, not assumed.
 
+## Reference consistency
+
+Course text and the reference build must agree (`02-course-architecture.md` → Reference builds). Run this at G5, at G7, and after any change to either side. A mismatch is an S2 defect.
+
+- [ ] The language and test runner in the chapters match the reference build (for example TypeScript and Vitest, not JavaScript and Jest).
+- [ ] Every endpoint path and method a chapter names exists in the reference server, and the chapters use one name for each.
+- [ ] Lifecycle timing matches: when an order, hold or record is created, paid for and changed.
+- [ ] Every feature the course says exists is in the build, and every surface in the build (for example an admin panel) is taught, or listed as stretch or deferred.
+- [ ] Currency, units and seed data match.
+- [ ] Every quiz key, prediction and open-question model answer agrees with the reference code.
+- [ ] The reference UI reads its brand from one config: name, logo, colour role tokens, fonts and dark mode.
+
+Record the result in `work/<course-slug>/qa/reference-consistency.md`.
+
+## Before a pull request
+
+Run these for every course a pull request touches, and list what you ran and what you saw in the PR description.
+
+- [ ] `pnpm --dir server content:validate:source --course <slug>` passes.
+- [ ] `pnpm --dir server content:audit --course <slug>` reports 0 errors; any warning is explained in the PR.
+- [ ] `pnpm --dir server content:import --course <slug>` succeeds against a local database.
+- [ ] A student click-through as a test learner (for example `mentee1@buildment.dev`) at 375px wide and at desktop width, in the light and dark themes. Every changed chapter loads without console errors.
+- [ ] Grading works: answer one quiz right and one wrong, then check the score, the explanations and the saved progress.
+
 ## Assessment validation
 
 - [ ] Every outcome has at least one assessment.
@@ -301,6 +327,13 @@ The technical validator runs, not reads.
 - [ ] MCQ distractors are plausible and mutually exclusive.
 - [ ] Option lengths are balanced; the correct answer is not systematically the longest.
 - [ ] The correct answer is unambiguous to an expert.
+- [ ] Every answer key was re-answered blind and matches the reference build.
+- [ ] Every option has an explanation, shown one option per line.
+- [ ] The audit gives no option-length warning (the correct option 10% or more longer than the longest wrong one), and correct positions are spread across the set.
+- [ ] No graded question depends on opinion; those are open questions.
+- [ ] Quiz chapters hold activities only, and their titles have no "Quiz:" prefix.
+- [ ] Open questions that accept a link-only answer set `minWords: 0`.
+- [ ] Every mentor-reviewed answer has a follow-up step.
 - [ ] Open-question rubrics are specific enough for inter-rater agreement.
 - [ ] Code tests cover the failure mode.
 - [ ] The pass condition is stated before the learner starts.
@@ -318,6 +351,9 @@ The technical validator runs, not reads.
 - [ ] Link text is descriptive.
 - [ ] Tables are readable on a narrow screen.
 - [ ] Instructions do not require a mouse.
+- [ ] Body text runs about 70 characters per line at 17 to 18px (`03-authoring-standards.md` → Readability).
+- [ ] Body text reaches 7:1 contrast and small text 4.5:1, in light and dark themes.
+- [ ] No paragraph text is faded with opacity.
 
 ## IP leakage check
 

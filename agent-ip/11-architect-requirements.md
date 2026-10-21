@@ -77,3 +77,91 @@ Corrections from the architect and IP owners become rules, so the same mistake i
 | Hand-holding that fades | `05-assessment-and-motivation.md` → Attention, pacing and support, Feedback | In IP |
 | Engagement | `05-assessment-and-motivation.md` → Motivation | In IP |
 | Mind maps for review | `04-interactive-playbook.md` → Learning maps and study aids | In IP |
+
+## 8. Fellowship audience
+
+| Requirement | Where it lives | Status |
+|---|---|---|
+| Fellows in Gaza with English as a second language: plain English, short sentences, jargon defined | `03-authoring-standards.md` → Audience: the fellowship (Plain English); `08-templates.md` → Course brief (Learner) | In IP |
+| Phones on weak or expensive data and power cuts: light pages, few heavy images, no autoplay video, progress saved often | `03-authoring-standards.md` → Audience: the fellowship (Light pages); `05-assessment-and-motivation.md` → Attention, pacing and support | In IP |
+| Hardship handled with care: never forced, never graded | `03-authoring-standards.md` → Audience: the fellowship (Hardship with care); `05-assessment-and-motivation.md` → Open question | In IP |
+| Wellbeing and harassment contacts are a real person | `03-authoring-standards.md` → Audience: the fellowship; `05-assessment-and-motivation.md` → Attention, pacing and support | In IP |
+
+## 9. Writing rules
+
+| Requirement | Where it lives | Status |
+|---|---|---|
+| No em dashes or en dashes anywhere | `03-authoring-standards.md` → Forbidden patterns; `06-quality-gates.md` → Anti-slop checklist; `agents/critic.md` → Slop | In IP; older IP text is cleaned when its section is next edited |
+| No AI or tool attribution in content, commits or PRs | `03-authoring-standards.md` → Forbidden patterns; `09-review-and-governance.md` → Pull requests | In IP |
+
+## 10. Variants and personalization
+
+| Requirement | Where it lives | Status |
+|---|---|---|
+| 5 or 6 variants per course under the 4-of-6 uniqueness contract | `02-course-architecture.md` → Variants, Variant uniqueness contract; `agents/variant-producer.md` | In IP |
+| Personalization layer, not a variant: 6 brand styles plus project name, wordmark and accent | `02-course-architecture.md` → Combinations; `work/multi-vendor-marketplace/personalization-layer.md` | In IP; choice at enrollment is a platform gap |
+| Cap of 2 fellows per variant and style, random draw for anyone undecided | `02-course-architecture.md` → Combinations; `work/multi-vendor-marketplace/personalization-layer.md` → Assignment and the draw | In IP; seat cap and draw are a platform gap |
+| A variant's hardest constraint becomes the fellow's specialization in follow-on courses | `02-course-architecture.md` → Combinations; `09-review-and-governance.md` → Continuing a course | In IP |
+| `%%product.name%%` variant placeholder rules | `03-authoring-standards.md` → Variant placeholders and `08-templates.md` → 10A. Variant intake, both in open PR #21 | Not on `main` until PR #21 merges |
+
+## 11. Reference builds
+
+| Requirement | Where it lives | Status |
+|---|---|---|
+| One full reference build per course and variant in `AQIB-NAWAB/buildment-courses` (`<course>/<NN-variant>/`) | `02-course-architecture.md` → Reference builds | In IP |
+| Used as the answer key, as mentor help, and as the base each variant reuses | `02-course-architecture.md` → Reference builds; `05-assessment-and-motivation.md` → Answer-key check | In IP |
+| Consistency gate between course text and reference code | `06-quality-gates.md` → Reference consistency; `agents/technical-validator.md` | In IP; FreshMarket has open mismatches in `work/multi-vendor-marketplace/qa/reference-consistency.md` |
+| One brand config in the reference UI: name, logo, colour role tokens, fonts, dark mode | `02-course-architecture.md` → Reference builds; `agents/project-designer.md` | In IP; not yet in the FreshMarket reference build |
+
+## 12. Interactive blocks
+
+| Requirement | Where it lives | Status |
+|---|---|---|
+| When to use the stepper, sequence, state-machine and factor canvases | `10-interactive-canvases.md` → Reusable renderers | In IP |
+| Theme tokens, dark mode, focus ring, reduced motion, phone behaviour | `10-interactive-canvases.md` → Reusable renderers, The design language, QA checklist | In IP |
+
+## 13. Assessment
+
+| Requirement | Where it lives | Status |
+|---|---|---|
+| Every answer key re-answered blind | `05-assessment-and-motivation.md` → Answer-key check; `agents/assessment-designer.md` | In IP |
+| An explanation for every option, shown one option per line | `04-interactive-playbook.md` → `QUIZ` | In IP |
+| Balanced option lengths; the audit warns at 10% or more | `04-interactive-playbook.md` → Option-length hygiene, `QUIZ` | In IP |
+| Correct positions spread out | `04-interactive-playbook.md` → Option-length hygiene; `08-templates.md` → Assessment plan | In IP |
+| Opinion questions go to open questions, not graded quizzes | `04-interactive-playbook.md` → `QUIZ`; `05-assessment-and-motivation.md` → Quiz | In IP |
+| Quiz chapters hold activities only; no "Quiz:" prefix in titles | `04-interactive-playbook.md` → `QUIZ`, Placement matrix | In IP |
+| Recording-link-only submissions need `minWords: 0` | `04-interactive-playbook.md` → `OPEN_QUESTION` | In IP |
+| A step for answering a mentor's follow-up questions | `04-interactive-playbook.md` → `OPEN_QUESTION`; `05-assessment-and-motivation.md` → Open question | In IP; uses the `NEEDS_REVISION` verdict, a dedicated follow-up thread is a platform gap |
+
+## 14. Readability
+
+| Requirement | Where it lives | Status |
+|---|---|---|
+| About 70 characters per line, 17 to 18px body text | `03-authoring-standards.md` → Readability; `06-quality-gates.md` → Accessibility validation | In IP |
+| Contrast of 7:1 for body text and 4.5:1 for small text, in light and dark themes | `03-authoring-standards.md` → Readability | In IP |
+| Never fade paragraph text with opacity | `03-authoring-standards.md` → Readability | In IP |
+
+## 15. Quiz integrity
+
+| Requirement | Where it lives | Status |
+|---|---|---|
+| Signals are flags for mentors, not automatic penalties | `05-assessment-and-motivation.md` → Quiz integrity signals | In IP; signals are a platform gap |
+| Camera snapshots optional per course, with consent, private storage and deletion after 30 days | `05-assessment-and-motivation.md` → Quiz integrity signals | In IP; snapshots are a platform gap |
+| The web cannot block screenshots | `05-assessment-and-motivation.md` → Quiz integrity signals | In IP |
+
+## 16. Verification before a PR
+
+| Requirement | Where it lives | Status |
+|---|---|---|
+| `content:validate:source`, `content:audit` and `content:import` per course | `06-quality-gates.md` → Before a pull request; `agents/technical-validator.md` | In IP |
+| Student click-through at 375px and desktop width, in both themes | `06-quality-gates.md` → Before a pull request | In IP |
+| Grading tested with one quiz answered right and one wrong | `06-quality-gates.md` → Before a pull request | In IP |
+
+## 17. Process
+
+| Requirement | Where it lives | Status |
+|---|---|---|
+| The course pipeline file | `09-review-and-governance.md` → Pull requests | In IP |
+| Both reviewers requested through the REST endpoint; dropped reviewers re-requested | `09-review-and-governance.md` → Pull requests | In IP |
+| Check a PR has not merged before pushing more commits | `09-review-and-governance.md` → Pull requests | In IP |
+| Small logical commits | `09-review-and-governance.md` → Pull requests | In IP |

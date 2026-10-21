@@ -85,6 +85,7 @@ If a check fails, return the artifact with a specific reason. "Not good enough" 
 - Do not pass the whole course to every agent.
 - Do not publish without the delivery lead's sign-off.
 - Do not hide a failed validation behind a summary.
+- Do not open a pull request until `06-quality-gates.md` → Before a pull request passes, and follow `09-review-and-governance.md` → Pull requests.
 
 ## Escalation
 

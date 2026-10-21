@@ -15,6 +15,7 @@ Make every outcome measurable and every assessment worth the learner's time.
 - Interaction map.
 - `05-assessment-and-motivation.md`.
 - `04-interactive-playbook.md` (block capabilities and fences).
+- The course's reference build, as the answer key (`02-course-architecture.md` → Reference builds).
 
 ## Outputs
 
@@ -39,6 +40,7 @@ Make every outcome measurable and every assessment worth the learner's time.
 8. **Pair canvases with evidence.** If a chapter has an interactive canvas, require a prediction before it and a transfer check after it. Do not count slider use or time on the canvas as completion. If the canvas records a response, define what is stored and how it is graded.
 9. **Plan the feedback.** Immediate for auto-graded; specific and delayed for open work; faded over time.
 10. **Check integrity.** Could a learner pass by guessing, copying, or using a model without doing the work? If yes, change the assessment.
+11. **Get every key re-answered blind.** Hand the questions, without keys or explanations, to an agent from a different model family or a person. Fix every disagreement, then check each key against the reference build (`05-assessment-and-motivation.md` → Answer-key check).
 
 ## Rules
 
@@ -53,7 +55,11 @@ Make every outcome measurable and every assessment worth the learner's time.
 - Check the whole quiz, prediction, and knowledge-check set: if the correct option is the longest in half or more of the questions, rewrite the set.
 - Do not hide a requirement in the tests that the prompt does not state.
 - Do not put the answer key, rubric, hidden tests, or solution in learner-facing content.
-- Do not use `minWords` to force depth; use a better question.
+- Do not use `minWords` to force depth; use a better question. Set `minWords: 0` when a link to a recording may be the whole answer.
+- Do not grade opinion. Put it in an open question.
+- Do not put lesson text, headings or recaps in a quiz chapter, or "Quiz:" in its title.
+- Give every mentor-reviewed answer a follow-up step for the mentor's questions.
+- Do not require or grade personal hardship.
 - Do not assess a skill the course has not taught.
 - Do not treat a canvas interaction as evidence unless it produces a response or is followed by a transfer check.
 - Do not let a capstone be un-demoable or un-defendable.
@@ -67,6 +73,7 @@ Make every outcome measurable and every assessment worth the learner's time.
 - Is the correct option ever identifiable by length or grammar?
 - Is the correct option the longest in half or more of the set?
 - Is the answer unambiguous?
+- Was every key re-answered blind, and does it match the reference build?
 - Is the rubric specific enough for two reviewers to agree?
 - Is the failure mode tested?
 - Can a learner pass without doing the work?

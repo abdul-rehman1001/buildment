@@ -48,7 +48,17 @@ Design rules:
 - Avoid "all of the above", "none of the above", and joke options.
 - Do not test a fact that the learner can look up in ten seconds unless the fact is a decision input.
 - Include an explanation for every option. The importer's MCQ fence takes an `explanations:` list, one reason per option; in the in-app editor, use the block's explanation field.
+- Do not grade opinion. If an expert could reasonably pick a different option, move the question to an open question.
 - Three to five questions per quiz chapter. More than that is a test, not a check.
+
+### Answer-key check
+
+An answer key written by the same agent that wrote the question is not checked.
+
+- **Re-answer every key blind.** A second agent from a different model family, or a person, answers every quiz question and prediction without the key or the explanations, and drafts an answer to every open question without the model answer.
+- **Compare.** Any disagreement is a defect until the question, the options or the key is fixed. Ambiguity counts as a disagreement.
+- **Check against the reference build.** Every key and model answer must match the course's reference code (`02-course-architecture.md` → Reference builds).
+- Record the check in the assessment plan.
 
 ### Code exercise
 
@@ -74,7 +84,10 @@ Design rules:
 - Write the model answer to show the shape of a strong response, not the only acceptable wording.
 - Use `minWords` honestly. A 40-word minimum for a 120-word question teaches padding.
 - Use the right submission mode: text, URL, article, or video demo.
+- When a link to a recording may be the whole answer, set `minWords: 0`, or the answer never reaches review (`04-interactive-playbook.md` → `OPEN_QUESTION`).
 - Tie the question to a decision the learner has just made. "Defend the hold-expiry value you chose" is stronger than "Explain holds."
+- Plan a follow-up step: the mentor asks one to three follow-up questions and the learner answers them before the work counts as reviewed.
+- Never require or grade personal hardship (`03-authoring-standards.md` → Audience: the fellowship).
 
 ### Interactive canvas
 
@@ -203,6 +216,8 @@ Learners have limited attention, and many study around work, family and unreliab
 - **Adaptive help.** When a learner is stuck (repeated wrong answers, long inactivity on one chapter, a help request), offer the next hint, a repair chapter, or a mentor, in that order.
 - **Hand-holding that fades.** Early modules give worked examples, checklists and templates; later modules remove them on purpose. Say so in the chapter, so the learner sees it as progress, not as missing help.
 - **Engagement means engagement with the work.** Use the motivation rules above: progress on evidence, cohort showcases, streaks with grace days. Never punish a learner for a power cut or a family emergency.
+- **A real person for wellbeing and harassment.** Every course names a person learners can reach about wellbeing or harassment. Reminders, adaptive help and models never stand in for that person (`03-authoring-standards.md` → Audience: the fellowship).
+- **Never grade hardship.** A learner is never required to share personal hardship, and anything they share is never scored.
 
 ## Integrity and AI use
 
@@ -211,6 +226,12 @@ Learners have limited attention, and many study around work, family and unreliab
 - **AI assistance is allowed only where the course says so.** If the course permits AI for drafting, say what must be the learner's own: the decisions, the debugging, the defense.
 - **The defense is the integrity check.** A learner who cannot explain their own system has not completed the outcome, regardless of the artifact.
 - **Do not design assessments that a model can pass without doing the work.** Ask for the learner's specific trade-offs, failures, and evidence.
+
+### Quiz integrity signals
+
+- **Signals are flags for mentors, not penalties.** Leaving the tab, pasting into an answer or answering very fast is shown to the mentor as context. A signal never changes a score, locks a quiz or fails a learner on its own. A dropped connection or a power cut can look like any of them, so the mentor talks to the learner before acting.
+- **Camera snapshots are optional per course,** and off unless the course turns them on with a stated reason. The learner gives explicit consent before any snapshot is taken. Snapshots are stored privately, visible only to the course's mentors and admins, and deleted after 30 days.
+- **The web cannot block screenshots.** Never promise learners or mentors that it can. Make a screenshot useless instead: scenarios tied to the learner's own build, and the defense.
 
 ## Assessment review checklist
 
@@ -223,6 +244,8 @@ Before an assessment ships:
 - Are option lengths balanced, so the correct answer is not identifiable by being the longest?
 - Is the correct option the longest in half or more of the set? If so, rewrite the set.
 - Is there an explanation or rubric?
+- Was every key re-answered blind, and does it match the reference build?
+- Is any graded question a matter of opinion?
 - Is the difficulty appropriate for the prerequisite level?
 - Could a learner pass by guessing or by copying?
 - Does the feedback tell the learner what to do next?

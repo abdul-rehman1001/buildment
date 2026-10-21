@@ -23,6 +23,8 @@ target_publish: <date>
 ## Learner
 - Who:
 - Prior knowledge:
+- Language: <first language; English level>
+- Device and connection: <phone or laptop; data cost; power cuts>
 - Time available: <3–4 weeks, ~10 h/day>
 - Motivation:
 - What they will do with the result:
