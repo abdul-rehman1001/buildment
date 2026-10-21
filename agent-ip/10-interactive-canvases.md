@@ -167,7 +167,7 @@ frontend/src/canvas/
 frontend/tests/unit/canvas/   # model, stepper and registry tests
 ```
 
-- Most canvases need only `data.ts` and `spec.md` for an existing renderer. A new kind of model gets a new renderer folder with a pure `model.ts` and tests; that is a code change with its own review.
+- Most canvases need only `data.ts` and `spec.md` for an existing renderer. A new kind of model can use a custom React component registered under its own slug, with a pure `model.ts` and tests. Extract a reusable renderer only when more than one canvas benefits from the same interaction pattern. This keeps the visual and control vocabulary open while the authored MDX remains safe.
 
 - No network calls. Data is bundled or passed as safe props.
 - No arbitrary JS in MDX. The learner-facing MDX references a registered canvas by slug.
@@ -300,7 +300,7 @@ The platform has a canvas slot. This is the contract, and where each part lives:
 7. The canvas never receives learner PII or secrets.
 8. Mentors can inspect every registered canvas at `/workspace/canvases`, in light and dark mode and at phone width, without importing a course.
 
-To add a canvas: add its slug to `slugs.ts` and run `pnpm sync-shared`, add a folder with `data.ts` and `spec.md` under `frontend/src/canvas/`, and add one line to the registry.
+To add a canvas: add its slug to `slugs.ts` and run `pnpm sync-shared`, add a folder with `data.ts` and `spec.md` under `frontend/src/canvas/`, and add one line to the registry. The registry entry may use a reusable renderer or `kind: "custom"` with a reviewed component. Custom canvases still follow the same model, accessibility, teaching, and QA contracts.
 
 This preserves the existing security model: MDX can only reach allowlisted components, and the canvas registry is a closed set.
 

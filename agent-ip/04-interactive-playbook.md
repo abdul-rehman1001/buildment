@@ -21,7 +21,7 @@ Known gaps that agents must not paper over:
 - `CodeExercise` supports JavaScript only. Do not promise Python, TypeScript, or a browser sandbox that is not implemented.
 - `BigWordAlert` is a static card. `GlossaryTerm` is the inline click-to-reveal element. AI expansion of a term is a proposed platform feature, not a current capability.
 - `Checklist` and `LearningLog` are components, not graded block types. They persist to the learner's account but do not gate progress by themselves.
-- `InteractiveCanvas` exists, but only for registered slugs (`server/src/shared/canvas/slugs.ts`). A new canvas is a code change: data and a spec for one of the three renderers (sequence, state machine, factor), or a new renderer. See `10-interactive-canvases.md`.
+- `InteractiveCanvas` exists, but only for registered slugs (`server/src/shared/canvas/slugs.ts`). A new canvas is a code change: data and a spec for a reusable renderer (sequence, state machine, factor), or a reviewed custom React component when the teaching model needs different controls or visuals. See `10-interactive-canvases.md`.
 - There is no generic inline SVG component for authors. Static SVG can go through `VisualDiagram` as an image URL; interactive SVG comes only through a registered canvas. Never put raw author SVG in MDX.
 
 ## The interaction question
