@@ -61,6 +61,7 @@ Make the project real enough to teach production engineering and bounded enough 
 - Do not design variants that differ only by name and colour.
 - Do not reveal the complete capstone implementation in the brief. Reveal the contract and the evidence.
 - Do not use a paid service without naming the free-tier limit or cost.
+- Keep the project brief and the reference build in step. The reference UI reads its brand from one config (`02-course-architecture.md` → Reference builds).
 
 ## Self-check
 

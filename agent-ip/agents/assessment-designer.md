@@ -15,6 +15,7 @@ Make every outcome measurable and every assessment worth the learner's time.
 - Interaction map.
 - `05-assessment-and-motivation.md`.
 - `04-interactive-playbook.md` (block capabilities and fences).
+- The course's reference build, as the answer key (`02-course-architecture.md` → Reference builds).
 
 ## Outputs
 

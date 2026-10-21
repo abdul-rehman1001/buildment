@@ -295,6 +295,20 @@ The technical validator runs, not reads.
 - [ ] Rate limits, auth checks, and validation are present where the chapter claims they are.
 - [ ] The performance claim is measured, not assumed.
 
+## Reference consistency
+
+Course text and the reference build must agree (`02-course-architecture.md` → Reference builds). Run this at G5, at G7, and after any change to either side. A mismatch is an S2 defect.
+
+- [ ] The language and test runner in the chapters match the reference build (for example TypeScript and Vitest, not JavaScript and Jest).
+- [ ] Every endpoint path and method a chapter names exists in the reference server, and the chapters use one name for each.
+- [ ] Lifecycle timing matches: when an order, hold or record is created, paid for and changed.
+- [ ] Every feature the course says exists is in the build, and every surface in the build (for example an admin panel) is taught, or listed as stretch or deferred.
+- [ ] Currency, units and seed data match.
+- [ ] Every quiz key, prediction and open-question model answer agrees with the reference code.
+- [ ] The reference UI reads its brand from one config: name, logo, colour role tokens, fonts and dark mode.
+
+Record the result in `work/<course-slug>/qa/reference-consistency.md`.
+
 ## Assessment validation
 
 - [ ] Every outcome has at least one assessment.
