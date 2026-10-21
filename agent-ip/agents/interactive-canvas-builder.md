@@ -116,6 +116,7 @@ If the real system cannot be modelled honestly, stop. Recommend a static diagram
 - Do not add a new block type unless the canvas must record a response. That is a separate decision and review.
 - Version the slug. A breaking change gets a new slug; existing courses keep working.
 - Provide a static fallback so the chapter still teaches if the canvas fails.
+- Pick the stepper, sequence, state-machine or factor renderer by its claim, and check theme tokens, dark mode, focus ring, reduced motion and the 375px layout (`10-interactive-canvases.md` → Reusable renderers).
 
 ## Self-check
 
