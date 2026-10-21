@@ -105,7 +105,7 @@ Do not leave two competing rules in the folder. If a rule is replaced, remove th
 
 Course and IP changes reach `main` through pull requests on `devweekends/Buildment`.
 
-- **Check the pipeline.** The architect keeps the order and status of the fellowship courses in `buildment-course-pipeline.md`, a planning file outside this repository. Read it before starting a course; update it when a course changes status.
+- **Check the pipeline.** The architect keeps the order and status of the fellowship courses in `buildment-course-pipeline.md`, a planning file in the architect's local workspace, outside this repository. Ask the architect (Zeeshan) for the current copy and read it before starting a course; tell him when a course changes status.
 - **Small logical commits.** One change per commit, with a message that says what changed and why. No catch-all commit.
 - **No attribution, no dashes.** No AI or tool attribution, and no em or en dashes, in commits or PR text (`03-authoring-standards.md` → Forbidden patterns).
 - **Verify first.** Run `06-quality-gates.md` → Before a pull request and list the results in the PR.
@@ -193,7 +193,7 @@ Each group sees the course differently, so collect and act on their feedback sep
 A course is not finished at launch.
 
 - **New versions.** Fixes from post-launch review go into a new version (see Versioning). Learners already enrolled keep their progress.
-- **Follow-up courses.** Each course names its natural next course: for a variant, the specialization course on its hardest constraint; for a soft-skills course, the next course in the series.
+- **Follow-up courses.** Each course names its natural next course: for a variant, the specialisation course on its hardest constraint; for a soft-skills course, the next course in the series.
 - **New modules.** A module added later goes through the same roadmap confirmation as the original course.
 
 ## How the IP learns

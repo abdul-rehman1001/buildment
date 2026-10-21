@@ -106,7 +106,7 @@ Rules:
 - Do not use "all of the above", joke options, or options whose length or grammar gives the answer away. See **Option-length hygiene** above.
 - Do not write the correct option as the only full sentence while distractors are short labels.
 - Give an explanation for every option, right or wrong. The MCQ fence takes `explanations:` (one string per option, in option order) and an optional overall `explanation:`; the learner sees them after answering. `content:audit` fails a course with a `course.yaml` when an MCQ lacks one reason per option. The importer puts each reason on its own line, one option per line, so write each reason to stand alone; never one paragraph that names the right answer mid-sentence.
-- Keep the right option from standing out: similar lengths, varied positions. The audit warns when the correct option is the longest and when it is 10% or more longer than the longest wrong one.
+- Keep the right option from standing out: similar lengths, varied positions. `content:audit` warns per question when the correct option is at least 10% longer than the longest wrong one. It also warns per file when the correct option is the longest in half or more of the set, once the file has 3 or more quiz questions or 2 or more predictions.
 - **Opinion goes to an open question.** If an expert could reasonably pick a different option, the question is a judgment, not a fact. Use `openquestion`, not a graded quiz.
 - **Re-answer every key blind** before it ships (`05-assessment-and-motivation.md` → Answer-key check).
 - Three to five questions per quiz chapter. One quiz per concept cluster, not one per section.
@@ -428,7 +428,7 @@ Introduce the diagram in prose, explain what to notice, and state the takeaway. 
 | Concept | Prose, one worked example | `BigWordAlert`, `ComparePanel`, `MermaidDiagram`, `GlossaryTerm`, `Predict`, one interactive canvas when a causal model is the best teacher | `CodeExercise` for a concept the learner has not built; a canvas that only decorates |
 | Build | `Steps`, code fence, `FileTree` or `TerminalBlock` | `Callout`, `DiffBlock`, `ApiRequestPanel`, `TraceRequest` | `OpenQuestion` mid-build |
 | Verify | Acceptance criteria, one failure test | `Checklist`, `TraceRequest`, `DiffBlock` | New conceptual content |
-| Quiz | Three to five `quiz` fences | `openquestion` or `codeexercise` fences | Lesson text, headings, `ChapterRecap`, `Checklist`, `InterestingRead`, `RealWorldEvent`, `BigWordAlert` |
+| Quiz | Three to five `quiz` fences | `openquestion`, `predict` or `codeexercise` fences | Lesson text, headings, `ChapterRecap`, `Checklist`, `InterestingRead`, `RealWorldEvent`, `BigWordAlert` |
 | Gate | `Checklist`, `LearningLog`, `ChapterRecap` | A short bridge to the next module | New content, optional enrichment |
 | Closing | `ChapterRecap`, `OpenQuestion` defense | `LearningLog`, `RealWorldEvent` | New build work |
 

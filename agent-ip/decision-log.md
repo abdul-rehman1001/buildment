@@ -8,7 +8,7 @@
 
 **Decision:** Add each one to the document that owns its topic, update the affected agent prompts, and map every requirement in `11-architect-requirements.md` (sections 8 to 17). Correct two statements that disagreed with the code: the audit's option-length warning is 10%, not 1.25 times, and quiz chapters cannot hold a `ChapterRecap`.
 
-**Platform impact:** None in this change. Integrity signals, camera snapshots, the seat cap and draw, and a mentor follow-up thread remain platform gaps. The `%%product.name%%` rules arrive with PR #21.
+**Platform impact:** None in this change. The seat cap and draw and a mentor follow-up thread remain platform gaps. Integrity signals and camera snapshots shipped in PR #23, and the `%%product.name%%` rules in PR #21.
 
 **Review:** Delivery lead and one additional reviewer pending.
 
