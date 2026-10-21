@@ -309,6 +309,16 @@ Course text and the reference build must agree (`02-course-architecture.md` → 
 
 Record the result in `work/<course-slug>/qa/reference-consistency.md`.
 
+## Before a pull request
+
+Run these for every course a pull request touches, and list what you ran and what you saw in the PR description.
+
+- [ ] `pnpm --dir server content:validate:source --course <slug>` passes.
+- [ ] `pnpm --dir server content:audit --course <slug>` reports 0 errors; any warning is explained in the PR.
+- [ ] `pnpm --dir server content:import --course <slug>` succeeds against a local database.
+- [ ] A student click-through as a test learner (for example `mentee1@buildment.dev`) at 375px wide and at desktop width, in the light and dark themes. Every changed chapter loads without console errors.
+- [ ] Grading works: answer one quiz right and one wrong, then check the score, the explanations and the saved progress.
+
 ## Assessment validation
 
 - [ ] Every outcome has at least one assessment.
