@@ -8,15 +8,25 @@ This document covers both live diagrams and Excalidraw-style static SVGs. The pl
 
 | Format | Use for | Avoid when |
 |---|---|---|
-| **Excalidraw / static SVG** | Conceptual architecture, boundaries, ERDs, request flows, mental models, annotated walkthroughs | The diagram must update with data or theme automatically |
-| **`MermaidDiagram` / `StateMachine`** | State machines, flowcharts, sequence diagrams, simple dependency graphs | The layout needs precise visual composition |
+| **Excalidraw / static SVG** | Precise visual composition, annotated screenshots, or diagrams Mermaid cannot express legibly | The diagram can be maintained as a simple live graph |
+| **`MermaidDiagram` / `StateMachine`** | HLD topology, request paths, state machines, flowcharts, sequence diagrams, dependency graphs | The layout needs precise visual composition or the learner must change a causal model |
 | **`EntityDiagram`** | Entity relationships and cardinality | The schema is trivial or already fully explained by a short table |
 | **`ArchitectureDiagram`** | Layer boundaries: client, API, data, external services | You need arrows between individual services |
 | **`TraceRequest`** | A request lifecycle across actors (browser → API → DB → worker) | The flow is a static hierarchy |
 | **`VisualDiagram` / `diagram` fence** | A static image with alt text, caption, and legend | A live diagram can stay in sync |
 | **`VisualWalkthrough`** | A sequence of UI states with annotations | A single static screen is enough |
 
-Default: **Excalidraw-style SVG for conceptual/architecture/ER diagrams; live Mermaid/State/Trace for dynamic flows.**
+Default: **live Mermaid for HLD topology and request flow; Entity/State/Trace for their specific relationships; static SVG only when the live result is unclear.** A diagram is not an interactive canvas simply because it has arrows.
+
+## System design and HLD
+
+For a system-design chapter, plan the diagram before writing the prose. Show the components and the decision the learner is meant to defend: who calls whom, which address or service is public, where the trust boundary sits, and which path a request or event takes. Label protocols or edge meanings when they matter. Keep deployment topology separate from a request sequence if combining them would make either hard to read.
+
+Start with `MermaidDiagram` for a node-and-edge topology. The user → DNS → load balancer → two private servers example is a Mermaid flowchart with a server subgraph; put the DNS record mapping in a small adjacent table or the explanation. `ArchitectureDiagram` is a vertical layer stack and does not replace a topology with individually connected services. Use `TraceRequest` for a step-by-step request lifecycle. Do not create a new block or an uploaded screenshot just to reproduce a graph Mermaid already explains clearly.
+
+If the learner must change a design condition and observe a consequence—such as server failure, uneven traffic, cache TTL, queue arrival rate, or replica lag—write a separate interactive-canvas spec under `10-interactive-canvases.md`. The canvas must have an honest, bounded model, a prediction, a visible outcome, and a transfer check. A static HLD diagram remains alongside it to establish the architecture. Do not turn a topology into a canvas merely to add pan, zoom, or animation. A new canvas slug is a platform code change; an author cannot invent one in MDX.
+
+In the diagram plan, record: the claim, chosen format, public/private and trust boundaries, labeled connections, text alternative, placement, and whether a changing condition needs a canvas. For HLD-heavy modules, record the canvas decision even when Mermaid is sufficient: `none — static topology answers the learning claim` is a valid decision; silence is not.
 
 ## Excalidraw design rules
 
@@ -178,6 +188,8 @@ Live diagrams still need a title, a legend or direct labels, and a text alternat
 - [ ] Static SVG is sanitized, optimised, hosted locally, and referenced through a `diagram` fence or `VisualDiagram`.
 - [ ] The diagram does not restate the paragraph above it.
 - [ ] The diagram does not reveal the capstone solution.
+- [ ] For HLD, component connections, public/private boundaries, and important protocols or data flows are explicit.
+- [ ] For HLD, the plan records why Mermaid is enough or names a registered, model-backed canvas for changing conditions.
 
 ## Anti-patterns
 
@@ -195,6 +207,7 @@ Live diagrams still need a title, a legend or direct labels, and a text alternat
 ## Sources
 
 - Excalidraw design best practices: https://github.com/rnjn/cc-excalidraw-skill/blob/main/best-practices.md
+- Mermaid flowchart syntax and subgraphs: https://mermaid.js.org/syntax/flowchart.html
 - SVG accessibility guide: https://imagetosvg.com/blog/svg-accessibility-guide
 - Excalidraw software architecture use case: https://plus.excalidraw.com/use-cases/software-architecture-diagram
 - We already use the platform's live diagram components; see `04-interactive-playbook.md`.

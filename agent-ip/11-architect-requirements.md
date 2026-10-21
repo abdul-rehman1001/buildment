@@ -15,7 +15,7 @@ Corrections from the architect and IP owners become rules, so the same mistake i
 | Feedback on agent output becomes IP rules | `09-review-and-governance.md` → How the IP learns, Changing the IP | In IP |
 | Asides | `03-authoring-standards.md` → Asides | In IP |
 | Interactive elements | `04-interactive-playbook.md`, `10-interactive-canvases.md` | In IP; canvases are a platform gap |
-| Diagrams | `04-interactive-playbook.md` → Presentation blocks (`VisualDiagram`), Prose components (`MermaidDiagram`); `10-interactive-canvases.md` for SVG | In IP |
+| Diagrams and HLD system design | `11-visual-explanations.md` → System design and HLD; `04-interactive-playbook.md` → Diagram plan; `10-interactive-canvases.md` → System-design canvas decision | In IP; Mermaid topology works now; new model-backed canvases require registered platform code |
 | Big Word Alerts: bold term, click for details, a small model can expand it | `04-interactive-playbook.md` → `GlossaryTerm` versus `BigWordAlert`, AI expansion | In IP; AI expansion is a platform gap |
 | Further reading, must-read and optional | `04-interactive-playbook.md` → `MUST_READ`; `03-authoring-standards.md` → Asides (`InterestingRead`) | In IP |
 | Building curiosity | `03-authoring-standards.md` → Curiosity | In IP |

@@ -1,6 +1,6 @@
 # Agent IP — Course Factory
 
-**Status:** v0.1 — draft for team review
+**Status:** v0.2 — draft for team review
 **Owner:** Delivery lead (Sean) + course engineering
 **Applies to:** every course produced for the platform
 
@@ -48,7 +48,7 @@ See `10-interactive-canvases.md` for the design language, model contract, platfo
 
 ## Visual explanations
 
-Diagrams are not decoration. A diagram must make a relationship, flow, boundary, or state change legible. Use Excalidraw-style static SVG for conceptual architecture, ERDs, and annotated flows; use live Mermaid/State/Entity/Trace components when the diagram should stay theme-aware or easier to maintain.
+Diagrams are not decoration. A diagram must make a relationship, flow, boundary, or state change legible. Start HLD topology and request flows with live Mermaid; use State/Entity/Trace for their specific relationships and static SVG when precise composition is necessary. For changing load, failure, routing, or consistency behavior, record a decision to build a model-backed interactive canvas or teach the outcome with a worked trace.
 
 See `11-visual-explanations.md` for the Excalidraw design rules, SVG export workflow, accessibility, placement, and QA.
 

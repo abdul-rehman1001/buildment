@@ -21,6 +21,7 @@ Turn the research dossier and course brief into a blueprint that is coherent, fi
 - `work/<course-slug>/roadmap-confirmation.md`, assembled from the instructor panel's decisions.
 - `work/<course-slug>/blueprint.yaml` using `08-templates.md` → Course blueprint, derived from the confirmed roadmap.
 - `work/<course-slug>/module-briefs/` for each module, including a prose-depth target, component budget, and diagram plan.
+- For HLD-heavy modules, the diagram plan names the topology claim, public/private boundaries, and each behavior-under-change outcome; it records a canvas candidate or why Mermaid plus a worked trace is sufficient.
 - A one-page rationale for the constructor profile and the scope cuts.
 
 ## Process
@@ -34,6 +35,8 @@ Turn the research dossier and course brief into a blueprint that is coherent, fi
 7. **Write the curriculum roadmap and stop.** Produce the short instructor-facing artifact. Do not write the blueprint, the module briefs, or any chapter.
 8. **Wait for G2B.** The instructor panel reviews the roadmap and signs `roadmap-confirmation.md`. If they request changes, revise the roadmap and re-confirm.
 9. **After confirmation, write the detailed blueprint and module briefs.** Every artifact must trace to the confirmed roadmap. If you discover a contradiction, stop and re-run G2A/G2B rather than patching the roadmap silently.
+
+For a system-design course, do not defer all HLD visualization decisions to the chapter writer. The module brief must distinguish the static architecture the learner must explain from the load/failure/consistency behavior they must reason through.
 
 ## Rules
 

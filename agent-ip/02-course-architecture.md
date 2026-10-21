@@ -196,7 +196,7 @@ The skeleton is not a component checklist. A concept or build chapter needs at l
 
 ### Diagrams and worked examples
 
-At least one diagram per module and one per concept-heavy chapter. Use Excalidraw-style static SVG for conceptual architecture, ERDs, and annotated flows; use live Mermaid/State/Entity/Trace for dynamic diagrams. Introduce the diagram in prose, explain what to notice, then state the takeaway.
+At least one diagram per module and one per concept-heavy chapter. Start HLD topology and request-flow diagrams with live Mermaid; use Entity/State/Trace for their specific relationships and static SVG when precise composition is necessary. In HLD-heavy modules, plan which changing conditions need an interactive canvas and record why Mermaid alone is sufficient when no canvas is planned. Introduce each diagram in prose, explain what to notice, then state the takeaway.
 
 Every new concept needs a worked example and a practice problem. Use a process-oriented example for novices, then a product-oriented example, and fade the support over time. The build chapter must include a failure mode and a debugging path, not only a happy-path snippet.
 

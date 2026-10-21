@@ -129,6 +129,7 @@ The course auditor files a defect for every chapter that fails. A course with a 
 - Can the learner learn the concept from the prose alone?
 - Is every component introduced and explained in prose?
 - Does every module have at least one diagram that argues?
+- In HLD-heavy modules, does the diagram show the relevant public/private boundaries and request or event path? Is each behavior-under-change outcome backed by a reviewed canvas or an honest worked trace, with the choice recorded?
 - Are the interactions concentrated at checkpoints and decisions, not spread as a template?
 - Does each build chapter have file paths, acceptance criteria, a failure test, and a debugging path?
 - Does each concept have a worked example and a practice problem?
@@ -169,7 +170,7 @@ Score each dimension from 1 to 5.
 19. **Instructor alignment.** The confirmed roadmap is reflected in the course; the instructors recognise the sequence, outcomes, and capstone as theirs.
 20. **Interactive canvas quality.** The model is correct and tested; the controls and output are legible; the design is simple; the canvas teaches one claim; the learner can state the claim and transfer it. If the course has no canvas, score 5 and mark it not applicable.
 21. **Explanatory depth.** The prose teaches the mechanism, the trade-offs, a worked example, and the failure modes. Components support the explanation; they do not replace it. The prose-depth audit passes.
-22. **Visual explanation quality.** Diagrams are necessary, accurate, accessible, labeled, and make a relationship, flow, or state change legible. A diagram that restates the prose is a defect.
+22. **Visual explanation quality.** Diagrams are necessary, accurate, accessible, labeled, and make a relationship, flow, or state change legible. HLD diagrams show relevant component connections and public/private boundaries; changing-condition outcomes have a recorded canvas or worked-trace decision. A diagram that restates the prose is a defect.
 
 ### Thresholds
 

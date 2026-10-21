@@ -77,6 +77,7 @@ Run one or more lenses per pass. At G3 and G5, at least two lenses must be run b
 - Is any section component-only?
 - Is there a diagram, and does it argue rather than restate the prose?
 - Is the diagram accurate, labeled, accessible, and readable on mobile?
+- For HLD, does the topology identify public/private boundaries, important connections, and the request or event path? If the outcome changes under load or failure, is there a reviewed canvas or an honest worked trace?
 - Is the same template repeated across chapters?
 - Does the course audit pass?
 

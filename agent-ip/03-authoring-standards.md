@@ -92,8 +92,8 @@ Worked examples are for novices. Once the learner can perform the task, remove t
 
 At least one diagram per module, and one in every concept-heavy chapter. A diagram must make a relationship, flow, boundary, or state change legible in a way prose cannot. If it only restates the paragraph above it, cut it.
 
-- Use Excalidraw-style static SVG for conceptual architecture, ERDs, and annotated flows.
-- Use live Mermaid/State/Entity/Trace diagrams when the structure should stay theme-aware or easier to maintain.
+- Start HLD topology and request flows with live Mermaid; use State/Entity/Trace for their specific relationships.
+- Use static SVG for precise annotated composition that Mermaid cannot keep legible.
 - Introduce the diagram in prose, then explain what to notice, then state the takeaway.
 - Label arrows and include a legend when color or shape encodes meaning.
 - Provide alt text or `<title>`/`<desc>`.

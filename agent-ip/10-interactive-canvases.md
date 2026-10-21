@@ -41,6 +41,12 @@ Use one when all of the following are true:
 
 Typical fits: rate limits, concurrency, capacity planning, queue backpressure, cache hit rate, retry/backoff, index selectivity, cost trade-offs, inventory holds, permission boundaries, consistency lag.
 
+### System-design canvas decision
+
+Teach the fixed HLD topology with `MermaidDiagram` first. Build a canvas only when the learner must change a condition and see a consequence the static graph cannot show. Good claims include how a failed backend changes routing and per-instance load, how arrivals exceeding service capacity grow a queue, or how cache TTL changes origin load and staleness. Pick one claim per canvas, with two to four bounded inputs and a deterministic output. State simplifying assumptions, such as constant request rate or independent server failures.
+
+The interaction designer records one of two outcomes for every HLD-heavy module: a registered canvas slug and spec, or a sentence explaining why Mermaid and a worked trace teach the outcome. A required behavior-under-change outcome cannot be satisfied by a static topology alone. If no honest small model exists, use a documented trace or worked scenario and flag the gap; do not fake a simulation. A pan/zoom diagram without changing outcomes remains a diagram, not a canvas.
+
 ## When not to use a canvas
 
 - The concept is a definition or a syntax rule.
@@ -370,6 +376,8 @@ These are candidate canvases for the event ticketing general course and its vari
 | Permission matrix | role, resource, action | IDOR and object-level authorization | HTML table (not SVG) | General course, security |
 | Cost simulator | compute, egress, API calls | Cloud cost trade-offs | HTML controls + SVG stacked bars | General course, deploy |
 | Replica lag | write rate, replication delay, read rate | Read-your-writes and consistency | HTML controls + SVG line | Any variant with read replicas |
+| Load balancer failover | healthy backends, request rate, per-backend capacity | How failures redistribute requests and cause overload or errors | HTML controls + SVG topology/readouts | HLD and availability chapters |
+| Queue backpressure | arrival rate, workers, service time | Why backlog and wait time grow when arrival exceeds capacity | HTML controls + SVG queue/timeline | HLD and async-work chapters |
 
 This table is a menu, not a checklist. A chapter gets a canvas only if the canvas is the best way to teach its claim.
 

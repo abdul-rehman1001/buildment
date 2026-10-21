@@ -385,6 +385,8 @@ A canvas is a small simulator or visualiser for one causal model: a token bucket
 
 Use a canvas only when the learner needs to manipulate inputs and see a relationship change. Do not use one when a static diagram or a worked example is enough. The full design language, model contract, platform integration, catalog, and QA are in `10-interactive-canvases.md`.
 
+For HLD and system-design chapters, first draw the topology with `MermaidDiagram`. If the teaching claim is about what changes under load, failure, retries, cache expiry, or a routing decision, specify a model-backed canvas as a separate artifact. Record the decision in the interaction map even when Mermaid alone is sufficient. A new canvas requires an implemented, registered slug; do not insert a placeholder in MDX.
+
 Canvases may be rendered with HTML/CSS, inline SVG, or Canvas 2D. Use HTML for controls and text, inline SVG for vector visuals (charts, seat maps, token buckets, timelines, state machines), and Canvas 2D only for very high element counts. Do not build form controls out of SVG shapes. See `10-interactive-canvases.md` → Rendering.
 
 Placement:
@@ -401,11 +403,14 @@ Platform status: `<InteractiveCanvas slug="..." />` is allowlisted, and publishi
 
 Every module needs at least one diagram; every concept-heavy chapter needs one where a relationship, flow, or state is central. Choose the format before writing:
 
-- conceptual architecture, ERD, annotated flow → Excalidraw-style static SVG;
+- HLD topology or component/request graph → `MermaidDiagram` first; use a static SVG only if Mermaid cannot keep the connections legible;
+- precise annotated illustration → Excalidraw-style static SVG;
 - state machine → `StateMachine` or `MermaidDiagram`;
 - request lifecycle → `TraceRequest`;
 - layered boundary → `ArchitectureDiagram`;
 - entity relationships → `EntityDiagram`.
+
+In HLD-heavy modules, the diagram plan must name public/private boundaries, important edge meanings or protocols, and the behavior that would require a canvas. See `11-visual-explanations.md` → System design and HLD.
 
 Introduce the diagram in prose, explain what to notice, and state the takeaway. Do not create a diagram-only section. See `11-visual-explanations.md`.
 
