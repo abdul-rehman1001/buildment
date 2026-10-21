@@ -189,7 +189,7 @@ Pick the renderer by the claim, not by the look.
 
 | Renderer | Use when the claim is about | Do not use for | On a phone |
 |---|---|---|---|
-| **Stepper** (`primitives/stepper.ts`) | Order: what happens first, next and last. It drives the sequence and state-machine renderers and any custom step-through | A model with numeric inputs | Previous, Next, Play and Reset buttons and numbered step chips; arrow keys, Home and End when focused. Play starts only on a press, stops on the last step and pauses on any manual move |
+| **Stepper** (`primitives/stepper.ts`) | Order: what happens first, next and last. It drives the sequence and state-machine renderers and any custom step-through | A model with numeric inputs | Back, Next, Play/Pause and Start over buttons and numbered step chips; arrow keys, Home and End when focused. Play starts only on a press, stops on the last step and pauses on any manual move |
 | **Sequence** (`renderers/sequence/`) | A request or message moving between actors: browser, API, worker, payment provider | A lifecycle or a decision | A separate narrow layout below the `sm` breakpoint. Keep arrow labels under about 18 characters |
 | **State machine** (`renderers/state-machine/`) | A lifecycle: the allowed transitions and the requests the machine refuses | A request path across services | The grid (at most 3 by 3) turns on its side, so a left-to-right lifecycle reads top to bottom. Keep edge labels under about 14 characters |
 | **Factor** (`renderers/factor/`) | Flip a factor: change how much one criterion matters and see which option wins | A process over time | Controls sit above the bars; weight buttons are at least 44px tall |
