@@ -25,7 +25,7 @@ target_publish: <date>
 - Prior knowledge:
 - Language: <first language; English level>
 - Device and connection: <phone or laptop; data cost; power cuts>
-- Time available: <3–4 weeks, ~10 h/day>
+- Time available: <3 to 4 weeks, ~10 h/day>
 - Motivation:
 - What they will do with the result:
 
@@ -89,7 +89,7 @@ instructors_reviewed: []
 ## Learner and entry prerequisites
 - Learner:
 - Prior knowledge:
-- Time available: <3–4 weeks, ~10 h/day>
+- Time available: <3 to 4 weeks, ~10 h/day>
 - Entry diagnostic: <what it checks>
 
 ## Outcomes
