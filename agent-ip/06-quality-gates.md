@@ -341,6 +341,9 @@ Record the result in `work/<course-slug>/qa/reference-consistency.md`.
 - [ ] Link text is descriptive.
 - [ ] Tables are readable on a narrow screen.
 - [ ] Instructions do not require a mouse.
+- [ ] Body text runs about 70 characters per line at 17 to 18px (`03-authoring-standards.md` → Readability).
+- [ ] Body text reaches 7:1 contrast and small text 4.5:1, in light and dark themes.
+- [ ] No paragraph text is faded with opacity.
 
 ## IP leakage check
 

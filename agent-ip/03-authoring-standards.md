@@ -368,6 +368,15 @@ A chapter that exceeds the budget usually has two ideas. Split it or cut one.
 - Write instructions that do not depend on a mouse.
 - Test the core journey at a mobile width and with keyboard navigation before publish.
 
+### Readability
+
+These apply to the reader, every block and every canvas, in the light AND the dark theme.
+
+- **Line length about 70 characters.** Keep body text to roughly 65 to 75 characters per line.
+- **Body text 17 to 18px,** with a line height around 1.7. Smaller text is for captions, labels and hints only.
+- **Contrast.** Body text at least 7:1 against its background. Small text (captions, labels, table headers) at least 4.5:1. Measure both themes.
+- **Never fade paragraph text with opacity** (`opacity-90`, `text-foreground/85`). Paragraphs use the full text colour; the muted token is for captions, hints and subtitles. Faded text fails on cheap screens and in sunlight.
+
 ## Final check
 
 Before a chapter leaves the writer:
