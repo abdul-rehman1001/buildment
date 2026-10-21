@@ -9,7 +9,8 @@ This document covers both live diagrams and Excalidraw-style static SVGs. The pl
 | Format | Use for | Avoid when |
 |---|---|---|
 | **Excalidraw / static SVG** | Precise visual composition, annotated screenshots, or diagrams Mermaid cannot express legibly | The diagram can be maintained as a simple live graph |
-| **`MermaidDiagram` / `StateMachine`** | HLD topology, request paths, state machines, flowcharts, sequence diagrams, dependency graphs | The layout needs precise visual composition or the learner must change a causal model |
+| **`MermaidDiagram`** | HLD topology, request paths, flowcharts, sequence diagrams, dependency graphs | The layout needs precise visual composition or the learner must change a causal model |
+| **`StateMachine`** | States and allowed transitions | The teaching claim concerns a component graph rather than a state model |
 | **`EntityDiagram`** | Entity relationships and cardinality | The schema is trivial or already fully explained by a short table |
 | **`ArchitectureDiagram`** | Layer boundaries: client, API, data, external services | You need arrows between individual services |
 | **`TraceRequest`** | A request lifecycle across actors (browser → API → DB → worker) | The flow is a static hierarchy |
@@ -39,8 +40,7 @@ flowchart TB
   LB -->|private request| S2
 ```
 
-Explain the DNS record in a small table and state that DNS returns an address; it does not forward the HTTP request. If the lesson is about load balancing behavior, follow the fixed topology with a separate model-backed canvas.
-In the chapter, give the rendered diagram a title and a one-sentence text alternative.
+Explain the DNS record in a small table and state that DNS returns an address; it does not forward the HTTP request. If the lesson is about load balancing behavior, follow the fixed topology with a separate model-backed canvas. In the chapter, give the rendered diagram a title and a one-sentence text alternative.
 
 If the learner must change a design condition and observe a consequence—such as server failure, uneven traffic, cache TTL, queue arrival rate, or replica lag—write a separate interactive-canvas spec under `10-interactive-canvases.md`. The canvas must have an honest, bounded model, a prediction, a visible outcome, and a transfer check. A static HLD diagram remains alongside it to establish the architecture. Do not turn a topology into a canvas merely to add pan, zoom, or animation. A new canvas slug is a platform code change; an author cannot invent one in MDX.
 

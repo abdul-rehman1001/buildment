@@ -462,6 +462,11 @@ chapters:
         placement: after-hook
         purpose: Define hold vs sale
         budget: 1
+      - type: DIAGRAM
+        component: MermaidDiagram
+        placement: after-mechanism
+        purpose: Show the request path to the inventory transaction boundary
+        budget: 1
       - type: CANVAS
         slug: seat-hold-race
         placement: before-transaction
@@ -473,12 +478,12 @@ chapters:
         budget: 1
     diagram_plan:
       format: MermaidDiagram
-      claim: <the topology or request path the learner must explain>
-      boundaries: <public/private or trust boundaries, if relevant>
-      canvas_decision: <registered slug and spec, or why a worked trace is sufficient>
+      claim: The hold API changes availability before payment completes
+      boundaries: Browser, API, and inventory transaction
+      canvas_decision: seat-hold-race models concurrent requests; see its spec
     density:
       big_word_alerts: 1
-      diagrams: 0
+      diagrams: 1
       callouts: 1
       predicts: 0
       quizzes: 0
