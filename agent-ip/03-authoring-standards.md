@@ -283,6 +283,16 @@ Do not write "have fun", "play around", or "explore the magic". The learner is d
 - **Do not hide the hard part.** If the interesting logic is in an omitted file, show the decision or the test that proves it, not a `// TODO`.
 - **Do not paste the capstone.** Snippets may establish a pattern; they may not constitute the learner's solution.
 
+## Variant placeholders
+
+A course family shares chapters across its variants. Where a shared sentence is about the learner's own product, write `%%product.name%%` and each learner reads their variant's product name, for example Hamesh on the books variant. The value comes from the variant intake (`08-templates.md`, section 10A). Learners who have not picked a variant, and courses outside a family, read FreshMarket.
+
+- **Use it** where the sentence is about the learner's product: "open your %%product.name%% vendor dashboard". It works in prose, lists, tables, string attributes of components, code fences, and block prompts, options and explanations.
+- **Keep the reference name** where the text is about the shared example: screenshots, the example pack, the seed story, alt text that describes a reference image, and diagrams.
+- **Only use it in a sentence that is true for every variant.** "Your %%product.name%% grocery shop" is wrong for the books variant. A sentence that only fits one domain belongs in that variant's chapter.
+- **Never in** headings, chapter titles and summaries, module titles, course metadata, or answer keys, rubrics, sample answers, tests and solutions. Headings give links and notes that must be the same for everyone, titles show outside the chapter, and grading must not depend on the variant. Publish and import refuse all of these.
+- **Only `%%product.name%%` exists today.** Any other `%%name%%` fails publish and import. A new placeholder is a platform change in `server/src/shared/lib/content-tokens.ts`, with its own fallback.
+
 ## Links and sources
 
 - Prefer primary sources: official documentation, standards, research papers, postmortems, and first-party engineering blogs.
