@@ -317,6 +317,13 @@ Record the result in `work/<course-slug>/qa/reference-consistency.md`.
 - [ ] MCQ distractors are plausible and mutually exclusive.
 - [ ] Option lengths are balanced; the correct answer is not systematically the longest.
 - [ ] The correct answer is unambiguous to an expert.
+- [ ] Every answer key was re-answered blind and matches the reference build.
+- [ ] Every option has an explanation, shown one option per line.
+- [ ] The audit gives no option-length warning (the correct option 10% or more longer than the longest wrong one), and correct positions are spread across the set.
+- [ ] No graded question depends on opinion; those are open questions.
+- [ ] Quiz chapters hold activities only, and their titles have no "Quiz:" prefix.
+- [ ] Open questions that accept a link-only answer set `minWords: 0`.
+- [ ] Every mentor-reviewed answer has a follow-up step.
 - [ ] Open-question rubrics are specific enough for inter-rater agreement.
 - [ ] Code tests cover the failure mode.
 - [ ] The pass condition is stated before the learner starts.

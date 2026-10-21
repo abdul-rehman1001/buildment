@@ -105,9 +105,13 @@ Rules:
 - Every distractor must be plausible to someone who half-understands the idea.
 - Do not use "all of the above", joke options, or options whose length or grammar gives the answer away. See **Option-length hygiene** above.
 - Do not write the correct option as the only full sentence while distractors are short labels.
-- Give an explanation for every option, right or wrong. The MCQ fence takes `explanations:` (one string per option, in option order) and an optional overall `explanation:`; the learner sees them after answering. `content:audit` fails a course with a `course.yaml` when an MCQ lacks one reason per option.
-- Keep the right option from standing out: similar lengths, varied positions. The audit warns when the correct option is the longest and when it is more than 1.25 times the longest wrong one.
+- Give an explanation for every option, right or wrong. The MCQ fence takes `explanations:` (one string per option, in option order) and an optional overall `explanation:`; the learner sees them after answering. `content:audit` fails a course with a `course.yaml` when an MCQ lacks one reason per option. The importer puts each reason on its own line, one option per line, so write each reason to stand alone; never one paragraph that names the right answer mid-sentence.
+- Keep the right option from standing out: similar lengths, varied positions. The audit warns when the correct option is the longest and when it is 10% or more longer than the longest wrong one.
+- **Opinion goes to an open question.** If an expert could reasonably pick a different option, the question is a judgment, not a fact. Use `openquestion`, not a graded quiz.
+- **Re-answer every key blind** before it ships (`05-assessment-and-motivation.md` → Answer-key check).
 - Three to five questions per quiz chapter. One quiz per concept cluster, not one per section.
+- **A quiz chapter holds activities only.** `content:validate:source` rejects lesson text, headings, recaps, checklists, learning logs and visual blocks there. Put instructions in the activity prompt and move teaching to a lesson.
+- **Title a quiz chapter by its topic, without a "Quiz:" prefix.** The reader adds "Quiz:" itself; a prefixed title shows "Quiz: Quiz: ...".
 - The `short` type in the `quiz` fence becomes an `OPEN_QUESTION` block, not a quiz. Use it only when the answer deserves human review.
 
 ### `PREDICT`
@@ -163,6 +167,8 @@ Rules:
 - Use the right submission mode: `text`, `url`, `url_required`, `article`, or `video_demo`.
 - Do not require a URL for an answer that is fundamentally prose.
 - Keep `minWords` honest. A 40-word minimum for a 120-word question teaches the learner to pad.
+- **Link-only answers need `minWords: 0`.** When a learner may answer with only a link to a recorded video or audio explanation, set `minWords: 0`. With any other value a link-only answer stays a draft and never reaches the mentor.
+- **Plan the mentor's follow-up.** A mentor-reviewed answer includes a step where the learner answers the mentor's follow-up questions. Today the mentor marks the response `NEEDS_REVISION` with one to three questions in the feedback, and the learner answers by resubmitting. Count that time in the chapter estimate.
 
 ### `CODE`
 
@@ -422,7 +428,7 @@ Introduce the diagram in prose, explain what to notice, and state the takeaway. 
 | Concept | Prose, one worked example | `BigWordAlert`, `ComparePanel`, `MermaidDiagram`, `GlossaryTerm`, `Predict`, one interactive canvas when a causal model is the best teacher | `CodeExercise` for a concept the learner has not built; a canvas that only decorates |
 | Build | `Steps`, code fence, `FileTree` or `TerminalBlock` | `Callout`, `DiffBlock`, `ApiRequestPanel`, `TraceRequest` | `OpenQuestion` mid-build |
 | Verify | Acceptance criteria, one failure test | `Checklist`, `TraceRequest`, `DiffBlock` | New conceptual content |
-| Quiz | Three to five `quiz` fences | `ChapterRecap` | `InterestingRead`, `RealWorldEvent`, `BigWordAlert` |
+| Quiz | Three to five `quiz` fences | `openquestion` or `codeexercise` fences | Lesson text, headings, `ChapterRecap`, `Checklist`, `InterestingRead`, `RealWorldEvent`, `BigWordAlert` |
 | Gate | `Checklist`, `LearningLog`, `ChapterRecap` | A short bridge to the next module | New content, optional enrichment |
 | Closing | `ChapterRecap`, `OpenQuestion` defense | `LearningLog`, `RealWorldEvent` | New build work |
 
