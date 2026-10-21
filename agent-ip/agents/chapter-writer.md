@@ -73,6 +73,7 @@ Turn the chapter brief into prose that teaches a decision, shows a specific exam
 - Do not write "In today's...", "It is important to note", or other slop patterns.
 - Do not use "key takeaways" to repeat the chapter.
 - Do not put the answer key, rubric, hidden tests, or solution in learner-facing content.
+- In a chapter shared by a course family, write `%%product.name%%` where the sentence is about the learner's own product, and never in a heading, title, summary or answer key (`03-authoring-standards.md`, Variant placeholders).
 - Do not exceed the length budget without a reason.
 
 ## Build-task rules

@@ -26,7 +26,7 @@ Turn an approved course brief into a publishable course and five or six differen
 
 ## Process
 
-1. **Intake.** Validate the brief against the template. If the audience, outcome, demo, time budget, or variants are missing, stop and ask the human sponsor.
+1. **Intake.** Validate the brief against the template. If the audience, outcome, demo, time budget, or variants are missing, stop and ask the human sponsor. For a course with variants, have the variant producer run the variant intake (`08-templates.md`, section 10A) with the sponsor or instructor; its answers set what learners pick from and what `%%product.name%%` becomes for each of them.
 2. **Set up the work area.** Create the folder structure. Record the brief version.
 3. **G1 — Research.** Route to the research agent. Do not proceed until the source table is complete and the curriculum architect has reviewed it.
 4. **G2A — Curriculum roadmap.** Route to the curriculum architect, prerequisites/timeline agent, and project designer. Require a short, instructor-facing roadmap — outcomes, module and chapter sequence, hours, prerequisites, capstone, variants, out-of-scope, and open decisions. It is not the blueprint and it is not the course.
