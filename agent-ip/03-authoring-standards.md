@@ -338,6 +338,8 @@ These are hard failures. The slop critic will file them as defects.
 - A link with no reason to click it.
 - A "further reading" list that is longer than the chapter.
 - An AI-style triple: three short paragraphs that each restate the same point in different words.
+- An em dash (U+2014) or en dash (U+2013) anywhere: prose, headings, options, explanations, code comments, UI copy, commit messages, PR text and changes to this IP. Use a comma, colon, full stop or parentheses, and write ranges as "3 to 4". Check before you commit: `git diff | rg "^\+.*[\x{2013}\x{2014}]"` must print nothing. Older IP text that still has them is cleaned when its section is next edited.
+- AI or tool attribution in course content, commits or PRs: no "Generated with" footer, no `Co-Authored-By` line for a model or tool, no note that a model wrote the text. The people who review the work own it.
 
 ## Length budgets
 

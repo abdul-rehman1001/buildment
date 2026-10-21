@@ -57,6 +57,7 @@ Turn the chapter brief into prose that teaches a decision, shows a specific exam
 - Open with two to four sentences of explanation. Use bullets only for lists.
 - Specific beats generic. Name the product, actor, constraint, number, and failure.
 - Write for the fellowship: plain English, short sentences, jargon defined on first use, light pages, and care with hardship (`03-authoring-standards.md` → Audience: the fellowship).
+- No em dashes or en dashes, and no AI or tool attribution (`03-authoring-standards.md` → Forbidden patterns).
 - One idea per paragraph. Two to five sentences.
 - Explain why before what. Do not open with a definition.
 - Show one worked example for a different case; do not show the capstone solution.

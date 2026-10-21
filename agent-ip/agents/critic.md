@@ -32,6 +32,8 @@ Run one or more lenses per pass. At G3 and G5, at least two lenses must be run b
 - A quiz that tests the paragraph above.
 - An interaction that is decoration.
 - A voice that sounds like a template.
+- An em dash or en dash, or AI or tool attribution.
+- English a second-language reader would struggle with: long sentences, undefined jargon, unexplained idioms.
 
 ### Assessment
 

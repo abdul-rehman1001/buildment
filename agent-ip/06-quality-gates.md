@@ -262,6 +262,8 @@ The slop critic files a defect for any of these:
 - [ ] An unverified command or API.
 - [ ] A placeholder such as "TODO", "coming soon", or "add details here".
 - [ ] An AI-style triple that repeats the same point three times.
+- [ ] An em dash or en dash anywhere in the content.
+- [ ] AI or tool attribution in the content, a commit or a PR.
 
 ## Technical validation checklist
 
