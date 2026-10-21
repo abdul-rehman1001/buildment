@@ -111,6 +111,8 @@ agent-ip/
 ├── 09-review-and-governance.md     ← human review, versioning, sign-off
 ├── 10-interactive-canvases.md      ← simulators/visualisers, design language, QA
 ├── 11-visual-explanations.md       ← Excalidraw/SVG/live diagrams, accessibility, QA
+├── decision-log.md                 ← IP changes and review state
+├── proposals/                     ← written proposals awaiting governance review
 ├── scripts/
 │   └── audit-course.mjs            ← prose depth, component density, diagram coverage
 └── agents/

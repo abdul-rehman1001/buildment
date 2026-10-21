@@ -24,6 +24,24 @@ For a system-design chapter, plan the diagram before writing the prose. Show the
 
 Start with `MermaidDiagram` for a node-and-edge topology. The user → DNS → load balancer → two private servers example is a Mermaid flowchart with a server subgraph; put the DNS record mapping in a small adjacent table or the explanation. `ArchitectureDiagram` is a vertical layer stack and does not replace a topology with individually connected services. Use `TraceRequest` for a step-by-step request lifecycle. Do not create a new block or an uploaded screenshot just to reproduce a graph Mermaid already explains clearly.
 
+For that example, keep name resolution distinct from application traffic:
+
+```mermaid
+flowchart TB
+  Client[Web or mobile client] -->|DNS query| DNS[DNS]
+  DNS -->|load balancer public address| Client
+  Client -->|HTTPS request| LB[Public load balancer]
+  subgraph Private[Private application network]
+    S1[Server 1]
+    S2[Server 2]
+  end
+  LB -->|private request| S1
+  LB -->|private request| S2
+```
+
+Explain the DNS record in a small table and state that DNS returns an address; it does not forward the HTTP request. If the lesson is about load balancing behavior, follow the fixed topology with a separate model-backed canvas.
+In the chapter, give the rendered diagram a title and a one-sentence text alternative.
+
 If the learner must change a design condition and observe a consequence—such as server failure, uneven traffic, cache TTL, queue arrival rate, or replica lag—write a separate interactive-canvas spec under `10-interactive-canvases.md`. The canvas must have an honest, bounded model, a prediction, a visible outcome, and a transfer check. A static HLD diagram remains alongside it to establish the architecture. Do not turn a topology into a canvas merely to add pan, zoom, or animation. A new canvas slug is a platform code change; an author cannot invent one in MDX.
 
 In the diagram plan, record: the claim, chosen format, public/private and trust boundaries, labeled connections, text alternative, placement, and whether a changing condition needs a canvas. For HLD-heavy modules, record the canvas decision even when Mermaid is sufficient: `none — static topology answers the learning claim` is a valid decision; silence is not.

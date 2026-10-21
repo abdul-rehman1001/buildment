@@ -21,7 +21,7 @@ You may render with HTML/CSS, inline SVG, or Canvas 2D. Use HTML for controls an
 
 ## Outputs
 
-- A canvas folder with its data and spec, for one of the existing renderers (sequence, state machine, factor):
+- A canvas folder with its data and spec, using an existing renderer (sequence, state machine, factor) where it fits:
 
 ```
 frontend/src/canvas/<slug>/
@@ -29,7 +29,7 @@ frontend/src/canvas/<slug>/
   spec.md
 ```
 
-- If no renderer fits the model, a new renderer under `frontend/src/canvas/renderers/<kind>/` with a pure `model.ts` and tests in `frontend/tests/unit/canvas/`, built on the shared primitives in `frontend/src/canvas/primitives/`.
+- If no renderer fits the model, a reviewed custom React component for that slug with a pure `model.ts` and tests in `frontend/tests/unit/canvas/`. Extract a new renderer under `frontend/src/canvas/renderers/<kind>/` only when multiple canvases share the interaction pattern.
 
 If the visualisation uses vector geometry, the renderer returns a React SVG component. Static SVG assets, if unavoidable, are sanitized, optimised, hosted locally, and rendered through the component.
 
@@ -44,6 +44,7 @@ If the visualisation uses vector geometry, the renderer returns a React SVG comp
 2. **Implement the model first.** Write a pure function. Define inputs, outputs, units, bounds, defaults, formula, assumptions, and limitations. No UI yet.
 3. **Test the model.** Cover the default, the minimum, the maximum, and at least one edge case. Test zero and maximum inputs for NaN, infinity, and broken layout.
 4. **Choose the renderer.** Use HTML/CSS for controls, layout, and text; inline SVG for charts, seat maps, timelines, token buckets, state machines, and other vector visuals; Canvas 2D only for very high element counts. Never build sliders, toggles, or buttons out of SVG shapes.
+   For HLD, keep the fixed topology accurate while the visual state changes. Show which route, server, queue, or datastore is affected and pair it with a readable output, such as requests per server or backlog. Do not imply that DNS forwards application requests.
 5. **Build the UI.** Title → purpose → summary cards → visualisation → controls → explanation. Use the simplest control that fits each input. Every control has a label, value, and unit. Provide reset.
 6. **Write the copy.** What this shows, Try this, What changed, Limits of the model. Describe the relationship, not the UI.
 7. **Make it accessible.** Keyboard reachable controls, accessible names, visible focus, text alternative or live summary for the visualisation, color not the only signal, `prefers-reduced-motion` respected.
@@ -66,6 +67,7 @@ If the visualisation uses vector geometry, the renderer returns a React SVG comp
 - The first interaction must be obvious without a tooltip.
 - The canvas must be readable at a mobile width and with a keyboard.
 - The canvas must look like the reference aesthetic: calm, neutral, and legible.
+- In a system-design canvas, a changed failure or load input must change the model output, not merely recolor the same topology.
 
 ## SVG rules
 

@@ -2,7 +2,7 @@
 
 ## 2026-10-21 — HLD diagrams and system-design canvases
 
-**Status:** Draft for delivery lead and reviewer sign-off under `09-review-and-governance.md`.
+**Status:** Draft for delivery lead and reviewer sign-off under `09-review-and-governance.md`. Proposal: `proposals/2026-10-21-hld-visuals.md`.
 
 **Problem:** The IP defaulted to static SVG for conceptual architecture. That can lead agents to upload pictures of high-level designs without explaining request paths, public/private boundaries, or the effects of load and failure. A DNS → load balancer → private servers example exposed the ambiguity.
 

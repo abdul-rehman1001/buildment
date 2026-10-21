@@ -51,6 +51,7 @@ Use this whenever a chapter includes an interactive canvas. The full contract is
 - [ ] Unit tests cover default, minimum, maximum, and one edge case.
 - [ ] Zero and maximum inputs do not produce NaN, infinity, or a broken layout.
 - [ ] Assumptions and limitations are visible in the UI.
+- [ ] For an HLD canvas, changing a load, failure, or routing input changes the modeled outcome; the fixed topology and control-plane/data-plane paths stay technically accurate.
 
 ### Teaching
 
