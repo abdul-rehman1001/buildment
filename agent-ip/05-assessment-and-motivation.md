@@ -229,8 +229,11 @@ Learners have limited attention, and many study around work, family and unreliab
 
 ### Quiz integrity signals
 
-- **Signals are flags for mentors, not penalties.** Leaving the tab, pasting into an answer or answering very fast is shown to the mentor as context. A signal never changes a score, locks a quiz or fails a learner on its own. A dropped connection or a power cut can look like any of them, so the mentor talks to the learner before acting.
-- **Camera snapshots are optional per course,** and off unless the course turns them on with a stated reason. The learner gives explicit consent before any snapshot is taken. Snapshots are stored privately, visible only to the course's mentors and admins, and deleted after 30 days.
+- **Signals are flags for mentors only, never penalties.** Leaving the tab, leaving full screen or answering very fast is shown to the mentor as context. A signal never changes a score, locks a quiz or fails a learner on its own. A dropped connection or a power cut can look like any of them, so the mentor talks to the learner before acting.
+- **The learner does not see a count of their own flags.**
+- **Camera stills are optional per course,** and off unless the course turns them on with a stated reason. The learner gives explicit consent before any still is taken. If the camera is off or drops, the quiz continues and the mentor sees "camera off". A learner is never locked out and a submit is never refused. Stills are stored privately, visible only to the course's mentors and admins, and deleted after 30 days.
+- **Full screen is requested, never required.** iOS cannot do full screen, so a learner on iOS must still be able to submit.
+- **Copy, paste and right-click on quiz questions are blocked and logged.** This is a restriction, not a flag.
 - **The web cannot block screenshots.** Never promise learners or mentors that it can. Make a screenshot useless instead: scenarios tied to the learner's own build, and the defense.
 
 ## Assessment review checklist
