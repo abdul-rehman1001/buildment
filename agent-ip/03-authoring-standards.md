@@ -12,6 +12,32 @@ This document governs how course prose is written. It applies to every chapter, 
 
 A useful test: read the paragraph aloud. If it sounds like a person explaining a decision to a colleague, it passes. If it sounds like a template, rewrite it.
 
+## Audience: the fellowship
+
+Our learners are fellows in Gaza, on a fellowship. English is usually their second language. Many learn on a phone, on weak or expensive mobile data, around power cuts. Write and build for that learner first.
+
+### Plain English
+
+- **Short sentences.** One idea per sentence, about 20 words or fewer.
+- **Common words.** "Use", not "utilise". "Start", not "commence".
+- **Define jargon on first use,** in one plain sentence. Use `GlossaryTerm` inline, or `BigWordAlert` for the chapter's central term (`04-interactive-playbook.md` → `GlossaryTerm` versus `BigWordAlert`).
+- **Explain or replace idioms and business phrases.** "Ballpark figure" means nothing to a reader who has never heard it.
+- **No wordplay or sarcasm** that only works for native speakers.
+
+### Light pages
+
+- **Few heavy images.** Prefer a live diagram, a small SVG or text. Compress every image and give it alt text.
+- **No autoplay video or audio.** Video is optional, short, captioned and has a transcript. The text path teaches the same thing.
+- **No large download to start a chapter.** State the size of any file a learner must fetch.
+- **Save progress often.** Every interaction saves on its own; a lost connection costs at most one short section (`05-assessment-and-motivation.md` → Attention, pacing and support).
+
+### Hardship with care
+
+- Scenarios may include power cuts, lost connections, displacement or studying while working. Never as a joke, never for drama.
+- **Never force a learner to share personal hardship.** A prompt that invites it is optional, offers a neutral alternative, and is never graded or scored.
+- If a learner shares hardship anyway, the mentor answers the person first and grades only the work the prompt asked for.
+- **Wellbeing and harassment contacts are a real person:** a named coordinator or mentor and a way to reach them that works on a phone. Never only a form, a bot or a model.
+
 ## Prose first
 
 The primary teaching surface is prose. Bullets are for inventories, comparisons, steps, and prerequisites. They are not a substitute for explanation.

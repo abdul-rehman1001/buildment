@@ -203,6 +203,8 @@ Learners have limited attention, and many study around work, family and unreliab
 - **Adaptive help.** When a learner is stuck (repeated wrong answers, long inactivity on one chapter, a help request), offer the next hint, a repair chapter, or a mentor, in that order.
 - **Hand-holding that fades.** Early modules give worked examples, checklists and templates; later modules remove them on purpose. Say so in the chapter, so the learner sees it as progress, not as missing help.
 - **Engagement means engagement with the work.** Use the motivation rules above: progress on evidence, cohort showcases, streaks with grace days. Never punish a learner for a power cut or a family emergency.
+- **A real person for wellbeing and harassment.** Every course names a person learners can reach about wellbeing or harassment. Reminders, adaptive help and models never stand in for that person (`03-authoring-standards.md` → Audience: the fellowship).
+- **Never grade hardship.** A learner is never required to share personal hardship, and anything they share is never scored.
 
 ## Integrity and AI use
 
