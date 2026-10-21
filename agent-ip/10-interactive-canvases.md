@@ -202,6 +202,8 @@ Rules for every renderer and custom canvas:
 - **Reduced motion.** Under `prefers-reduced-motion` the flow pulse on the active arrow is hidden and a still dot marks the arrow instead. New motion follows the same rule.
 - **Phone.** Check at 375px wide: no horizontal scroll, labels readable, touch targets at least 44px.
 
+Known exception to fix: `renderers/factor/FactorCanvas.tsx` does not use the shared `FOCUS_RING` or `TONES` yet. It uses `focus-visible:ring-ring` and raw `bg-blue-500`. Do not copy it; move it onto `FOCUS_RING` and `TONES` from `primitives/tones.ts`.
+
 ## Rendering: SVG, HTML, or Canvas
 
 SVG is a first-class rendering option for canvases and diagrams. It is not a separate interaction model. The model contract, teaching contract, and QA still apply.
