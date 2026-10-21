@@ -265,7 +265,7 @@ Rules:
 - A variant's hardest constraint is the natural first specialization for fellows who finish that variant.
 - Personalization is chosen at enrollment and stored with the enrollment, so mentors see it in review.
 - **Personalization is a layer, not a variant.** It sits on top of the variant and never counts toward the uniqueness contract.
-- **Six brand styles:** Fresh, Bold street, Editorial, Night market, Heritage and Clean pro. Each is a pre-checked palette, font set and shape language. On top of the style, the fellow adds their own project name, a wordmark and one accent colour, and the accent must pass the contrast rules.
+- **Six brand styles:** Fresh, Bold street, Editorial, Night market, Heritage and Clean pro. Each is a pre-checked palette, font set and shape language. On top of the style, the fellow adds their own project name, a wordmark and one accent colour, and the accent must pass the contrast rules. This accent belongs to the fellow's own project and is part of the personalization layer. It is not the reader accent: each variant sets `theme.accentLight` and `theme.accentDark` (`08-templates.md` → 10A. Variant intake), which colour the course reader for every learner on that variant.
 - **Cap and draw.** At most 2 fellows per variant and style combination. Fellows who do not choose are placed by a seeded random draw that fills the emptiest combination first. The full procedure and cohort-size rules are in `work/multi-vendor-marketplace/personalization-layer.md` → Assignment and the draw.
 
 ## Reference builds
