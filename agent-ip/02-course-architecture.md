@@ -263,7 +263,10 @@ Rules:
 
 - A specialization adds stretch hours inside the budget or becomes its own short course. It never replaces a core module.
 - A variant's hardest constraint is the natural first specialization for fellows who finish that variant.
-- Personalization is chosen at enrollment and stored with the enrollment, so mentors see it in review. Assignment caps keep two fellows from shipping the same combination.
+- Personalization is chosen at enrollment and stored with the enrollment, so mentors see it in review.
+- **Personalization is a layer, not a variant.** It sits on top of the variant and never counts toward the uniqueness contract.
+- **Six brand styles:** Fresh, Bold street, Editorial, Night market, Heritage and Clean pro. Each is a pre-checked palette, font set and shape language. On top of the style, the fellow adds their own project name, a wordmark and one accent colour, and the accent must pass the contrast rules.
+- **Cap and draw.** At most 2 fellows per variant and style combination. Fellows who do not choose are placed by a seeded random draw that fills the emptiest combination first. The full procedure and cohort-size rules are in `work/multi-vendor-marketplace/personalization-layer.md` → Assignment and the draw.
 
 ## Worked example: event ticketing
 
