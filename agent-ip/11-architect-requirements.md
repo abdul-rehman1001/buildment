@@ -37,9 +37,9 @@ Corrections from the architect and IP owners become rules, so the same mistake i
 
 | Requirement | Where it lives | Status |
 |---|---|---|
-| Industries and use cases | `02-course-architecture.md` → Variants, Variant uniqueness contract, Combinations | In IP |
-| Design elements | `02-course-architecture.md` → Combinations (personalization layer) | In IP; choice at enrollment is a platform gap |
-| Special interests and specialization areas | `02-course-architecture.md` → Combinations | In IP |
+| Industries and use cases: 5 or 6 variants per course under the 4-of-6 uniqueness contract | `02-course-architecture.md` → Variants, Variant uniqueness contract, Combinations; `agents/variant-producer.md` | In IP |
+| Design elements: the personalization layer, not a variant; 6 brand styles plus project name, wordmark and accent | `02-course-architecture.md` → Combinations (personalization layer); `work/multi-vendor-marketplace/personalization-layer.md` | In IP; choice at enrollment is a platform gap |
+| Special interests and specialization areas: a variant's hardest constraint becomes the fellow's specialization in follow-on courses | `02-course-architecture.md` → Combinations; `09-review-and-governance.md` → Continuing a course | In IP |
 
 ## 4. Multi-agent, multi-provider orchestrator (1 month)
 
@@ -96,12 +96,11 @@ Corrections from the architect and IP owners become rules, so the same mistake i
 
 ## 10. Variants and personalization
 
+Variants, the personalization layer and specialization are mapped in section 3, Combinations. This section adds only the rules section 3 does not cover.
+
 | Requirement | Where it lives | Status |
 |---|---|---|
-| 5 or 6 variants per course under the 4-of-6 uniqueness contract | `02-course-architecture.md` → Variants, Variant uniqueness contract; `agents/variant-producer.md` | In IP |
-| Personalization layer, not a variant: 6 brand styles plus project name, wordmark and accent | `02-course-architecture.md` → Combinations; `work/multi-vendor-marketplace/personalization-layer.md` | In IP; choice at enrollment is a platform gap |
 | Cap of 2 fellows per variant and style, random draw for anyone undecided | `02-course-architecture.md` → Combinations; `work/multi-vendor-marketplace/personalization-layer.md` → Assignment and the draw | In IP; seat cap and draw are a platform gap |
-| A variant's hardest constraint becomes the fellow's specialization in follow-on courses | `02-course-architecture.md` → Combinations; `09-review-and-governance.md` → Continuing a course | In IP |
 | `%%product.name%%` variant placeholder rules | `03-authoring-standards.md` → Variant placeholders; `08-templates.md` → 10A. Variant intake | In IP; shipped in PR #21 |
 
 ## 11. Reference builds
