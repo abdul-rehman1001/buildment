@@ -428,7 +428,7 @@ Introduce the diagram in prose, explain what to notice, and state the takeaway. 
 | Concept | Prose, one worked example | `BigWordAlert`, `ComparePanel`, `MermaidDiagram`, `GlossaryTerm`, `Predict`, one interactive canvas when a causal model is the best teacher | `CodeExercise` for a concept the learner has not built; a canvas that only decorates |
 | Build | `Steps`, code fence, `FileTree` or `TerminalBlock` | `Callout`, `DiffBlock`, `ApiRequestPanel`, `TraceRequest` | `OpenQuestion` mid-build |
 | Verify | Acceptance criteria, one failure test | `Checklist`, `TraceRequest`, `DiffBlock` | New conceptual content |
-| Quiz | Three to five `quiz` fences | `openquestion` or `codeexercise` fences | Lesson text, headings, `ChapterRecap`, `Checklist`, `InterestingRead`, `RealWorldEvent`, `BigWordAlert` |
+| Quiz | Three to five `quiz` fences | `openquestion`, `predict` or `codeexercise` fences | Lesson text, headings, `ChapterRecap`, `Checklist`, `InterestingRead`, `RealWorldEvent`, `BigWordAlert` |
 | Gate | `Checklist`, `LearningLog`, `ChapterRecap` | A short bridge to the next module | New content, optional enrichment |
 | Closing | `ChapterRecap`, `OpenQuestion` defense | `LearningLog`, `RealWorldEvent` | New build work |
 
