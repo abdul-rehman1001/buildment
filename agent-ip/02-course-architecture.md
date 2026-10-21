@@ -270,7 +270,7 @@ Rules:
 
 ## Reference builds
 
-Every course and every variant has one full reference build: the product built to the course, end to end. They live in `github.com/AQIB-NAWAB/buildment-courses`, one folder per course and variant, `<course>/<NN-variant>/`, each with `client/`, `server/` and `docs/` (for example `multi-vendor-course/01-food-marketplace/`).
+Every course and every variant needs one full reference build: the product built to the course, end to end. Today only `multi-vendor-course/01-food-marketplace/` exists; the missing builds are a gap in `11-architect-requirements.md` → Reference builds. They live in `github.com/AQIB-NAWAB/buildment-courses`, one folder per course and variant, `<course>/<NN-variant>/`, each with `client/`, `server/` and `docs/` (for example `multi-vendor-course/01-food-marketplace/`).
 
 A reference build has three jobs:
 

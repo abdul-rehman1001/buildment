@@ -108,7 +108,7 @@ Corrections from the architect and IP owners become rules, so the same mistake i
 
 | Requirement | Where it lives | Status |
 |---|---|---|
-| One full reference build per course and variant in `AQIB-NAWAB/buildment-courses` (`<course>/<NN-variant>/`) | `02-course-architecture.md` → Reference builds | In IP |
+| One full reference build per course and variant in `AQIB-NAWAB/buildment-courses` (`<course>/<NN-variant>/`) | `02-course-architecture.md` → Reference builds | In IP; gap: only `multi-vendor-course/01-food-marketplace/` exists, every other course and variant still needs its build |
 | Used as the answer key, as mentor help, and as the base each variant reuses | `02-course-architecture.md` → Reference builds; `05-assessment-and-motivation.md` → Answer-key check | In IP |
 | Consistency gate between course text and reference code | `06-quality-gates.md` → Reference consistency; `agents/technical-validator.md` | In IP; FreshMarket has open mismatches in `work/multi-vendor-marketplace/qa/reference-consistency.md` |
 | One brand config in the reference UI: name, logo, colour role tokens, fonts, dark mode | `02-course-architecture.md` → Reference builds; `agents/project-designer.md` | In IP; not yet in the FreshMarket reference build |
