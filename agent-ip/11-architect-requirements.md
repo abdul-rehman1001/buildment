@@ -39,7 +39,7 @@ Corrections from the architect and IP owners become rules, so the same mistake i
 |---|---|---|
 | Industries and use cases: 5 or 6 variants per course under the 4-of-6 uniqueness contract | `02-course-architecture.md` → Variants, Variant uniqueness contract, Combinations; `agents/variant-producer.md` | In IP |
 | Design elements: the personalization layer, not a variant; 6 brand styles plus project name, wordmark and accent | `02-course-architecture.md` → Combinations (personalization layer); `work/multi-vendor-marketplace/personalization-layer.md` | In IP; choice at enrollment is a platform gap |
-| Special interests and specialization areas: a variant's hardest constraint becomes the fellow's specialization in follow-on courses | `02-course-architecture.md` → Combinations; `09-review-and-governance.md` → Continuing a course | In IP |
+| Special interests and specialisation areas: a variant's hardest constraint becomes the fellow's specialisation in follow-on courses | `02-course-architecture.md` → Combinations; `09-review-and-governance.md` → Continuing a course | In IP |
 
 ## 4. Multi-agent, multi-provider orchestrator (1 month)
 
@@ -96,7 +96,7 @@ Corrections from the architect and IP owners become rules, so the same mistake i
 
 ## 10. Variants and personalization
 
-Variants, the personalization layer and specialization are mapped in section 3, Combinations. This section adds only the rules section 3 does not cover.
+Variants, the personalization layer and specialisation are mapped in section 3, Combinations. This section adds only the rules section 3 does not cover.
 
 | Requirement | Where it lives | Status |
 |---|---|---|

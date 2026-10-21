@@ -193,7 +193,7 @@ Each group sees the course differently, so collect and act on their feedback sep
 A course is not finished at launch.
 
 - **New versions.** Fixes from post-launch review go into a new version (see Versioning). Learners already enrolled keep their progress.
-- **Follow-up courses.** Each course names its natural next course: for a variant, the specialization course on its hardest constraint; for a soft-skills course, the next course in the series.
+- **Follow-up courses.** Each course names its natural next course: for a variant, the specialisation course on its hardest constraint; for a soft-skills course, the next course in the series.
 - **New modules.** A module added later goes through the same roadmap confirmation as the original course.
 
 ## How the IP learns

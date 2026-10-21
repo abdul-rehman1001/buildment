@@ -123,7 +123,7 @@ Every course has a time budget, set in the course brief and confirmed with the r
 | Course type | Typical budget | Example |
 |---|---|---|
 | Flagship engineering course | 210 to 280 hours over 3 to 4 weeks | The general course and its variants |
-| Short course or specialization | 30 to 60 hours | A 40-hour course on one hard constraint |
+| Short course or specialisation | 30 to 60 hours | A 40-hour course on one hard constraint |
 | Soft-skills course | 8 to 20 hours | Decision-making, communication |
 
 The numbers below are the flagship default. Scale the shares, not the rigor, for a smaller budget.
@@ -256,13 +256,13 @@ A fellow's course is a combination of three layers. Only the first changes the p
 | Layer | What it changes | Counts toward variant uniqueness? |
 |---|---|---|
 | **Industry or use case** (the variant) | Domain, user journey, hardest constraint, data model, hero feature, capstone | Yes |
-| **Specialization or special interest** | One stretch module or a follow-up course on a deeper topic, such as payments, search, realtime, offline-first mobile or AI features | No; it adds evidence on top of the core |
+| **Specialisation or special interest** | One stretch module or a follow-up course on a deeper topic, such as payments, search, realtime, offline-first mobile or AI features | No; it adds evidence on top of the core |
 | **Design elements** (personalization) | Brand style, project name, wordmark and accent colour chosen by the fellow | No; on its own it is a reskin |
 
 Rules:
 
-- A specialization adds stretch hours inside the budget or becomes its own short course. It never replaces a core module.
-- A variant's hardest constraint is the natural first specialization for fellows who finish that variant.
+- A specialisation adds stretch hours inside the budget or becomes its own short course. It never replaces a core module.
+- A variant's hardest constraint is the natural first specialisation for fellows who finish that variant.
 - Personalization is chosen at enrollment and stored with the enrollment, so mentors see it in review.
 - **Personalization is a layer, not a variant.** It sits on top of the variant and never counts toward the uniqueness contract.
 - **Six brand styles:** Fresh, Bold street, Editorial, Night market, Heritage and Clean pro. Each is a pre-checked palette, font set and shape language. On top of the style, the fellow adds their own project name, a wordmark and one accent colour, and the accent must pass the contrast rules. This accent belongs to the fellow's own project and is part of the personalization layer. It is not the reader accent: each variant sets `theme.accentLight` and `theme.accentDark` (`08-templates.md` → 10A. Variant intake), which colour the course reader for every learner on that variant.
