@@ -101,6 +101,24 @@ A change to a principle, a gate, or a template is a version bump. A typo fix is 
 
 Do not leave two competing rules in the folder. If a rule is replaced, remove the old one or mark it explicitly superseded.
 
+### Pull requests
+
+Course and IP changes reach `main` through pull requests on `devweekends/Buildment`.
+
+- **Check the pipeline.** The architect keeps the order and status of the fellowship courses in `buildment-course-pipeline.md`, a planning file outside this repository. Read it before starting a course; update it when a course changes status.
+- **Small logical commits.** One change per commit, with a message that says what changed and why. No catch-all commit.
+- **No attribution, no dashes.** No AI or tool attribution, and no em or en dashes, in commits or PR text (`03-authoring-standards.md` → Forbidden patterns).
+- **Verify first.** Run `06-quality-gates.md` → Before a pull request and list the results in the PR.
+- **Request both reviewers,** `asifrazadev` and `AQIB-NAWAB` (except whichever of them opened the PR), through the REST endpoint:
+
+  ```bash
+  gh api -X POST repos/devweekends/Buildment/pulls/<n>/requested_reviewers \
+    -f 'reviewers[]=AQIB-NAWAB' -f 'reviewers[]=asifrazadev'
+  ```
+
+  Read `requested_reviewers` in the response. GitHub sometimes drops a reviewer without an error; re-request any missing reviewer on their own.
+- **Check before pushing again.** Before pushing more commits to a PR, check it has not merged (`gh pr view <n> --json state,mergedAt`). If it has, open a new PR from a fresh branch off `main`.
+
 ### Changing a published course
 
 - **Content fix** (typo, broken link, wrong command): normal review, patch version.
