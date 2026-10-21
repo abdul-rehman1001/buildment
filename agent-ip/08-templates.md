@@ -562,6 +562,50 @@ owner: variant-producer
 <What looks similar and why it is acceptable, or what must change.>
 ```
 
+## 10A. Variant intake
+
+Run this with the instructor or sponsor before any variant roadmap is written. The answers are the source of truth for the course family catalogue in `server/src/shared/lib/course-tracks.ts`: the variant picker, the reader theme, the mentor badges, the specialisation offered at the end, and the value each learner sees in place of `%%product.name%%`. One block per variant.
+
+```yaml
+---
+artifact: variant-intake
+course: <general-slug>
+family: <family-slug>
+answered_by: <name and role>
+asked_by: variant-producer
+date: <date>
+status: draft | confirmed
+---
+
+# Variant intake: <family>
+
+## Family
+| Question | Answer | Catalogue field |
+|---|---|---|
+| What do learners call the course family? | | `label` |
+| Which variant does a learner get before they pick one? | | `defaultVariantSlug` |
+
+## Variant <n>
+| Question | Answer | Catalogue field |
+|---|---|---|
+| What is this variant called in one or two words? | | `label` |
+| What is the reference product called? Learners on this variant read it wherever a chapter says `%%product.name%%`. | | `productName` |
+| Who uses the product and what do they do, in one sentence? | | `summary` |
+| What makes this variant hard that the others do not have? | | `hardestConstraint` |
+| Which specialisation follows naturally from it? | | `specialisationSlug` |
+| Which accent colour fits the product, on light and on dark? | | `theme.accentLight`, `theme.accentDark` |
+| Sans or serif headings? | | `theme.headingFont` |
+
+## Specialisations
+| Slug | Label | One-line summary |
+|---|---|---|
+
+## Checks before the catalogue changes
+- Each product name uses letters, digits, spaces, hyphens or the typographic apostrophe only. It is inserted into chapters as plain text, so `{ } < > [ ] * _ # | \ " &` and the plain apostrophe are not allowed.
+- Each accent reaches 4.5:1 against its background and against its label colour, light and dark.
+- No two variants share a product name, a hardest constraint or a primary user.
+```
+
 ## 11. Critique report
 
 ```yaml
