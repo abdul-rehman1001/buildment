@@ -8,11 +8,10 @@ import {
   Building2,
   ClipboardList,
   LayoutDashboard,
-  LogOut,
   Menu,
-  Plug,
   Users,
 } from "lucide-react";
+import { WorkspaceAccountMenu } from "@/components/workspace/workspace-account-menu";
 import { Logo } from "@/components/brand/logo";
 import {
   DropdownMenu,
@@ -20,7 +19,6 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
@@ -62,6 +60,7 @@ export function AdminWorkspaceShell({
       href: "/admin/organizations",
       icon: Building2,
       active: pathname.startsWith("/admin/organizations"),
+      badge: organizationCount,
     },
     {
       label: "Requests",
@@ -90,8 +89,9 @@ export function AdminWorkspaceShell({
         <Link href="/admin" aria-label="Platform admin">
           <Logo size="sm" />
         </Link>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <NotificationBell />
+          <WorkspaceAccountMenu current="admin" user={{ ...user, role: "ADMIN" }} signOutAction={signOutAction} compact />
           <DropdownMenu>
             <DropdownMenuTrigger
               render={
@@ -126,43 +126,17 @@ export function AdminWorkspaceShell({
                   );
                 })}
               </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => void signOutAction()} variant="destructive">
-                <LogOut className="size-4" />
-                Sign out
-              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>
 
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 flex-col border-r bg-card lg:flex">
-        <div className="flex items-start justify-between gap-3 border-b px-5 py-5">
-          <div>
-            <Link href="/admin" className="inline-flex outline-none focus-visible:ring-2 focus-visible:ring-ring">
-              <Logo size="md" />
-            </Link>
-            <p className="mt-1 pl-10.5 text-xs text-muted-foreground">Platform admin</p>
-          </div>
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-60 flex-col border-r bg-card lg:flex">
+        <div className="flex h-16 shrink-0 items-center justify-between gap-3 border-b px-4">
+          <Link href="/admin" className="inline-flex outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            <Logo size="sm" />
+          </Link>
           <NotificationBell />
-        </div>
-
-        <div className="border-b p-3">
-          <div className="flex items-center gap-3 rounded-xl bg-muted/45 px-3 py-3">
-            <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-background text-muted-foreground shadow-sm ring-1 ring-border">
-              <Building2 className="size-4" />
-            </span>
-            <span className="min-w-0">
-              <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                Tenants
-              </span>
-              <span className="mt-0.5 block text-sm font-semibold">
-                {organizationCount === 0
-                  ? "No organizations yet"
-                  : `${organizationCount} organization${organizationCount === 1 ? "" : "s"}`}
-              </span>
-            </span>
-          </div>
         </div>
 
         <nav aria-label="Platform admin" className="flex-1 space-y-1 overflow-y-auto p-3">
@@ -197,32 +171,12 @@ export function AdminWorkspaceShell({
           })}
         </nav>
 
-        <div className="space-y-2 border-t p-3">
-          <Link
-            href="/integrations"
-            className="flex items-center gap-2 rounded-lg px-2.5 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          >
-            <Plug className="size-4" />
-            Integration API
-          </Link>
-          <div className="flex items-center gap-2.5 rounded-xl px-2 py-2">
-            <span className="min-w-0 flex-1">
-              <span className="block truncate text-xs font-medium">{user.name ?? "Admin"}</span>
-              <span className="block truncate text-[11px] text-muted-foreground">{user.email}</span>
-            </span>
-            <button
-              type="button"
-              onClick={() => void signOutAction()}
-              className="grid size-8 shrink-0 place-items-center rounded-lg text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
-              aria-label="Sign out"
-            >
-              <LogOut className="size-4" />
-            </button>
-          </div>
+        <div className="shrink-0 border-t p-2">
+          <WorkspaceAccountMenu current="admin" user={{ ...user, role: "ADMIN" }} signOutAction={signOutAction} />
         </div>
       </aside>
 
-      <main className="min-h-dvh lg:pl-72">
+      <main className="min-h-dvh lg:pl-60">
         <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">{children}</div>
       </main>
     </div>

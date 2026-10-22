@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import type { NotificationPreferences } from "@/shared/api/notifications";
-import { requireVerifiedUser, surfaceHomeRoute, userCanInstruct } from "@/server/auth/guards";
+import { requireVerifiedUser, surfaceHomeRoute } from "@/server/auth/guards";
 import { getActiveSurface } from "@/server/auth/surface";
 import { serverApiFetch } from "@/lib/api-server";
 import { Logo } from "@/components/brand/logo";
@@ -18,7 +18,7 @@ export const metadata: Metadata = { title: "Notifications" };
 export default async function NotificationsPage() {
   const user = await requireVerifiedUser();
   const preferences = await serverApiFetch<NotificationPreferences>("/api/v1/notifications/preferences");
-  const homeHref = user.role === "ADMIN" ? "/admin" : surfaceHomeRoute(await getActiveSurface(userCanInstruct(user)));
+  const homeHref = user.role === "ADMIN" ? "/admin" : surfaceHomeRoute(await getActiveSurface(user.role));
 
   return (
     <div className="min-h-dvh bg-background text-foreground">

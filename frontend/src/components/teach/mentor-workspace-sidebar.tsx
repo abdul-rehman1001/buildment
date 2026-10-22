@@ -12,12 +12,13 @@ import {
   CircleHelp,
   LayoutDashboard,
   LibraryBig,
-  LogOut,
   Menu,
   MessageSquareText,
+  Settings2,
   Users,
   type LucideIcon,
 } from "lucide-react";
+import { WorkspaceAccountMenu } from "@/components/workspace/workspace-account-menu";
 import { Logo } from "@/components/brand/logo";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -35,9 +36,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { helpUiCopy } from "@/shared/lib/help-ui-copy";
-import { SurfaceSwitcher } from "@/components/workspace/surface-switcher";
 import { NotificationBell } from "@/components/notifications/notification-bell";
+import { helpUiCopy } from "@/shared/lib/help-ui-copy";
 import type { InstructorAccessView } from "@/shared/lib/instructor-access";
 
 const LAST_COURSE_KEY = "buildment:mentor:last-course";
@@ -70,7 +70,7 @@ export function MentorWorkspaceSidebar({
   signOutAction,
 }: {
   courses: MentorSidebarCourse[];
-  user: { name?: string | null; email?: string | null };
+  user: { name?: string | null; email?: string | null; role?: string };
   instructorAccess: InstructorAccessView;
   signOutAction: () => Promise<void>;
 }) {
@@ -125,6 +125,13 @@ export function MentorWorkspaceSidebar({
         Boolean(routeCourseSlug) &&
         (pathname.endsWith("/edit") || pathname.includes("/chapters/")),
       count: selectedCourse?.chapterCount,
+      disabled: !selectedCourse,
+    },
+    {
+      label: "Settings",
+      href: courseBase ? `${courseBase}/settings` : "/courses",
+      icon: Settings2,
+      active: Boolean(routeCourseSlug) && pathname.endsWith("/settings"),
       disabled: !selectedCourse,
     },
     {
@@ -185,8 +192,9 @@ export function MentorWorkspaceSidebar({
     <>
       <div className="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-background/95 px-4 backdrop-blur lg:hidden">
         <Logo size="sm" />
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <NotificationBell />
+          <WorkspaceAccountMenu current="teach" user={user} instructorAccess={instructorAccess} signOutAction={signOutAction} compact />
           <DropdownMenu>
             <DropdownMenuTrigger
               render={
@@ -230,24 +238,21 @@ export function MentorWorkspaceSidebar({
         </div>
       </div>
 
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 border-r bg-card lg:flex lg:flex-col">
-        <div className="flex items-start justify-between gap-3 border-b px-5 py-5">
-          <div>
-            <Link href="/workspace" className="inline-flex outline-none focus-visible:ring-2 focus-visible:ring-ring">
-              <Logo size="md" />
-            </Link>
-            <p className="mt-1 pl-10.5 text-xs text-muted-foreground">Mentor workspace</p>
-          </div>
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-60 border-r bg-card lg:flex lg:flex-col">
+        <div className="flex h-16 shrink-0 items-center justify-between gap-3 border-b px-4">
+          <Link href="/workspace" className="inline-flex outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            <Logo size="sm" />
+          </Link>
           <NotificationBell />
         </div>
 
-        <div className="border-b p-3">
+        <div className="shrink-0 border-b p-3">
           <DropdownMenu>
             <DropdownMenuTrigger
               render={
                 <button
                   type="button"
-                  className="flex w-full items-center gap-2 rounded-xl border bg-background px-3 py-2.5 text-left outline-none transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
+                  className="flex w-full items-center gap-2 rounded-lg border bg-background px-2.5 py-2 text-left outline-none transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
                   aria-label="Select course context"
                   disabled={courses.length === 0}
                 />
@@ -263,7 +268,7 @@ export function MentorWorkspaceSidebar({
               </span>
               <ChevronsUpDown className="size-4 shrink-0 text-muted-foreground" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-72">
+            <DropdownMenuContent align="start" className="w-60">
               <DropdownMenuGroup>
                 <DropdownMenuLabel>Switch course</DropdownMenuLabel>
                 {courses.map((course) => (
@@ -283,7 +288,7 @@ export function MentorWorkspaceSidebar({
           </DropdownMenu>
         </div>
 
-        <nav aria-label="Mentor workspace" className="flex-1 space-y-5 overflow-y-auto p-3">
+        <nav aria-label="Mentor workspace" className="min-h-0 flex-1 space-y-4 overflow-y-auto p-3">
           <SidebarGroup label="Workspace" items={workspaceItems} />
           <SidebarGroup label="Course" items={courseItems} />
           <Collapsible defaultOpen>
@@ -298,22 +303,8 @@ export function MentorWorkspaceSidebar({
           <SidebarGroup label="Workflow" items={workflowItems} />
         </nav>
 
-        <div className="border-t p-3 space-y-1">
-          <SurfaceSwitcher current="teach" instructorAccess={instructorAccess} />
-          <div className="flex items-center gap-2.5 rounded-xl px-2 py-2">
-            <span className="min-w-0 flex-1">
-              <span className="block truncate text-xs font-medium">{user.name ?? "Instructor"}</span>
-              <span className="block truncate text-[11px] text-muted-foreground">{user.email}</span>
-            </span>
-            <button
-              type="button"
-              onClick={() => void signOutAction()}
-              className="grid size-8 shrink-0 place-items-center rounded-lg text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
-              aria-label="Sign out"
-            >
-              <LogOut className="size-4" />
-            </button>
-          </div>
+        <div className="shrink-0 border-t p-2">
+          <WorkspaceAccountMenu current="teach" user={user} instructorAccess={instructorAccess} signOutAction={signOutAction} />
         </div>
       </aside>
     </>

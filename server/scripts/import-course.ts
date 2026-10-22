@@ -1,6 +1,7 @@
 /**
- * Imports content/import/multi-vendor-marketplace/ into the real Course /
- * Module / Chapter / Block tables.
+ * Imports one course folder under content/import/ into the real Course /
+ * Module / Chapter / Block tables. Pick it with `--course <slug>`; the default
+ * is multi-vendor-marketplace (see course-source.ts).
  *
  * This is a *structural* import, not a rewrite (see the chat decision this
  * script implements): the mentor's prose is kept close to verbatim. The two
@@ -14,13 +15,11 @@
  * The importer never invents learner interactions. A reflection, quiz, or
  * mentor-reviewed answer must be authored intentionally in the source lesson.
  *
- * Idempotent: re-running upserts Modules/Chapters by (courseId, order) /
- * (courseId, slug) and replaces each chapter's Block rows from scratch. Safe
- * before there are any real learner Responses against this course; once
- * mentees start answering, block replacement needs the "keep vs invalidate"
- * flow from docs/02-content-authoring.mdx instead.
+ * Re-running upserts Modules/Chapters by (courseId, order) / (courseId, slug).
+ * Identical blocks keep their ids and learner responses. A changed answered
+ * block is archived; a changed unanswered block is removed.
  *
- * Run: pnpm content:import
+ * Run: pnpm content:import [--course <slug>]
  */
 import "dotenv/config";
 import fs from "node:fs";
@@ -35,13 +34,12 @@ import { VideoConfigSchema } from "../src/shared/blocks/video/schema.js";
 import { VisualWalkthroughConfigSchema } from "../src/shared/blocks/visual-walkthrough/schema.js";
 import { VisualDiagramConfigSchema } from "../src/shared/blocks/visual-diagram/schema.js";
 import { RoadmapConfigSchema } from "../src/shared/blocks/roadmap/schema.js";
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const COURSE_SOURCE_DIR = path.resolve(__dirname, "../../content/import/multi-vendor-marketplace");
-const COURSE_OUTPUT_DIR = path.resolve(__dirname, "../../content/transformed/multi-vendor-marketplace");
+import { COURSE_OUTPUT_DIR, COURSE_SOURCE_DIR, loadCourseManifest, type CourseManifest } from "./course-source.js";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
+/** FreshMarket module titles. Courses with a course.yaml take titles from it instead. */
 const CHAPTER_NAMES: Record<number, string> = {
   1: "Introduction",
   2: "Project skeleton",
@@ -71,12 +69,42 @@ const CHAPTER_NAMES: Record<number, string> = {
   99: "Closing",
 };
 
-type PendingBlock = {
+export type PendingBlock = {
   id: string;
   type: "QUIZ" | "OPEN_QUESTION" | "CHAPTER_RECAP" | "PROJECT_PREVIEW" | "LEARNING_OBJECTIVES" | "CODE" | "PREDICT" | "MUST_READ" | "VIDEO" | "VISUAL_WALKTHROUGH" | "VISUAL_DIAGRAM" | "ROADMAP";
   config: Prisma.InputJsonValue;
   required: boolean;
 };
+
+function stableConfig(value: unknown): string {
+  return JSON.stringify(value, (_key, item) => {
+    if (item && typeof item === "object" && !Array.isArray(item)) {
+      return Object.fromEntries(Object.entries(item).sort(([a], [b]) => a.localeCompare(b)));
+    }
+    return item;
+  });
+}
+
+/** Preserve an existing block id when the learner-facing activity is identical. */
+async function reconcileBlockIds(chapterId: string, lesson: ParsedLesson) {
+  const existing = await prisma.block.findMany({
+    where: { chapterId, archivedAt: null },
+    select: { id: true, type: true, config: true, _count: { select: { responses: true } } },
+  });
+  const unmatched = new Set(existing.map((block) => block.id));
+
+  for (const block of lesson.blocks) {
+    const match = existing.find((old) =>
+      unmatched.has(old.id) && old.type === block.type && stableConfig(old.config) === stableConfig(block.config)
+    );
+    if (!match) continue;
+    lesson.source = lesson.source.replaceAll(block.id, match.id);
+    block.id = match.id;
+    unmatched.delete(match.id);
+  }
+
+  return existing.filter((block) => unmatched.has(block.id));
+}
 
 function blockPlaceholderTag(block: PendingBlock): string {
   const tag =
@@ -142,6 +170,13 @@ function parseJsxStringAttr(source: string, attr: string): string | undefined {
   return match?.[1];
 }
 
+/** Reads `attr="true|false"` or `attr={true|false}`. Anything else is undefined. */
+function parseJsxBooleanAttr(source: string, attr: string): boolean | undefined {
+  const match = source.match(new RegExp(`\\b${attr}=(?:"(true|false)"|\\{(true|false)\\})`));
+  const value = match?.[1] ?? match?.[2];
+  return value === undefined ? undefined : value === "true";
+}
+
 function parseJsxStringArray(source: string, attr: string): string[] | undefined {
   const match = source.match(new RegExp(`${attr}=\\{\\[([\\s\\S]*?)\\]\\}`));
   if (!match?.[1]) return undefined;
@@ -155,7 +190,7 @@ function parseJsxStringArray(source: string, attr: string): string[] | undefined
 }
 
 /** Inline presentation JSX -> registered blocks with stable id placeholders. */
-function transformPresentationBlocks(body: string, pushBlock: (b: PendingBlock) => string): string {
+export function transformPresentationBlocks(body: string, pushBlock: (b: PendingBlock) => string): string {
   return body.replace(/<(ChapterRecap|ProjectPreview|LearningObjectives|MustRead|VideoBlock)([\s\S]*?)\/>/g, (full, tagName: string, attrs: string) => {
     if (/\bid=/.test(attrs)) return full;
 
@@ -169,10 +204,13 @@ function transformPresentationBlocks(body: string, pushBlock: (b: PendingBlock) 
       const readMinutesStr = parseJsxStringAttr(pseudo, "readMinutes");
       const readMinutes = readMinutesStr ? Number(readMinutesStr) : undefined;
       if (!title || !url || !description) return full;
+      // `required="false"` (or `required={false}`) keeps an example or bonus read
+      // out of the chapter's completion rule. Everything else stays required.
+      const required = parseJsxBooleanAttr(pseudo, "required") ?? true;
       return pushBlock({
         id: ulid(),
         type: "MUST_READ",
-        required: true,
+        required,
         config: {
           title,
           url,
@@ -396,11 +434,6 @@ function normalizeGateLearningLog(body: string): string {
   return `${without.trim()}\n\n${block}`;
 }
 
-/** `use `<Outlet />` here` → `use '<Outlet />' here` — only when the inner span is JSX. */
-function fixJsxInInlineCode(prose: string): string {
-  return prose.replace(/`([^`\n]*)`(<[^`\n]+>)`([^`\n]*)/g, (_m, a, b, c) => `\`${a}'${b}'${c}\``);
-}
-
 function escapeMdxInline(text: string): string {
   return text.replace(/\{/g, "&#123;").replace(/\}/g, "&#125;").replace(/</g, "&lt;");
 }
@@ -458,7 +491,7 @@ function escapeMdxProse(body: string): string {
       return `\x00BLOCK${blockTags.length - 1}\x00`;
     });
   }
-  withMarkers = withMarkers.replace(/<(DiffBlock|MermaidDiagram)[\s\S]*?\/>/g, (tag) => {
+  withMarkers = withMarkers.replace(/<(DiffBlock|MermaidDiagram|InteractiveCanvas|EcosystemGallery|Roadmap)[\s\S]*?\/>/g, (tag) => {
     blockTags.push(tag);
     return `\x00BLOCK${blockTags.length - 1}\x00`;
   });
@@ -468,8 +501,7 @@ function escapeMdxProse(body: string): string {
   });
 
   const escaped = splitOutsideFences(withMarkers, /```[\s\S]*?```/g, (segment) => {
-    const fixed = fixJsxInInlineCode(segment);
-    return splitOutsideFences(fixed, /`[^`\n]+`/g, (prose) =>
+    return splitOutsideFences(segment, /`[^`\n]+`/g, (prose) =>
       prose.replace(/\{/g, "&#123;").replace(/\}/g, "&#125;").replace(/</g, "&lt;")
     );
   });
@@ -581,6 +613,17 @@ function transformPredictFences(body: string, pushBlock: (b: PendingBlock) => st
   });
 }
 
+/**
+ * One explanation string for the learner, shown after they answer. `explanations` holds one
+ * reason per option, in option order, so every choice (right or wrong) gets its own feedback.
+ */
+function quizExplanation(options: string[], explanation?: string, explanations?: string[]): string | undefined {
+  // One line per option ("Option" reason) so the quiz feedback reads as a list, not one paragraph.
+  const perOption = (explanations ?? []).map((why, i) => (options[i] ? `"${options[i]}" ${why}` : why));
+  const text = [explanation, ...perOption].filter((part) => part?.trim()).join("\n");
+  return text || undefined;
+}
+
 /** ```quiz``` fenced YAML -> real Quiz/OpenQuestion blocks + placeholder tags. */
 function transformQuizFences(body: string, pushBlock: (b: PendingBlock) => string): string {
   return body.replace(/```quiz\n([\s\S]*?)```/g, (match, yamlText: string) => {
@@ -589,6 +632,8 @@ function transformQuizFences(body: string, pushBlock: (b: PendingBlock) => strin
       question: string;
       options?: string[];
       correct?: number;
+      explanation?: string;
+      explanations?: string[];
       modelAnswer?: string;
       allowSpeechInput?: boolean;
       allowUrl?: boolean;
@@ -616,6 +661,7 @@ function transformQuizFences(body: string, pushBlock: (b: PendingBlock) => strin
           prompt: parsed.question,
           options,
           correctOptionIds: [`opt-${parsed.correct}`],
+          explanation: quizExplanation(parsed.options, parsed.explanation, parsed.explanations),
           allowRetry: true,
         },
       });
@@ -744,7 +790,7 @@ export function parseLesson(moduleNum: number, moduleDir: string, fileName: stri
   };
 }
 
-async function upsertCourse() {
+async function upsertCourse(manifest: CourseManifest | null) {
   const mentor = await prisma.user.findFirst({ where: { role: "MENTOR" } });
   if (!mentor) {
     throw new Error(
@@ -752,24 +798,24 @@ async function upsertCourse() {
     );
   }
 
+  const meta = manifest ?? SEED_COURSE;
+  const fields = {
+    title: meta.title,
+    description: meta.description,
+    projectGoal: meta.projectGoal,
+    difficulty: meta.difficulty,
+    estimatedHours: meta.estimatedHours,
+    category: manifest?.category === "soft-skills" ? ("SOFT_SKILLS" as const) : ("TECH" as const),
+    coverUrl: meta.coverUrl ?? null,
+    familySlug: meta.family ?? null,
+  };
+
   return prisma.course.upsert({
-    where: { slug: SEED_COURSE.slug },
-    update: {
-      title: SEED_COURSE.title,
-      description: SEED_COURSE.description,
-      projectGoal: SEED_COURSE.projectGoal,
-      difficulty: SEED_COURSE.difficulty,
-      estimatedHours: SEED_COURSE.estimatedHours,
-      coverUrl: SEED_COURSE.coverUrl,
-    },
+    where: { slug: meta.slug },
+    update: fields,
     create: {
-      slug: SEED_COURSE.slug,
-      title: SEED_COURSE.title,
-      description: SEED_COURSE.description,
-      projectGoal: SEED_COURSE.projectGoal,
-      difficulty: SEED_COURSE.difficulty,
-      estimatedHours: SEED_COURSE.estimatedHours,
-      coverUrl: SEED_COURSE.coverUrl,
+      slug: meta.slug,
+      ...fields,
       status: "PUBLISHED",
       mentorId: mentor.id,
       publishedAt: new Date(),
@@ -787,7 +833,9 @@ async function main() {
   }
   console.log(`MDX ok: ${total} chapters`);
 
-  const course = await upsertCourse();
+  const manifest = loadCourseManifest();
+  const moduleTitles = new Map(manifest?.modules.map((m) => [m.dir, m.title]) ?? []);
+  const course = await upsertCourse(manifest);
   fs.rmSync(COURSE_OUTPUT_DIR, { recursive: true, force: true });
 
   let moduleCount = 0;
@@ -803,7 +851,7 @@ async function main() {
     const displayOrder = index + 1;
     importedModuleOrders.push(displayOrder);
 
-    const title = CHAPTER_NAMES[moduleNum] ?? `Module ${displayOrder}`;
+    const title = moduleTitles.get(dirName) ?? CHAPTER_NAMES[moduleNum] ?? `Module ${displayOrder}`;
     const mod = await prisma.module.upsert({
       where: { courseId_order: { courseId: course.id, order: displayOrder } },
       update: { title },
@@ -818,6 +866,12 @@ async function main() {
       const lesson = parseLesson(moduleNum, dirName, fileName, lessonNum, slugPart);
       const slug = `${displayOrder}-${lessonNum}-${slugPart}`;
       importedChapterSlugs.push(slug);
+
+      const priorChapter = await prisma.chapter.findUnique({
+        where: { courseId_slug: { courseId: course.id, slug } },
+        select: { id: true },
+      });
+      const unmatchedBlocks = priorChapter ? await reconcileBlockIds(priorChapter.id, lesson) : [];
 
       const chapter = await prisma.chapter.upsert({
         where: { courseId_slug: { courseId: course.id, slug } },
@@ -850,10 +904,11 @@ async function main() {
       });
       chapterCount += 1;
 
-      await prisma.block.deleteMany({ where: { chapterId: chapter.id } });
-      if (lesson.blocks.length > 0) {
-        await prisma.block.createMany({
-          data: lesson.blocks.map((block, index) => ({
+      for (const [index, block] of lesson.blocks.entries()) {
+        await prisma.block.upsert({
+          where: { id: block.id },
+          update: { order: index + 1, required: block.required, config: block.config, archivedAt: null },
+          create: {
             id: block.id,
             chapterId: chapter.id,
             type: block.type,
@@ -863,10 +918,17 @@ async function main() {
             points: 1,
             config: block.config,
             tags: [],
-          })),
+          },
         });
-        blockCount += lesson.blocks.length;
       }
+      for (const old of unmatchedBlocks) {
+        if (old._count.responses > 0) {
+          await prisma.block.update({ where: { id: old.id }, data: { archivedAt: new Date() } });
+        } else {
+          await prisma.block.delete({ where: { id: old.id } });
+        }
+      }
+      blockCount += lesson.blocks.length;
 
       const frontmatter = [
         `title: ${JSON.stringify(lesson.title)}`,

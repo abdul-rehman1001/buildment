@@ -8,9 +8,7 @@ Before writing middleware, read OWASP guidance on object-level authorization —
 
 <BigWordAlert term="Defense in depth" plainEnglish="Multiple layers of checks — middleware, service logic, database query filters — not one gate only." whyItMatters="FreshMarket filters products by owner in the query even if middleware is bypassed by a bug." />
 
-
-<Predict id="01M4THGD6WE6K0YQ5EJDEQ4AW5" />
-
+<Predict id="01M5CM5JGMP6NYP57VS78TV3MM" />
 
 ## Why read before you code
 
@@ -34,9 +32,12 @@ Each resource below covers a different slice of the same idea — the OWASP docs
 
 | Resource | Focus |
 |---|---|
-| [OWASP API Security Top 10 — BOLA](https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/) | Object id manipulation |
-| [OWASP IDOR Prevention](https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html) | Server-side checks |
+| [OWASP API Security Top 10 — BOLA][owasp-bola] | Object id manipulation |
+| [OWASP IDOR Prevention][owasp-idor] | Server-side checks |
 | Your `docs/erd.md` ownership chain | Field names for lookups |
+
+[owasp-bola]: https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/
+[owasp-idor]: https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html
 
 ## Key takeaways to apply
 
@@ -61,8 +62,6 @@ Four rules to internalize now — they'll become the pattern behind every owners
 
 **Hint:** Read role from JWT payload you set in Chapter 6 — same field name everywhere (`role`, not `userRole` in one file and `roles` in another).
 
-<RealWorldEvent title="Facebook Graph API permission scandals" when="2010s" summary="Platforms exposed user data when apps could request broader permissions than users understood — driving industry focus on least-privilege access." lesson="Centralize authorization in middleware and guards. Ad-hoc checks in individual routes drift and get missed during code review." />
-
 ## Error class optional
 
 `ForbiddenError` / `UnauthorizedError` — map to 403/401 in central error handler if you have one from Ch 2.
@@ -86,12 +85,6 @@ Read OWASP BOLA (10 min) → skim IDOR cheat sheet (10 min) → confirm two vend
 - [ ] I can explain BOLA in one sentence  
 - [ ] I know 401 vs 403 for this chapter  
 - [ ] I have two vendor tokens ready from seed accounts  
-
-<InterestingRead title="IDOR: the bug where changing a number steals data" hook="If `/api/products/42` works, will `/api/products/43`?" readMinutes={5}>
-
-Insecure Direct Object Reference bugs happen when the server checks login but not ownership. FreshMarket's guards compare the authenticated user to the document owner on every mutating route — not just on the dashboard UI.
-
-</InterestingRead>
 
 ## Next
 

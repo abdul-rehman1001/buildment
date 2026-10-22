@@ -68,6 +68,16 @@ enum CourseStatus {
   ARCHIVED
 }
 
+enum CourseCategory {
+  TECH
+  SOFT_SKILLS
+}
+
+enum CourseInstructorRole {
+  COURSE_CREATOR
+  SUBMISSION_EVALUATOR
+}
+
 enum EnrollStatus {
   ASSIGNED
   IN_PROGRESS
@@ -171,10 +181,12 @@ model User {
   image         String?
   role          Role         @default(MENTEE)
   passwordHash  String?
-  /// Udemy-style: same account can switch to instructor tools when true (admin invite or legacy MENTOR).
-  canInstruct   Boolean      @default(false)
+  zipImportEnabled Boolean @default(false)
   weeklyGoalKind WeeklyGoalKind?
   weeklyGoalTarget Int?
+  weeklyGoalNote String? @db.VarChar(240)
+  weeklyGoalReminderEnabled Boolean @default(false)
+  weeklyGoalReminderSentOn DateTime? @db.Date
   celebratedStreakMilestones Int[] @default([])
   createdAt     DateTime     @default(now())
   accounts      Account[]
@@ -182,6 +194,8 @@ model User {
   profile       UserProfile?
   learnerProfile LearnerProfile?
   coursesOwned  Course[]     @relation("CourseMentor")
+  courseMemberships CourseInstructor[]
+  courseInstructorInvitesSent CourseInstructorInvite[] @relation("CourseInstructorInviteSender")
   enrollments   Enrollment[]
   responses     Response[]
   reviewsGiven          Review[]       @relation("Reviewer")
@@ -241,13 +255,19 @@ model Course {
   projectGoal    String? // "Build a multi-vendor marketplace"
   difficulty     String?
   estimatedHours Int?
+  category       CourseCategory @default(TECH)
   status         CourseStatus @default(DRAFT)
   pricingType    CoursePricingType @default(FREE)
   priceCents     Int          @default(0)
   currency       String       @default("USD")
   sequential     Boolean      @default(true)
+  familySlug     String? // course family in src/shared/lib/course-tracks.ts; null = no variants
+  /// Quiz camera photos are opt-in per course and never required; quiz integrity signals are always on.
+  integritySnapshots Boolean  @default(false)
   mentorId       String
   mentor         User         @relation("CourseMentor", fields: [mentorId], references: [id])
+  instructors    CourseInstructor[]
+  instructorInvites CourseInstructorInvite[]
   modules        Module[]
   chapters       Chapter[]
   enrollments    Enrollment[]
@@ -260,6 +280,37 @@ model Course {
   updatedAt      DateTime     @updatedAt
 
   @@index([mentorId, status])
+}
+
+model CourseInstructor {
+  id        String               @id @default(cuid())
+  courseId  String
+  userId    String
+  role      CourseInstructorRole
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+  course    Course               @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  user      User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([courseId, userId])
+  @@index([userId, role])
+}
+
+model CourseInstructorInvite {
+  id          String               @id @default(cuid())
+  courseId    String
+  email       String
+  role        CourseInstructorRole
+  token       String               @unique
+  invitedById String
+  acceptedAt  DateTime?
+  expiresAt   DateTime
+  createdAt   DateTime             @default(now())
+  course      Course               @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  invitedBy   User                 @relation("CourseInstructorInviteSender", fields: [invitedById], references: [id], onDelete: Cascade)
+
+  @@index([courseId, email, acceptedAt])
+  @@index([email, expiresAt])
 }
 
 model Module {
@@ -299,6 +350,7 @@ model Chapter {
   helpThreads       HelpThread[]
   studySessions     StudySession[]
   headingNotes      HeadingNote[]
+  integrityAttempts IntegrityAttempt[]
 
   @@unique([courseId, slug])
   @@index([courseId, order])
@@ -318,6 +370,9 @@ model Block {
   sourceHash String? // hash of the block's MDX subtree; change detection bumps version (docs/02-content-authoring.mdx)
   tags       String[] // for weak-area reporting
   archivedAt DateTime?
+  // Null for blocks that existed before this column. Progress uses it so a
+  // block added after a learner finished a chapter cannot reopen it.
+  createdAt  DateTime?  @default(now())
   responses  Response[]
   stats      BlockStats?
 
@@ -349,10 +404,15 @@ model Enrollment {
   lastNudgeSentAt   DateTime?
   startedAt         DateTime?
   completedAt       DateTime?
+  variantSlug       String? // learner's variant in the course family; null = not picked yet
+  variantChosenAt   DateTime?
+  specialisationSlug     String? // follow-up track picked once the course is complete
+  specialisationChosenAt DateTime?
   createdAt         DateTime          @default(now())
   chapterProgress   ChapterProgress[]
   dailyActivity     DailyActivity[]
   studySessions     StudySession[]
+  integrityAttempts IntegrityAttempt[]
   payment           Payment?
 
   @@unique([courseId, userId])
@@ -722,4 +782,84 @@ model BlockStats {
   correctCount    Int       @default(0)
   pendingReviews  Int       @default(0)
   lastSubmittedAt DateTime?
+}
+
+// --- Quiz integrity signals ------------------------------------------------------------------
+// Flags for mentors to judge, never an automatic verdict. Events are append-only rows (no
+// read-modify-write log), each attempt has a hard cap, and camera stills are opt-in per course
+// and deleted by the daily retention job after 30 days while the flags stay.
+
+enum IntegrityEventType {
+  TAB_HIDDEN
+  WINDOW_BLUR
+  FULLSCREEN_EXIT
+  COPY_BLOCKED
+  PASTE_BLOCKED
+  CONTEXT_MENU_BLOCKED
+  SCREENSHOT_KEY
+  MOUSE_LEFT
+  SECOND_SCREEN
+  FAST_ANSWER
+  CAMERA_OFF
+  CAMERA_ON
+}
+
+enum IntegrityCameraStatus {
+  NOT_REQUESTED
+  ON
+  DECLINED
+  UNAVAILABLE
+}
+
+/// One proctored try at a quiz chapter. `attempt` is 1 + the learner's highest submitted
+/// attempt in the chapter when the sitting opened, so reloads resume the same row.
+model IntegrityAttempt {
+  id            String                @id @default(cuid())
+  enrollmentId  String
+  enrollment    Enrollment            @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  chapterId     String
+  chapter       Chapter               @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  attempt       Int
+  cameraStatus  IntegrityCameraStatus @default(NOT_REQUESTED)
+  eventCount    Int                   @default(0)
+  droppedEvents Int                   @default(0)
+  snapshotCount Int                   @default(0)
+  startedAt     DateTime              @default(now())
+  lastSeenAt    DateTime              @default(now())
+  events        IntegrityEvent[]
+  snapshots     IntegritySnapshot[]
+
+  @@unique([enrollmentId, chapterId, attempt])
+  @@index([chapterId])
+}
+
+model IntegrityEvent {
+  id         String             @id @default(cuid())
+  attemptId  String
+  attempt    IntegrityAttempt   @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  /// Browser-generated key, so a batch retried after a lost response is stored once.
+  clientId   String             @db.VarChar(40)
+  type       IntegrityEventType
+  at         DateTime
+  /// Question on screen when it happened, if known.
+  blockId    String?
+  meta       Json?
+  receivedAt DateTime           @default(now())
+
+  @@unique([attemptId, clientId])
+  @@index([attemptId, at])
+}
+
+model IntegritySnapshot {
+  id         String           @id @default(cuid())
+  attemptId  String
+  attempt    IntegrityAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  storageKey String           @unique
+  bytes      Int
+  takenAt    DateTime         @default(now())
+  /// Set when the retention job deletes the image; the row stays as a record.
+  deletedAt  DateTime?
+
+  @@index([attemptId, takenAt])
+  @@index([deletedAt, takenAt])
 }

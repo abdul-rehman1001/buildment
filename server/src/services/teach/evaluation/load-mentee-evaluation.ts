@@ -1,3 +1,4 @@
+import { summarizeLearnerTrack } from "../../../shared/lib/course-tracks.js";
 import { prisma } from "../../../db/prisma.js";
 import { OpenQuestionConfigSchema, openQuestionUrlPresentation } from "../../../shared/blocks/open-question/schema.js";
 import { submissionPreview } from "../../progress/submission-preview.js";
@@ -15,6 +16,7 @@ import type {
   ProjectEvidence,
 } from "../../../shared/api/teach.js";
 import { helpUiCopy as copy } from "../../../shared/lib/help-ui-copy.js";
+import { loadIntegritySummaries } from "../../integrity/review.js";
 
 const RESPONSE_LIMIT = 240;
 const INACTIVE_DAYS = 7;
@@ -30,12 +32,13 @@ export async function loadMenteeEvaluation(args: {
   if (!enrollment || !isEnrollmentScopedToCourse(enrollment, args.course.id)) return null;
   if (!enrollment.userId || !enrollment.user) return null;
 
-  const [courseStructure, progressRows, responseRows, helpRows, sessionRows, study] =
+  const [courseStructure, progressRows, responseRows, helpRows, sessionRows, study, integrity] =
     await Promise.all([
       prisma.course.findUnique({
         where: { id: args.course.id },
         select: {
           sequential: true,
+          familySlug: true,
           modules: {
             orderBy: { order: "asc" },
             select: {
@@ -114,6 +117,7 @@ export async function loadMenteeEvaluation(args: {
         include: { chapter: { select: { title: true } } },
       }),
       loadStudyWeek([enrollment.id]),
+      loadIntegritySummaries(enrollment.id),
     ]);
 
   if (!courseStructure) return null;
@@ -279,6 +283,7 @@ export async function loadMenteeEvaluation(args: {
       name: enrollment.user.name ?? enrollment.user.email ?? "Mentee",
       email: enrollment.user.email,
     },
+    track: summarizeLearnerTrack(courseStructure?.familySlug, enrollment),
     enrollment: {
       id: enrollment.id,
       status: enrollment.status,
@@ -313,6 +318,7 @@ export async function loadMenteeEvaluation(args: {
       startedAt: session.startedAt.toISOString(),
     })),
     reflections: buildReflections(progressRows, courseStructure),
+    integrity,
   };
 }
 

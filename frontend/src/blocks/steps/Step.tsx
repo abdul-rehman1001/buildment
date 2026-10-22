@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { cn } from "@/lib/utils";
 
 export type StepProps = {
   title?: string;
@@ -22,7 +21,7 @@ export function Step({ title, stepNumber, description, content, children }: Step
         {title ? (
           <h4 className="text-sm font-semibold text-foreground tracking-tight">{title}</h4>
         ) : null}
-        <div className="mt-1 text-sm leading-relaxed text-muted-foreground [&_p]:mt-0 [&_p+p]:mt-2">
+        <div className="mt-1 text-sm leading-relaxed text-foreground [&_p]:mt-0 [&_p+p]:mt-2">
           {children ?? content ?? description}
         </div>
       </div>

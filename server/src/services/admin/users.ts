@@ -2,8 +2,12 @@ import type { AdminUsersView } from "../../shared/api/admin.js";
 import { ADMIN_ERROR_CODES } from "../../shared/api/admin.js";
 import { prisma } from "../../db/prisma.js";
 import { ConflictError, NotFoundError } from "../../utils/errors.js";
-import type { GrantInstructorBody } from "../../validations/admin.js";
-import { notifyUserGrantedInstructorByAdmin, notifyUserInstructorAccessDecision } from "../notifications/events.js";
+import type { GrantAdminBody, GrantInstructorBody } from "../../validations/admin.js";
+import {
+  notifyUserGrantedAdminByAdmin,
+  notifyUserGrantedInstructorByAdmin,
+  notifyUserInstructorAccessDecision,
+} from "../notifications/events.js";
 import { dispatchNotification } from "../notifications/service.js";
 
 // Accounts and the instructor capability. Granting instructor tools promotes a
@@ -27,8 +31,8 @@ export async function listUsers(): Promise<AdminUsersView> {
         email: true,
         name: true,
         role: true,
-        canInstruct: true,
         emailVerified: true,
+        zipImportEnabled: true,
         createdAt: true,
         _count: { select: { enrollments: true, coursesOwned: true } },
       },
@@ -54,7 +58,7 @@ export async function setInstructorAccess(userId: string, enabled: boolean): Pro
   await prisma.$transaction(async (tx) => {
     await tx.user.update({
       where: { id: userId },
-      data: { canInstruct: enabled, ...(enabled && existing.role !== "ADMIN" ? { role: "MENTOR" } : {}) },
+      data: { role: existing.role === "ADMIN" ? "ADMIN" : enabled ? "MENTOR" : "MENTEE" },
     });
     if (enabled) {
       await tx.instructorAccessRequest.upsert({
@@ -66,6 +70,12 @@ export async function setInstructorAccess(userId: string, enabled: boolean): Pro
   });
 }
 
+export async function setZipImportAccess(userId: string, enabled: boolean): Promise<void> {
+  const user = await prisma.user.findUnique({ where: { id: userId }, select: { id: true } });
+  if (!user) throw new NotFoundError("User not found");
+  await prisma.user.update({ where: { id: userId }, data: { zipImportEnabled: enabled } });
+}
+
 /** Grants instructor tools by email, creating a verified account when the address is new. */
 export async function grantInstructorByEmail(input: GrantInstructorBody): Promise<void> {
   const existing = await prisma.user.findUnique({ where: { email: input.email }, select: { role: true } });
@@ -75,10 +85,9 @@ export async function grantInstructorByEmail(input: GrantInstructorBody): Promis
       email: input.email,
       name: input.name ?? input.email.split("@")[0],
       role: "MENTOR",
-      canInstruct: true,
       emailVerified: new Date(),
     },
-    update: { canInstruct: true, ...(existing?.role === "ADMIN" ? {} : { role: "MENTOR" }) },
+    update: { ...(existing?.role === "ADMIN" ? {} : { role: "MENTOR" }) },
     select: { id: true, name: true },
   });
 
@@ -90,6 +99,23 @@ export async function grantInstructorByEmail(input: GrantInstructorBody): Promis
   });
 
   await dispatchNotification(() => notifyUserGrantedInstructorByAdmin({ userId: user.id, grantedAt }));
+}
+
+/** Adds a platform admin by email, creating a verified account when the address is new. */
+export async function grantAdminByEmail(input: GrantAdminBody): Promise<void> {
+  const user = await prisma.user.upsert({
+    where: { email: input.email },
+    create: {
+      email: input.email,
+      name: input.name ?? input.email.split("@")[0],
+      role: "ADMIN",
+      emailVerified: new Date(),
+    },
+    update: { role: "ADMIN", ...(input.name ? { name: input.name } : {}) },
+    select: { id: true, name: true },
+  });
+
+  await dispatchNotification(() => notifyUserGrantedAdminByAdmin({ userId: user.id, grantedAt: new Date() }));
 }
 
 async function requirePendingInstructorRequest(requestId: string) {
@@ -107,7 +133,7 @@ export async function approveInstructorRequest(admin: { id: string }, requestId:
   await prisma.$transaction([
     prisma.user.update({
       where: { id: request.userId },
-      data: { canInstruct: true, ...(request.user.role !== "ADMIN" ? { role: "MENTOR" } : {}) },
+      data: { ...(request.user.role !== "ADMIN" ? { role: "MENTOR" } : {}) },
     }),
     prisma.instructorAccessRequest.update({
       where: { id: request.id },

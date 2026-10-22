@@ -28,7 +28,7 @@ describe("/api/v1/learner", () => {
     const res = await request(app).get("/api/v1/learner/workspace").set(auth());
     expect(res.status).toBe(200);
     expect(res.body.data).toEqual({
-      instructorAccess: { canInstruct: false, requestStatus: "none", canRequestAccess: true },
+      instructorAccess: { role: "MENTEE", requestStatus: "none", canRequestAccess: true },
       assignedCourses: 1,
       pendingReviews: 0,
       openHelpRequests: 0,
@@ -64,7 +64,7 @@ describe("/api/v1/learner", () => {
 
     expect((await request(app).put("/api/v1/learner/weekly-goal").set(auth()).send({ kind: "CHAPTERS", target: 3 })).status).toBe(204);
     const dashboard = await request(app).get("/api/v1/learner/dashboard").set(auth());
-    expect(dashboard.body.data.habit.weeklyGoal).toEqual({ kind: "CHAPTERS", target: 3, progress: 1 });
+    expect(dashboard.body.data.habit.weeklyGoal).toEqual({ kind: "CHAPTERS", target: 3, progress: 1, note: null, dailyReminder: false });
 
     expect((await request(app).delete("/api/v1/learner/weekly-goal").set(auth())).status).toBe(204);
     const user = await prisma.user.findUniqueOrThrow({ where: { id: fx.learner.id } });

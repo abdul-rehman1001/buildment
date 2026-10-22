@@ -30,7 +30,7 @@ export function HelpInboxFilters({
 
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <nav className="flex rounded-lg border border-neutral-200 bg-white p-0.5" aria-label="Filter by status">
+      <nav className="flex rounded-lg border border-border bg-card p-0.5" aria-label="Filter by status">
         {tabs.map((tab) => (
           <Link
             key={tab.value}
@@ -38,8 +38,8 @@ export function HelpInboxFilters({
             className={cn(
               "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
               current === tab.value
-                ? "bg-neutral-900 text-white"
-                : "text-neutral-600 hover:text-neutral-900"
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:text-foreground"
             )}
           >
             {tab.label}
@@ -52,7 +52,7 @@ export function HelpInboxFilters({
           <QueryFilterSelect
             name="courseId"
             defaultValue={courseId ?? ""}
-            className="h-9 rounded-lg border border-neutral-200 bg-white px-3 text-sm text-neutral-700 outline-none focus:border-neutral-400"
+            className="h-9 rounded-lg border border-border bg-card px-3 text-sm text-foreground outline-none focus:border-neutral-400"
           >
             <option value="">All courses</option>
             {courses.map((course) => (

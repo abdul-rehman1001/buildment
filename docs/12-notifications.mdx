@@ -53,6 +53,7 @@ product event ──► events.ts builder ──► notify()            ← serv
 | `course.suggestion` | learner with no course in progress | in-app + email | hourly reminder job (below) |
 | `instructor.request` | admins (+ `ADMIN_NOTIFY_EMAIL` by email) | in-app + email | learner asks to teach |
 | `instructor.decision` / `instructor.granted` | user | in-app + email (always on) | admin decides / grants |
+| `admin.granted` | user | in-app + email (always on) | an admin adds a platform admin |
 | `organization.course_request` | admins (+ `ADMIN_NOTIFY_EMAIL`) | in-app + email | an org requests a course |
 | `organization.course_approved` | course mentor | in-app + email | admin approves it |
 

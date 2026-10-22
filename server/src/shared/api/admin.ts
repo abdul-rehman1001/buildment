@@ -85,11 +85,11 @@ export type AdminCourseRequestsView = {
 };
 
 export type AdminUserRow = {
+  zipImportEnabled: boolean;
   id: string;
   email: string;
   name: string | null;
   role: Role;
-  canInstruct: boolean;
   emailVerified: boolean;
   createdAt: string;
   enrollmentCount: number;

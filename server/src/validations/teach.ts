@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isSafeAssetUrl } from "../shared/lib/asset-url.js";
 import { id, params } from "./common.js";
 
 export const courseIdParams = params("courseId");
@@ -9,6 +10,10 @@ export const enrollmentIdParams = params("enrollmentId");
 export const responseIdParams = params("responseId");
 export const menteeParams = z.object({ courseSlug: id, enrollmentId: id });
 export const inviteParams = z.object({ courseId: id, inviteId: id });
+export const courseInstructorInviteParams = params("token");
+export const courseInstructorMemberParams = z.object({ courseId: id, userId: id });
+export const courseInstructorPendingInviteParams = z.object({ courseId: id, inviteId: id });
+export const courseInstructorInviteBody = z.object({ email: z.string().trim().email().max(254), role: z.enum(["COURSE_CREATOR", "SUBMISSION_EVALUATOR"]) });
 
 export const createCourseBody = z.object({
   title: z.string().trim().min(3).max(120),
@@ -18,14 +23,29 @@ export type CreateCourseBody = z.infer<typeof createCourseBody>;
 
 export const unpublishCourseBody = z.object({ confirmedWithEnrollments: z.boolean().optional() });
 
+export const deleteCourseBody = z.object({
+  /** Deletion is always explicit — the UI collects a typed confirmation first. */
+  confirm: z.literal(true),
+  confirmedWithEnrollments: z.boolean().optional(),
+});
+export type DeleteCourseBody = z.infer<typeof deleteCourseBody>;
+
+export const removeChapterBody = z.object({
+  confirmedWithProgress: z.boolean().optional(),
+});
+export type RemoveChapterBody = z.infer<typeof removeChapterBody>;
+
 // The settings form posts strings; the service turns "" into null and dollars into cents.
 export const courseSettingsBody = z.object({
   title: z.string().trim().min(3).max(120),
   description: z.string().trim().max(500),
-  coverUrl: z.string().trim().max(2048),
+  coverUrl: z.string().trim().max(2048).refine(value => !value || isSafeAssetUrl(value), "Use a same-origin image path or HTTPS URL."),
   projectGoal: z.string().trim().max(240),
-  difficulty: z.enum(["", "Easy", "Medium", "Hard"]),
+  // Beginner and Advanced match course.yaml; Easy and Hard stay valid for older courses.
+  difficulty: z.enum(["", "Beginner", "Easy", "Medium", "Advanced", "Hard"]),
   estimatedHours: z.union([z.literal(""), z.coerce.number().int().min(1).max(1000)]),
+  // Optional so older clients keep working; omitted means "leave the category as it is".
+  category: z.enum(["TECH", "SOFT_SKILLS"]).optional(),
   sequential: z.boolean(),
   pricingType: z.enum(["FREE", "PAID"]),
   priceDollars: z.union([z.literal(""), z.coerce.number().min(0).max(99999)]),

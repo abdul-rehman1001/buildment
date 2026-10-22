@@ -1,13 +1,17 @@
 import { Router } from "express";
+import { userRateLimit } from "../../middlewares/rate-limit.js";
 import * as admin from "../../controllers/admin.js";
 import { authenticate } from "../../middlewares/authenticate.js";
 import { requireAdmin } from "../../middlewares/require-admin.js";
 import { validate, validateBody, validateParams, validateQuery } from "../../middlewares/validate.js";
 import { appActivityOverviewQuery, appActivityUsersQuery } from "../../validations/activity.js";
 import {
+  adminProfileBody,
+  adminPasswordBody,
   allocationsBody,
   approveCourseRequestBody,
   createOrganizationBody,
+  grantAdminBody,
   grantInstructorBody,
   instructorAccessBody,
   orgIdParams,
@@ -20,6 +24,10 @@ import {
 const router = Router();
 
 router.use(authenticate, requireAdmin);
+
+const profileLimiter = userRateLimit({ scope: "admin-profile", max: 10, windowMs: 15 * 60_000 });
+router.patch("/profile", profileLimiter, validateBody(adminProfileBody), admin.updateProfile);
+router.patch("/password", profileLimiter, validateBody(adminPasswordBody), admin.updatePassword);
 
 router.get("/overview", admin.getOverview);
 router.get("/courses", admin.listCourses);
@@ -35,13 +43,14 @@ router.post("/course-requests/:requestId/approve", validate({ params: requestIdP
 router.post("/course-requests/:requestId/reject", validateParams(requestIdParams), admin.rejectCourseRequest);
 
 router.get("/users", admin.listUsers);
+router.patch("/users/:userId/zip-import", validate({ params: userIdParams, body: instructorAccessBody }), admin.setZipImportAccess);
+router.patch("/users/:userId/instructor-access", validate({ params: userIdParams, body: instructorAccessBody }), admin.setInstructorAccess);
+router.post("/instructors", validateBody(grantInstructorBody), admin.grantInstructor);
+router.post("/admins", validateBody(grantAdminBody), admin.grantAdmin);
+router.post("/instructor-access-requests/:requestId/approve", validateParams(requestIdParams), admin.approveInstructorRequest);
+router.post("/instructor-access-requests/:requestId/reject", validateParams(requestIdParams), admin.rejectInstructorRequest);
 
 router.get("/app-activity", validateQuery(appActivityOverviewQuery), admin.getAppActivity);
 router.get("/app-activity/users", validateQuery(appActivityUsersQuery), admin.listAppActivityUsers);
-
-router.patch("/users/:userId/instructor-access", validate({ params: userIdParams, body: instructorAccessBody }), admin.setInstructorAccess);
-router.post("/instructors", validateBody(grantInstructorBody), admin.grantInstructor);
-router.post("/instructor-access-requests/:requestId/approve", validateParams(requestIdParams), admin.approveInstructorRequest);
-router.post("/instructor-access-requests/:requestId/reject", validateParams(requestIdParams), admin.rejectInstructorRequest);
 
 export default router;

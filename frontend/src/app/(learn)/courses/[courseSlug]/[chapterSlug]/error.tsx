@@ -41,6 +41,7 @@ export default function ChapterReaderError({
     ? `/my-questions?course=${encodeURIComponent(courseSlug)}&chapter=${encodeURIComponent(chapterSlug)}`
     : "/my-questions";
 
+  const connectionFailed = /fetch failed|Cannot reach the API server|API_UNAVAILABLE/i.test(error.message);
   const schemaStale =
     /Unknown field `|PrismaClientValidationError|column .* does not exist/i.test(
       error.message ?? ""
@@ -48,24 +49,26 @@ export default function ChapterReaderError({
 
   return (
     <div className="mx-auto max-w-3xl px-4 pb-12 pt-8">
-      <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 shadow-sm">
-        <h1 className="text-lg font-semibold text-amber-950">
+      <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 shadow-sm dark:border-amber-900/50 dark:bg-amber-950/30">
+        <h1 className="text-lg font-semibold text-amber-950 dark:text-amber-100">
           This chapter can&apos;t be displayed right now
         </h1>
-        <p className="mt-2 text-sm leading-relaxed text-amber-900/90">
-          {schemaStale ? (
+        <p className="mt-2 text-sm leading-relaxed text-amber-900 dark:text-amber-200">
+          {connectionFailed ? (
+            <>The server is temporarily unreachable. Please try again in a moment.</>
+          ) : schemaStale ? (
             <>
               The app database schema is out of date with the code (common after pulling
               updates). An admin should run{" "}
-              <code className="rounded bg-amber-100/80 px-1 py-0.5 text-xs">
+              <code className="rounded bg-amber-100/80 px-1 py-0.5 text-xs dark:bg-amber-900/40">
                 pnpm db:ready
               </code>{" "}
               and restart the dev server, then reload this page.
             </>
           ) : (
             <>
-              The content failed to render. This usually means the chapter contains a
-              component the platform doesn&apos;t support yet, or the lesson MDX needs a fix.
+              The chapter could not load. The server may be temporarily unavailable,
+              or there may be a problem with the lesson content.
               You can try again, skip to another unlocked lesson, or ask your mentor for help.
             </>
           )}
@@ -76,7 +79,7 @@ export default function ChapterReaderError({
             type="button"
             size="sm"
             variant="default"
-            className="gap-1.5 bg-amber-950 hover:bg-amber-800"
+            className="gap-1.5 bg-amber-950 text-white hover:bg-amber-800 dark:bg-amber-700 dark:hover:bg-amber-600"
             onClick={() => reset()}
           >
             <RotateCcw className="size-3.5" aria-hidden />
@@ -85,7 +88,7 @@ export default function ChapterReaderError({
           {continueHref && continueHref !== `/courses/${courseSlug}/${chapterSlug}` ? (
             <Link
               href={continueHref}
-              className="inline-flex h-8 items-center gap-1.5 rounded-md bg-neutral-100 px-3 text-sm font-medium text-neutral-900 hover:bg-neutral-200"
+              className="inline-flex h-8 items-center gap-1.5 rounded-md bg-muted px-3 text-sm font-medium text-foreground hover:bg-accent"
             >
               <SkipForward className="size-3.5" aria-hidden />
               Go to next unlocked lesson
@@ -93,7 +96,7 @@ export default function ChapterReaderError({
           ) : courseSlug ? (
             <Link
               href={`/courses/${courseSlug}`}
-              className="inline-flex h-8 items-center gap-1.5 rounded-md bg-neutral-100 px-3 text-sm font-medium text-neutral-900 hover:bg-neutral-200"
+              className="inline-flex h-8 items-center gap-1.5 rounded-md bg-muted px-3 text-sm font-medium text-foreground hover:bg-accent"
             >
               <SkipForward className="size-3.5" aria-hidden />
               Back to course overview
@@ -101,7 +104,7 @@ export default function ChapterReaderError({
           ) : null}
           <Link
             href={askHelpHref}
-            className="inline-flex h-8 items-center gap-1.5 rounded-md border border-amber-300 bg-white px-3 text-sm font-medium text-neutral-900 hover:bg-amber-50"
+            className="inline-flex h-8 items-center gap-1.5 rounded-md border border-amber-300 bg-card px-3 text-sm font-medium text-foreground hover:bg-amber-50 dark:border-amber-800 dark:hover:bg-amber-950/40"
           >
             <HandHelping className="size-3.5" aria-hidden />
             Ask mentor

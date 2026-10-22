@@ -1,186 +1,251 @@
-import { BookOpenCheck, Settings2 } from "lucide-react";
+"use client";
+
+import type { ChangeEvent } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { BookOpenCheck, ImageIcon, Upload, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { updateCourseSettings } from "@/server/actions/modules";
-import type { CourseBuilderCourse } from "@/shared/api/teach";
+import type { CourseSettingsInput, CourseSettingsView } from "@/shared/api/teach";
+import { uploadCourseImage } from "@/lib/course-media-upload";
+import { isSafeAssetUrl } from "@/shared/lib/asset-url";
 
-export function CourseSettings({ course }: { course: CourseBuilderCourse }) {
+type SettingsSection = "details" | "learning" | "pricing";
+
+function settingsFromCourse(course: CourseSettingsView): CourseSettingsInput {
+  return {
+    title: course.title,
+    description: course.description ?? "",
+    coverUrl: course.coverUrl ?? "",
+    projectGoal: course.projectGoal ?? "",
+    difficulty: course.difficulty ?? "",
+    estimatedHours: course.estimatedHours == null ? "" : String(course.estimatedHours),
+    category: course.category,
+    sequential: course.sequential,
+    pricingType: course.pricingType,
+    priceDollars: course.pricingType === "PAID" && course.priceCents > 0 ? (course.priceCents / 100).toFixed(2) : "",
+    currency: course.currency,
+  };
+}
+
+function settingsFromForm(form: HTMLFormElement): CourseSettingsInput {
+  const data = new FormData(form);
+  return {
+    title: String(data.get("title") ?? ""),
+    description: String(data.get("description") ?? ""),
+    coverUrl: String(data.get("coverUrl") ?? ""),
+    projectGoal: String(data.get("projectGoal") ?? ""),
+    difficulty: String(data.get("difficulty") ?? ""),
+    estimatedHours: String(data.get("estimatedHours") ?? ""),
+    category: String(data.get("category") ?? "TECH"),
+    sequential: data.get("sequential") === "on",
+    pricingType: String(data.get("pricingType") ?? "FREE"),
+    priceDollars: String(data.get("priceDollars") ?? ""),
+    currency: String(data.get("currency") ?? "USD"),
+  };
+}
+
+function sectionChanged(current: CourseSettingsInput, saved: CourseSettingsInput, section: SettingsSection): boolean {
+  if (section === "details") return current.title !== saved.title || current.description !== saved.description || current.coverUrl !== saved.coverUrl;
+  if (section === "learning") return current.projectGoal !== saved.projectGoal || current.difficulty !== saved.difficulty || current.estimatedHours !== saved.estimatedHours || current.category !== saved.category || current.sequential !== saved.sequential;
+  return current.pricingType !== saved.pricingType || current.priceDollars !== saved.priceDollars || current.currency !== saved.currency;
+}
+
+function mergeSection(saved: CourseSettingsInput, current: CourseSettingsInput, section: SettingsSection): CourseSettingsInput {
+  if (section === "details") return { ...saved, title: current.title, description: current.description, coverUrl: current.coverUrl };
+  if (section === "learning") return { ...saved, projectGoal: current.projectGoal, difficulty: current.difficulty, estimatedHours: current.estimatedHours, category: current.category, sequential: current.sequential };
+  return { ...saved, pricingType: current.pricingType, priceDollars: current.priceDollars, currency: current.currency };
+}
+
+export function CourseSettings({ course }: { course: CourseSettingsView }) {
+  const router = useRouter();
+  const formRef = useRef<HTMLFormElement>(null);
+  const [pricingType, setPricingType] = useState(course.pricingType);
+  const [savingSection, setSavingSection] = useState<SettingsSection | null>(null);
+  const [error, setError] = useState<{ section: SettingsSection; message: string } | null>(null);
+  const [savedSection, setSavedSection] = useState<SettingsSection | null>(null);
+  const [savedValues, setSavedValues] = useState(() => settingsFromCourse(course));
+  const [currentValues, setCurrentValues] = useState(() => settingsFromCourse(course));
+  const [coverUrl, setCoverUrl] = useState(course.coverUrl ?? "");
+  const [uploading, setUploading] = useState(false);
+  const coverPreviewUrl = isSafeAssetUrl(coverUrl.trim()) ? coverUrl.trim() : null;
+
+  const syncValues = useCallback(() => {
+    if (formRef.current) setCurrentValues(settingsFromForm(formRef.current));
+  }, []);
+
+  useEffect(() => { syncValues(); }, [coverUrl, pricingType, syncValues]);
+
+  async function uploadCover(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setError(null);
+    setSavedSection(null);
+    try {
+      setCoverUrl(await uploadCourseImage(course.id, "cover", file));
+    } catch (cause) {
+      setError({ section: "details", message: cause instanceof Error ? cause.message : "Could not upload the image. Please try again." });
+    } finally {
+      setUploading(false);
+      event.target.value = "";
+    }
+  }
+
+  async function save(section: SettingsSection) {
+    if (savingSection || uploading || !formRef.current) return;
+    const sectionId = section === "details" ? "course-details" : section === "learning" ? "learning-rules" : "pricing";
+    const sectionElement = formRef.current.querySelector(`#${sectionId}`);
+    const invalidField = Array.from(sectionElement?.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>("input, textarea, select") ?? []).find(field => !field.checkValidity());
+    if (invalidField) {
+      invalidField.reportValidity();
+      return;
+    }
+    const next = mergeSection(savedValues, settingsFromForm(formRef.current), section);
+    if (next.coverUrl.trim() && !isSafeAssetUrl(next.coverUrl.trim())) {
+      setError({ section, message: "Use a same-origin image path or HTTPS URL for the cover." });
+      return;
+    }
+    setSavingSection(section);
+    setError(null);
+    setSavedSection(null);
+    try {
+      const result = await updateCourseSettings({
+        courseId: course.id,
+        ...next,
+      });
+      if (!result.ok) {
+        setError({ section, message: result.errors.join(" ") });
+        return;
+      }
+      setSavedValues(next);
+      setSavedSection(section);
+      router.refresh();
+    } catch {
+      setError({ section, message: "Could not save settings. Please try again." });
+    } finally {
+      setSavingSection(null);
+    }
+  }
+
+  function footer(section: SettingsSection) {
+    const dirty = sectionChanged(currentValues, savedValues, section);
+    if (!dirty && savedSection !== section && error?.section !== section) return null;
+    return <div className="flex flex-wrap items-center justify-end gap-3 border-t px-5 py-4 sm:px-6">
+      {error?.section === section && <p role="alert" className="mr-auto text-sm text-destructive">{error.message}</p>}
+      {savedSection === section && !dirty && !error && <p role="status" className="mr-auto text-sm text-emerald-700 dark:text-emerald-400">Changes saved.</p>}
+      {dirty && error?.section !== section && <p className="mr-auto text-xs text-muted-foreground">Unsaved changes</p>}
+      {dirty && <Button type="button" onClick={() => void save(section)} loading={savingSection === section} loadingLabel="Saving…" disabled={savingSection !== null || uploading}>Save changes</Button>}
+    </div>;
+  }
+
+  function saveFocusedSection() {
+    if (!formRef.current) return;
+    const sectionId = document.activeElement?.closest("section")?.id;
+    const section = sectionId === "course-details" ? "details" : sectionId === "learning-rules" ? "learning" : sectionId === "pricing" ? "pricing" : null;
+    if (section && sectionChanged(settingsFromForm(formRef.current), savedValues, section)) void save(section);
+  }
+
   return (
-    <aside className="space-y-4 lg:sticky lg:top-6 lg:self-start">
-      <details className="group rounded-xl border bg-card" open>
-        <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-medium [&::-webkit-details-marker]:hidden">
-          <Settings2 className="size-4 text-muted-foreground" />
-          Course settings
-          <span className="ml-auto text-xs text-muted-foreground group-open:hidden">Open</span>
-          <span className="ml-auto hidden text-xs text-muted-foreground group-open:inline">Close</span>
-        </summary>
-        <form
-          className="space-y-4 border-t p-4"
-          action={async (formData) => {
-            "use server";
-            await updateCourseSettings({
-              courseId: course.id,
-              title: String(formData.get("title") ?? ""),
-              description: String(formData.get("description") ?? ""),
-              coverUrl: String(formData.get("coverUrl") ?? ""),
-              projectGoal: String(formData.get("projectGoal") ?? ""),
-              difficulty: String(formData.get("difficulty") ?? ""),
-              estimatedHours: String(formData.get("estimatedHours") ?? ""),
-              sequential: formData.get("sequential") === "on",
-              pricingType: String(formData.get("pricingType") ?? "FREE"),
-              priceDollars: String(formData.get("priceDollars") ?? ""),
-              currency: String(formData.get("currency") ?? "USD"),
-            });
-          }}
-        >
-          <Field label="Course title" htmlFor="course-title">
-            <Input id="course-title" name="title" defaultValue={course.title} minLength={3} maxLength={120} required />
+    <form ref={formRef} onInput={syncValues} onChange={syncValues} onSubmit={(event) => { event.preventDefault(); saveFocusedSection(); }} className="space-y-6">
+      <section id="course-details" aria-labelledby="course-details-title" className="scroll-mt-24 overflow-hidden rounded-2xl border bg-card">
+        <SectionHeading icon={ImageIcon} title="Course details" description="The name, summary, and cover learners see in the catalog." id="course-details-title" />
+        <div className="grid gap-7 p-5 sm:p-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
+          <div className="space-y-5">
+            <Field label="Course title" htmlFor="course-title">
+              <Input id="course-title" name="title" defaultValue={course.title} minLength={3} maxLength={120} required className="h-10" />
+            </Field>
+            <Field label="Short description" htmlFor="course-description" hint="A quick explanation of what learners will build.">
+              <Textarea id="course-description" name="description" defaultValue={course.description ?? ""} maxLength={500} rows={5} placeholder="What will learners build and understand?" />
+            </Field>
+            <Field label="Cover image" htmlFor="course-cover-file" hint="JPEG, PNG, WebP, GIF, or AVIF · up to 8 MB. Save changes after uploading to publish the new cover.">
+              <div className="flex flex-wrap items-center gap-3">
+                <input id="course-cover-file" type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/avif" onChange={(event) => void uploadCover(event)} className="sr-only" disabled={uploading} />
+                <label htmlFor="course-cover-file" className="inline-flex h-10 cursor-pointer items-center gap-2 rounded-lg border bg-background px-4 text-sm font-medium hover:bg-muted focus-within:ring-2 focus-within:ring-ring/30">
+                  <Upload className="size-4" aria-hidden />{uploading ? "Uploading…" : "Upload cover"}
+                </label>
+                {uploading && <span role="status" className="text-sm text-muted-foreground">Sending image to storage…</span>}
+              </div>
+            </Field>
+            <Field label="Or use an image URL" htmlFor="course-cover-url">
+              <Input id="course-cover-url" name="coverUrl" type="text" inputMode="url" value={coverUrl} onChange={(event) => { setCoverUrl(event.target.value); setSavedSection(null); }} maxLength={2048} placeholder="https://example.com/cover.jpg" className="h-10" />
+            </Field>
+          </div>
+          <div className="min-w-0">
+            <p className="mb-2 text-sm font-medium">Cover preview</p>
+            <div className="overflow-hidden rounded-xl border bg-muted/30">
+              {coverPreviewUrl ? (
+                <Image unoptimized width={1600} height={900} src={coverPreviewUrl} alt={`Cover for ${course.title}`} className="aspect-video w-full object-cover" />
+              ) : (
+                <div className="flex aspect-video items-center justify-center text-muted-foreground"><ImageIcon className="size-8" aria-hidden /></div>
+              )}
+            </div>
+            <p className="mt-2 text-xs leading-5 text-muted-foreground">This is how the cover will look after you save.</p>
+          </div>
+        </div>
+        {footer("details")}
+      </section>
+
+      <section id="learning-rules" aria-labelledby="learning-rules-title" className="scroll-mt-24 overflow-hidden rounded-2xl border bg-card">
+        <SectionHeading icon={BookOpenCheck} title="Learning experience" description="Set expectations and choose how learners move through chapters." id="learning-rules-title" />
+        <div className="space-y-5 p-5 sm:p-6">
+          <Field label="Project goal" htmlFor="course-goal" hint="One clear outcome learners can work toward.">
+            <Input id="course-goal" name="projectGoal" defaultValue={course.projectGoal ?? ""} maxLength={240} placeholder="Ship a real multi-vendor marketplace" className="h-10" />
           </Field>
-          <Field label="Cover image URL" htmlFor="course-cover-url">
-            <Input
-              id="course-cover-url"
-              name="coverUrl"
-              type="url"
-              defaultValue={course.coverUrl ?? ""}
-              maxLength={2048}
-              placeholder="https://example.com/cover.jpg"
-            />
-            {course.coverUrl && (
-              <img
-                src={course.coverUrl}
-                alt="Cover preview"
-                className="mt-1.5 aspect-video w-full rounded-md border object-cover"
-              />
-            )}
-          </Field>
-          <Field label="Short description" htmlFor="course-description">
-            <Textarea
-              id="course-description"
-              name="description"
-              defaultValue={course.description ?? ""}
-              maxLength={500}
-              rows={3}
-              placeholder="What will learners build and understand?"
-            />
-          </Field>
-          <Field label="Project goal" htmlFor="course-goal">
-            <Input
-              id="course-goal"
-              name="projectGoal"
-              defaultValue={course.projectGoal ?? ""}
-              maxLength={240}
-              placeholder="Ship a real-time multiplayer game"
-            />
-          </Field>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid gap-5 sm:grid-cols-2">
             <Field label="Difficulty" htmlFor="course-difficulty">
-              <select
-                id="course-difficulty"
-                name="difficulty"
-                defaultValue={course.difficulty ?? ""}
-                className="h-9 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
-              >
-                <option value="">Not set</option>
-                <option value="Easy">Easy</option>
-                <option value="Medium">Medium</option>
-                <option value="Hard">Hard</option>
+              <select id="course-difficulty" name="difficulty" defaultValue={course.difficulty ?? ""} className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30">
+                <option value="">Not set</option><option value="Beginner">Beginner</option><option value="Easy">Easy</option><option value="Medium">Medium</option><option value="Advanced">Advanced</option><option value="Hard">Hard</option>
               </select>
             </Field>
-            <Field label="Hours" htmlFor="course-hours">
-              <Input
-                id="course-hours"
-                name="estimatedHours"
-                type="number"
-                min={1}
-                max={1000}
-                defaultValue={course.estimatedHours ?? ""}
-                placeholder="12"
-              />
+            <Field label="Estimated hours" htmlFor="course-hours">
+              <Input id="course-hours" name="estimatedHours" type="number" min={1} max={1000} defaultValue={course.estimatedHours ?? ""} placeholder="12" className="h-10" />
             </Field>
           </div>
-          <Field label="Pricing" htmlFor="course-pricing">
-            <select
-              id="course-pricing"
-              name="pricingType"
-              defaultValue={course.pricingType}
-              className="h-9 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
-            >
-              <option value="FREE">Free — learners enroll without payment</option>
-              <option value="PAID">Paid — learners pay before access (Stripe in a later phase)</option>
+          <Field label="Catalog category" htmlFor="course-category" hint="Learners can filter the catalog by category.">
+            <select id="course-category" name="category" defaultValue={course.category} className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30">
+              <option value="TECH">Tech</option><option value="SOFT_SKILLS">Soft skills</option>
             </select>
           </Field>
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="Price (USD)" htmlFor="course-price">
-              <Input
-                id="course-price"
-                name="priceDollars"
-                type="number"
-                min={0}
-                step={0.01}
-                defaultValue={
-                  course.pricingType === "PAID" && course.priceCents > 0
-                    ? (course.priceCents / 100).toFixed(2)
-                    : ""
-                }
-                placeholder="49.00"
-              />
-            </Field>
-            <Field label="Currency" htmlFor="course-currency">
-              <Input
-                id="course-currency"
-                name="currency"
-                defaultValue={course.currency}
-                maxLength={3}
-                placeholder="USD"
-              />
-            </Field>
-          </div>
-          <label className="flex items-start gap-3 rounded-lg border bg-muted/35 p-3">
-            <input
-              type="checkbox"
-              name="sequential"
-              defaultChecked={course.sequential}
-              className="mt-0.5 size-4 rounded border-input accent-primary"
-            />
-            <span>
-              <span className="block text-sm font-medium">Sequential learning</span>
-              <span className="mt-0.5 block text-xs leading-5 text-muted-foreground">
-                Require learners to complete chapters in order.
-              </span>
-            </span>
+          <label className="flex items-start gap-3 rounded-xl border bg-muted/25 p-4">
+            <input type="checkbox" name="sequential" defaultChecked={course.sequential} className="mt-1 size-4 accent-primary" />
+            <span><span className="block text-sm font-medium">Require chapters in order</span><span className="mt-1 block text-xs leading-5 text-muted-foreground">Learners finish the previous chapter before opening the next one.</span></span>
           </label>
-          <Button type="submit" className="w-full">Save settings</Button>
-        </form>
-      </details>
+        </div>
+        {footer("learning")}
+      </section>
 
-      <div className="rounded-xl border bg-muted/30 p-4">
-        <BookOpenCheck className="size-5 text-muted-foreground" />
-        <p className="mt-3 text-sm font-medium">Authoring workflow</p>
-        <ol className="mt-2 space-y-1.5 text-xs leading-5 text-muted-foreground">
-          <li>1. Organize modules and chapters.</li>
-          <li>2. Open a chapter to add lessons and activities.</li>
-          <li>3. Publish each chapter, then publish the course.</li>
-        </ol>
-      </div>
-    </aside>
+      <section id="pricing" aria-labelledby="pricing-title" className="scroll-mt-24 overflow-hidden rounded-2xl border bg-card">
+        <SectionHeading icon={Wallet} title="Pricing" description="Choose how learners enroll in this course." id="pricing-title" />
+        <div className="grid gap-5 p-5 sm:grid-cols-2 sm:p-6">
+          <Field label="Enrollment type" htmlFor="course-pricing">
+            <select id="course-pricing" name="pricingType" value={pricingType} onChange={(event) => setPricingType(event.target.value as typeof pricingType)} className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30">
+              <option value="FREE">Free</option><option value="PAID">Paid</option>
+            </select>
+          </Field>
+          <div className="hidden sm:block" />
+          <Field label="Price" htmlFor="course-price" hint={pricingType === "FREE" ? "Free courses do not need a price." : undefined}>
+            <Input id="course-price" name="priceDollars" type="number" min={0.01} step={0.01} defaultValue={course.pricingType === "PAID" && course.priceCents > 0 ? (course.priceCents / 100).toFixed(2) : ""} disabled={pricingType === "FREE"} required={pricingType === "PAID"} placeholder="49.00" className="h-10" />
+          </Field>
+          <Field label="Currency" htmlFor="course-currency">
+            <Input id="course-currency" name="currency" defaultValue={course.currency} minLength={3} maxLength={3} required placeholder="USD" className="h-10" />
+          </Field>
+          {pricingType === "PAID" && <p className="text-xs leading-5 text-muted-foreground sm:col-span-2">Payment collection depends on the course checkout configuration.</p>}
+        </div>
+        {footer("pricing")}
+      </section>
+    </form>
   );
 }
 
-function Field({
-  label,
-  htmlFor,
-  children,
-}: {
-  label: string;
-  htmlFor: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="space-y-1.5">
-      <Label htmlFor={htmlFor}>{label}</Label>
-      {children}
-    </div>
-  );
+function SectionHeading({ icon: Icon, title, description, id }: { icon: typeof ImageIcon; title: string; description: string; id: string }) {
+  return <div className="flex items-start gap-3 border-b bg-muted/15 px-5 py-4 sm:px-6"><span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg border bg-background text-muted-foreground"><Icon className="size-4" aria-hidden /></span><div><h2 id={id} className="text-base font-semibold">{title}</h2><p className="mt-0.5 text-sm text-muted-foreground">{description}</p></div></div>;
+}
+
+function Field({ label, htmlFor, hint, children }: { label: string; htmlFor: string; hint?: string; children: React.ReactNode }) {
+  return <div className="space-y-2"><Label htmlFor={htmlFor}>{label}</Label>{children}{hint && <p className="text-xs leading-5 text-muted-foreground">{hint}</p>}</div>;
 }

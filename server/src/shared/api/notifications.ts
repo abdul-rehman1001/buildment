@@ -56,6 +56,7 @@ export const NOTIFICATION_TYPES = [
   "instructor.request",
   "instructor.decision",
   "instructor.granted",
+  "admin.granted",
   "organization.course_request",
   "organization.course_approved",
 ] as const;

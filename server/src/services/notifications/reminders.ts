@@ -364,7 +364,6 @@ async function loadSuggestionTargets(now: Date, userIds: string[] | undefined): 
     where: {
       ...(userIds ? { id: { in: userIds } } : {}),
       role: "MENTEE",
-      canInstruct: false,
       emailVerified: { not: null },
       enrollments: { none: { OR: [ACTIVE_COURSE_WHERE, { lifecycle: "PAYMENT_REQUIRED" }] } },
       OR: [

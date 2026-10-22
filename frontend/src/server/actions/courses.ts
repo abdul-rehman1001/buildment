@@ -12,6 +12,7 @@ async function courseCall(path: string, json?: unknown): Promise<CourseActionRes
   const result = await teachCall<CourseSlugResult>(path, { method: "POST", json });
   if (!result.ok) return result;
   revalidatePath(`/courses/${result.data.courseSlug}/edit`);
+  revalidatePath(`/courses/${result.data.courseSlug}/settings`);
   return { ok: true, courseSlug: result.data.courseSlug };
 }
 
@@ -39,4 +40,24 @@ export async function unpublishCourse(input: {
 /** Move an archived course back to draft for editing before re-publish. */
 export async function restoreCourseToDraft(input: { courseId: string }): Promise<CourseActionResult> {
   return courseCall(`/api/v1/teach/courses/${encodeURIComponent(input.courseId)}/restore`);
+}
+
+export type CourseDeleteResult = { ok: true } | { ok: false; errors: string[] };
+
+/** Permanently deletes a course after the instructor confirms in the UI. */
+export async function deleteCourse(input: {
+  courseId: string;
+  /** Required when learners are enrolled — deleting removes their progress too. */
+  confirmedWithEnrollments?: boolean;
+}): Promise<CourseDeleteResult> {
+  const result = await teachCall<CourseSlugResult>(`/api/v1/teach/courses/${encodeURIComponent(input.courseId)}`, {
+    method: "DELETE",
+    json: { confirm: true, confirmedWithEnrollments: input.confirmedWithEnrollments ?? false },
+  });
+  if (!result.ok) return result;
+  revalidatePath("/courses");
+  revalidatePath("/courses/[courseSlug]/edit", "page");
+  revalidatePath("/courses/[courseSlug]/settings", "page");
+  revalidatePath("/", "layout");
+  return { ok: true };
 }

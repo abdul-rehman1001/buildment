@@ -1,26 +1,13 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useSyncExternalStore, type SetStateAction } from "react";
+import { useBrowserStorage, useHydrated } from "./use-browser-storage";
 
 const MOBILE_QUERY = "(max-width: 767px)";
 const READY_KEY = "buildment:reader:ready";
 
 function sidebarStorageKey(courseSlug: string) {
   return `buildment:reader:sidebar:${courseSlug}`;
-}
-
-function readSidebarPrefs(courseSlug: string, mobile: boolean) {
-  try {
-    const raw = sessionStorage.getItem(sidebarStorageKey(courseSlug));
-    if (!raw) return { left: mobile, right: mobile };
-    const parsed = JSON.parse(raw) as { left?: boolean; right?: boolean };
-    return {
-      left: parsed.left ?? mobile,
-      right: parsed.right ?? mobile,
-    };
-  } catch {
-    return { left: mobile, right: mobile };
-  }
 }
 
 function subscribeMobile(callback: () => void) {
@@ -41,55 +28,54 @@ export function useIsMobile() {
   return useSyncExternalStore(subscribeMobile, getMobileSnapshot, getMobileServerSnapshot);
 }
 
-function readerAlreadyReady() {
-  return typeof window !== "undefined" && sessionStorage.getItem(READY_KEY) === "1";
+/** Below this width both side panels leave too little room for the text, so the outline starts closed. */
+const ROOMY_QUERY = "(min-width: 1280px)";
+
+function subscribeRoomy(callback: () => void) {
+  const mq = window.matchMedia(ROOMY_QUERY);
+  mq.addEventListener("change", callback);
+  return () => mq.removeEventListener("change", callback);
 }
 
-/** Sidebar + TOC state; persists across chapter navigations within a course. */
-function initialPrefs(courseSlug: string) {
-  if (typeof window === "undefined") {
-    return { left: false, right: false };
-  }
-  const mobile = window.matchMedia(MOBILE_QUERY).matches;
-  return readSidebarPrefs(courseSlug, mobile);
+function useIsRoomy() {
+  return useSyncExternalStore(
+    subscribeRoomy,
+    () => window.matchMedia(ROOMY_QUERY).matches,
+    () => true
+  );
 }
 
+/** Sidebar preferences are stored separately for each course. */
 export function useReaderLayout(courseSlug: string) {
   const isMobile = useIsMobile();
-  const [leftCollapsed, setLeftCollapsed] = useState(() => initialPrefs(courseSlug).left);
-  const [rightCollapsed, setRightCollapsed] = useState(() => initialPrefs(courseSlug).right);
-  // Content must stay visible on first paint — hiding until useLayoutEffect caused blank
-  // screens when hydration failed or was slow ("Compiled" in terminal but empty page).
-  const [visible] = useState(true);
-  const [skipSkeleton] = useState(() => readerAlreadyReady());
-
-  useLayoutEffect(() => {
-    const mobile = window.matchMedia(MOBILE_QUERY).matches;
-    const prefs = readSidebarPrefs(courseSlug, mobile);
-    setLeftCollapsed((prev) => (prev === prefs.left ? prev : prefs.left));
-    setRightCollapsed((prev) => (prev === prefs.right ? prev : prefs.right));
-    sessionStorage.setItem(READY_KEY, "1");
-  }, [courseSlug]);
-
-  useEffect(() => {
-    if (!visible) return;
-    try {
-      sessionStorage.setItem(
-        sidebarStorageKey(courseSlug),
-        JSON.stringify({ left: leftCollapsed, right: rightCollapsed })
-      );
-    } catch {
-      /* ignore */
+  const isRoomy = useIsRoomy();
+  const hydrated = useHydrated();
+  const [raw, setRaw] = useBrowserStorage(sidebarStorageKey(courseSlug), "", "sessionStorage");
+  let prefs: { left?: boolean; right?: boolean } = {};
+  try {
+    const parsed: unknown = raw ? JSON.parse(raw) : {};
+    if (parsed && typeof parsed === "object") {
+      const stored = parsed as Record<string, unknown>;
+      prefs = {
+        left: typeof stored.left === "boolean" ? stored.left : undefined,
+        right: typeof stored.right === "boolean" ? stored.right : undefined,
+      };
     }
-  }, [courseSlug, leftCollapsed, rightCollapsed, visible]);
-
-  return {
-    isMobile,
-    leftCollapsed,
-    setLeftCollapsed,
-    rightCollapsed,
-    setRightCollapsed,
-    visible,
-    skipSkeleton,
-  };
+  } catch { /* Use device defaults. */ }
+  const leftCollapsed = prefs.left ?? (hydrated && isMobile);
+  const rightCollapsed = prefs.right ?? (hydrated && (isMobile || !isRoomy));
+  // Read through useBrowserStorage so hydration sees the server value; reading sessionStorage
+  // in a useState initializer made reloads render a different tree than the server did.
+  const [readyFlag] = useBrowserStorage(READY_KEY, "", "sessionStorage");
+  const skipSkeleton = readyFlag === "1";
+  useEffect(() => {
+    try { sessionStorage.setItem(READY_KEY, "1"); } catch { /* Optional preference. */ }
+  }, []);
+  const setLeftCollapsed = useCallback((next: SetStateAction<boolean>) => {
+    setRaw(JSON.stringify({ left: typeof next === "function" ? next(leftCollapsed) : next, right: rightCollapsed }));
+  }, [leftCollapsed, rightCollapsed, setRaw]);
+  const setRightCollapsed = useCallback((next: SetStateAction<boolean>) => {
+    setRaw(JSON.stringify({ left: leftCollapsed, right: typeof next === "function" ? next(rightCollapsed) : next }));
+  }, [leftCollapsed, rightCollapsed, setRaw]);
+  return { isMobile, leftCollapsed, setLeftCollapsed, rightCollapsed, setRightCollapsed, visible: true, skipSkeleton };
 }

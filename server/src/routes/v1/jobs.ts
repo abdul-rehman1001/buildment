@@ -11,5 +11,7 @@ router.post("/study-reminders", jobs.studyReminders);
 router.post("/inactivity-nudge", jobs.studyReminders);
 router.post("/notification-emails", jobs.notificationEmails);
 router.post("/app-activity-cleanup", jobs.appActivityCleanup);
+router.post("/weekly-goal-reminder", jobs.weeklyGoalReminder);
+router.post("/integrity-retention", jobs.integrityRetention);
 
 export default router;

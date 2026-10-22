@@ -3,6 +3,8 @@ import { logger } from "../utils/logger.js";
 import { pruneAppActivity } from "../services/activity/app-activity.js";
 import { runStudyReminders } from "../services/notifications/reminders.js";
 import { pruneNotifications } from "../services/notifications/cleanup.js";
+import { runWeeklyGoalReminders } from "../services/jobs/weekly-goal-reminders.js";
+import { runIntegrityRetention } from "../services/jobs/integrity-retention.js";
 
 // Background jobs run inside the API process on a fixed schedule, so a
 // deployment needs no external cron. The /api/v1/jobs endpoints stay for
@@ -64,6 +66,8 @@ export function defaultJobs(): ScheduledJob[] {
       hourUtc: CLEANUP_HOUR_UTC,
       run: async () => ({ appActivity: await pruneAppActivity(), notifications: await pruneNotifications() }),
     },
+    { name: "weekly-goal-reminders", hourUtc: env.WEEKLY_GOAL_REMINDER_HOUR_UTC, run: runWeeklyGoalReminders },
+    { name: "integrity-retention", hourUtc: env.INTEGRITY_RETENTION_HOUR_UTC, run: () => runIntegrityRetention() },
   ];
 }
 

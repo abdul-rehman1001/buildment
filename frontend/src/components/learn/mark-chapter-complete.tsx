@@ -14,10 +14,11 @@ import { scrollToNextCheckpoint } from "@/components/learn/checkpoint-marker";
 import { playFeedback } from "@/lib/sound-feedback";
 import { toast } from "@/components/ui/app-toast";
 
-const MODAL_OPEN_DELAY_MS = 820;
+const MODAL_OPEN_DELAY_MS = 200;
 
 export function ChapterCompletionStrip(props: {
   chapterId: string;
+  nextLocked: boolean;
   chapterComplete: boolean;
   canMarkComplete: boolean;
   checkpointsCompleted: number;
@@ -38,6 +39,7 @@ type CelebrationPhase = "idle" | "burst" | "modal";
 
 function ChapterCompletionMoment({
   chapterId,
+  nextLocked,
   chapterComplete,
   canMarkComplete,
   checkpointsCompleted,
@@ -52,6 +54,7 @@ function ChapterCompletionMoment({
   suppressAutoCelebration = false,
 }: {
   chapterId: string;
+  nextLocked: boolean;
   chapterComplete: boolean;
   canMarkComplete: boolean;
   checkpointsCompleted: number;
@@ -66,6 +69,7 @@ function ChapterCompletionMoment({
   suppressAutoCelebration?: boolean;
 }) {
   const router = useRouter();
+  const [completionSaved, setCompletionSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
   const [celebrationPhase, setCelebrationPhase] = useState<CelebrationPhase>("idle");
@@ -84,7 +88,7 @@ function ChapterCompletionMoment({
 
   if (chapterComplete !== trackedComplete) {
     setTrackedComplete(chapterComplete);
-    if (chapterComplete) beginCelebration();
+    if (chapterComplete && !completionSaved) beginCelebration();
   }
 
   useEffect(() => {
@@ -93,9 +97,9 @@ function ChapterCompletionMoment({
     const reduced = prefersReducedMotion();
     if (reduced) {
       playFeedback("completion");
-      setCelebrationPhase("modal");
+      const timer = window.setTimeout(() => setCelebrationPhase("modal"), 0);
       if (streakMilestone) void acknowledgeStreakMilestone(streakMilestone);
-      return;
+      return () => window.clearTimeout(timer);
     }
 
     if (celebrationAnchorRef.current) {
@@ -133,26 +137,33 @@ function ChapterCompletionMoment({
         toast(result.error);
         return;
       }
+      setCompletionSaved(true);
       beginCelebration();
       router.refresh();
     });
   }
 
+  const isComplete = chapterComplete || completionSaved;
   const remaining = Math.max(0, checkpointsTotal - checkpointsCompleted);
   const hasCheckpoints = checkpointsTotal > 0;
 
   let statusLine: string;
-  if (chapterComplete) {
-    statusLine = "This lesson is complete — the next one is unlocked in the syllabus.";
+  if (isComplete) {
+    statusLine = "Chapter complete. Your progress is saved.";
   } else if (reflectionPending) {
-    statusLine =
-      "Check every checklist item and answer the learning log. The next chapter stays locked until those are saved.";
+    statusLine = nextLocked
+      ? "Complete the checklist and learning log to save your reflection and open the next chapter."
+      : "Complete the checklist and learning log when you are ready.";
   } else if (canMarkComplete) {
-    statusLine = hasCheckpoints
-      ? "All checkpoints are done. Mark complete to unlock the next lesson."
-      : "No graded checkpoints here — mark complete when you have read the lesson.";
+    if (!hasCheckpoints) {
+      statusLine = "Mark this chapter complete when you have finished reading.";
+    } else {
+      statusLine = nextLocked
+        ? "All checkpoints are done. Mark complete to unlock the next lesson."
+        : "All checkpoints are done. Mark this chapter complete when you are ready.";
+    }
   } else if (hasCheckpoints) {
-    statusLine = `Finish ${remaining} more checkpoint${remaining === 1 ? "" : "s"} in this lesson (scroll up).`;
+    statusLine = `${checkpointsCompleted} of ${checkpointsTotal} checkpoints complete. Take the next one when you are ready.`;
   } else {
     statusLine = "Mark complete when you are ready to move on.";
   }
@@ -165,39 +176,40 @@ function ChapterCompletionMoment({
       >
         <div className="min-w-0">
           <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-            Finish this lesson
+            Your progress
           </p>
           <p
             className={cn(
               "mt-1 text-sm leading-relaxed",
-              chapterComplete ? "font-medium text-emerald-800 dark:text-emerald-100" : "text-muted-foreground"
+              isComplete ? "font-medium text-foreground" : "text-muted-foreground"
             )}
           >
             {statusLine}
           </p>
-          {hasCheckpoints && !chapterComplete ? (
-            <p className="mt-1 font-mono text-xs tabular-nums text-muted-foreground/75">
+          {hasCheckpoints && !isComplete ? (
+            <p className="mt-1 font-mono text-xs tabular-nums text-muted-foreground">
               {checkpointsCompleted}/{checkpointsTotal} checkpoints
             </p>
           ) : null}
-          {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
+          {error ? <p role="alert" className="mt-2 text-sm text-destructive">{error}</p> : null}
         </div>
 
         <div className="shrink-0 sm:pl-4">
-          {chapterComplete ? (
-            <span className="inline-flex h-10 items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 text-sm font-medium text-emerald-800 dark:border-emerald-400/25 dark:bg-emerald-500/10 dark:text-emerald-100">
-              <CheckCircle2 className="size-4 text-emerald-700 dark:text-emerald-400" aria-hidden />
+          {isComplete ? (
+            <span className="inline-flex h-10 items-center gap-2 rounded-lg border border-border bg-muted px-4 text-sm font-medium text-foreground">
+              <CheckCircle2 className="size-4 text-primary" aria-hidden />
               Completed
             </span>
           ) : reflectionPending ? (
             <span className="inline-flex h-10 w-full min-w-[11rem] items-center justify-center rounded-lg border border-border bg-muted px-4 text-sm font-medium text-muted-foreground sm:w-auto">
-              Finish the gate reflection
+              Complete your reflection
             </span>
           ) : canMarkComplete ? (
             <Button
               type="button"
               size="sm"
               onClick={onMark}
+              loading={pending}
               disabled={pending}
               className="h-10 w-full min-w-[11rem] rounded-lg px-5 text-sm font-medium sm:w-auto"
             >
@@ -212,8 +224,8 @@ function ChapterCompletionMoment({
             >
               <ArrowUp className="size-4 shrink-0" aria-hidden />
               {remaining === 1
-                ? "Complete remaining checkpoint"
-                : "Complete remaining checkpoints"}
+                ? "Go to the final checkpoint"
+                : "Go to next checkpoint"}
             </Button>
           )}
         </div>
@@ -224,9 +236,9 @@ function ChapterCompletionMoment({
         onClose={closeCelebration}
         recap={recap}
         streakMilestone={streakMilestone}
-        courseCompleted={courseCompleted}
+        courseCompleted={courseCompleted + (!chapterComplete && completionSaved ? 1 : 0)}
         courseTotal={courseTotal}
-        nextHref={nextHref}
+        nextHref={nextLocked && !isComplete ? undefined : nextHref}
         nextTitle={nextTitle}
       />
     </>

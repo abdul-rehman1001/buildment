@@ -1,5 +1,6 @@
 import type {
   ChapterReaderMode,
+  CourseCategory,
   CoursePricingType,
   CourseStatus,
   EnrollStatus,
@@ -8,7 +9,9 @@ import type {
   ResponseStatus,
   ReviewVerdict,
 } from "../domain/enums.js";
+import type { LearnerTrackSummary } from "../lib/course-tracks.js";
 import type { InstructorAccessView } from "../lib/instructor-access.js";
+import type { IntegrityAttemptSummary } from "./integrity.js";
 
 // Wire contract for /api/v1/teach — the instructor workspace. Every date is an
 // ISO string; labels that need "now" (e.g. "3d ago") are computed on the server
@@ -38,6 +41,7 @@ export type MentorCourseCard = {
   slug: string;
   title: string;
   description: string | null;
+  coverUrl: string | null;
   status: CourseStatus;
   chapterCount: number;
   learnerCount: number;
@@ -50,6 +54,7 @@ export type MentorCourseCard = {
 };
 
 export type MentorCoursesView = {
+  zipImportEnabled: boolean;
   courses: MentorCourseCard[];
   summary: {
     totalCourses: number;
@@ -91,6 +96,7 @@ export type CourseBuilderCourse = {
   projectGoal: string | null;
   difficulty: string | null;
   estimatedHours: number | null;
+  category: CourseCategory;
   sequential: boolean;
   coverUrl: string | null;
   status: CourseStatus;
@@ -107,8 +113,28 @@ export type CourseBuilderView = {
   looseChapters: CourseBuilderChapter[];
 };
 
+export type CourseSettingsView = Pick<CourseBuilderCourse,
+  "id" | "slug" | "title" | "description" | "projectGoal" | "difficulty" |
+  "estimatedHours" | "category" | "sequential" | "coverUrl" | "status" | "pricingType" |
+  "priceCents" | "currency"
+> & { enrollmentCount: number; chapterCount: number; integritySnapshots: boolean };
+
+export type CourseDraftPreview = {
+  course: Pick<CourseBuilderCourse, "id" | "slug" | "title" | "description" | "projectGoal" | "coverUrl" | "status">;
+  modules: Array<{ id: string; title: string; chapters: Array<Pick<CourseBuilderChapter, "id" | "title" | "slug" | "readerMode" | "publishedAt"> & { source: string }> }>;
+};
+
+export type CourseTeamView = {
+  owner: { id: string; name: string | null; email: string };
+  instructors: Array<{ id: string; name: string | null; email: string; role: "COURSE_CREATOR" | "SUBMISSION_EVALUATOR" }>;
+  invites: Array<{ id: string; email: string; role: "COURSE_CREATOR" | "SUBMISSION_EVALUATOR"; url: string; expiresAt: string }>;
+};
+export type CourseInstructorInviteResult = { url: string; emailSent: boolean };
+export type CourseInstructorInviteAcceptance = { courseSlug: string; role: "COURSE_CREATOR" | "SUBMISSION_EVALUATOR" };
+
 export type ChapterEditorView = {
   chapterId: string;
+  courseId: string;
   courseSlug: string;
   title: string;
   summary: string | null;
@@ -134,6 +160,7 @@ export type CourseSettingsInput = {
   projectGoal: string;
   difficulty: string;
   estimatedHours: string;
+  category: string;
   sequential: boolean;
   pricingType: string;
   priceDollars: string;
@@ -175,6 +202,8 @@ export type MenteeRosterItem = {
   activityState: "recent" | "inactive" | "never";
   attention: Array<{ kind: MenteeAttentionKind; label: string }>;
   evaluationHref: string;
+  /** Variant and specialisation for a course in a family; null otherwise. */
+  track: LearnerTrackSummary | null;
 };
 
 export type PendingInviteView = { id: string; email: string; createdAt: string };
@@ -329,6 +358,8 @@ export type EvaluationReflection = {
 export type MenteeEvaluation = {
   course: { id: string; slug: string; title: string };
   mentee: { id: string; name: string; email: string | null };
+  /** Variant and specialisation for a course in a family; null otherwise. */
+  track: LearnerTrackSummary | null;
   enrollment: {
     id: string;
     status: string;
@@ -355,6 +386,8 @@ export type MenteeEvaluation = {
   help: HelpRequest[];
   sessions: StudySessionItem[];
   reflections: EvaluationReflection[];
+  /** Quiz integrity attempts, newest first. Mentor-only. */
+  integrity: IntegrityAttemptSummary[];
 };
 
 // ---------------------------------------------------------------------------
@@ -459,6 +492,8 @@ export type ReviewDetailView = {
   answerUrl: string | null;
   review: { score: number | null; verdict: ReviewVerdict } | null;
   history: Array<{ id: string; attempt: number; verdict: ReviewVerdict; feedback: string; reviewerName: string | null }>;
+  /** Quiz integrity attempts on this chapter by this learner, newest first. */
+  integrity: IntegrityAttemptSummary[];
 };
 
 export type AiReviewDraft = {
@@ -500,6 +535,8 @@ export const TEACH_ERROR_CODES = {
   COURSE_NOT_PUBLISHED: "COURSE_NOT_PUBLISHED",
   /** Unpublishing with enrolled learners needs the confirmation flag. */
   ENROLLMENTS_CONFIRMATION_REQUIRED: "ENROLLMENTS_CONFIRMATION_REQUIRED",
+  /** Removing a chapter with learner progress or submissions needs the confirmation flag. */
+  CHAPTER_PROGRESS_CONFIRMATION_REQUIRED: "CHAPTER_PROGRESS_CONFIRMATION_REQUIRED",
   ALREADY_AT_EDGE: "ALREADY_AT_EDGE",
   ALREADY_REVIEWED: "ALREADY_REVIEWED",
   AI_DRAFT_UNSUPPORTED: "AI_DRAFT_UNSUPPORTED",

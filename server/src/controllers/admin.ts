@@ -4,18 +4,34 @@ import * as overview from "../services/admin/overview.js";
 import * as organizations from "../services/admin/organizations.js";
 import * as courseRequests from "../services/admin/course-requests.js";
 import * as users from "../services/admin/users.js";
+import * as profile from "../services/admin/profile.js";
 import * as appActivity from "../services/activity/reports.js";
 import type { AppActivityUsersQuery } from "../validations/activity.js";
 import type {
+  AdminProfileBody,
+  AdminPasswordBody,
   AllocationsBody,
   ApproveCourseRequestBody,
   CreateOrganizationBody,
+  GrantAdminBody,
   GrantInstructorBody,
 } from "../validations/admin.js";
 
 // Platform administration. Every handler runs behind authenticate + requireAdmin.
 
 const param = (req: Request, name: string) => req.params[name] as string;
+
+// PATCH /api/v1/admin/profile
+export async function updateProfile(req: Request, res: Response) {
+  await profile.updateAdminProfile(req.user!.id, req.body as AdminProfileBody);
+  noContent(res);
+}
+
+// PATCH /api/v1/admin/password
+export async function updatePassword(req: Request, res: Response) {
+  await profile.updateAdminPassword(req.user!.id, req.sessionToken!, req.body as AdminPasswordBody);
+  noContent(res);
+}
 
 // GET /api/v1/admin/overview
 export async function getOverview(_req: Request, res: Response) {
@@ -82,9 +98,20 @@ export async function setInstructorAccess(req: Request, res: Response) {
   noContent(res);
 }
 
+export async function setZipImportAccess(req: Request, res: Response) {
+  await users.setZipImportAccess(param(req, "userId"), req.body.enabled);
+  noContent(res);
+}
+
 // POST /api/v1/admin/instructors
 export async function grantInstructor(req: Request, res: Response) {
   await users.grantInstructorByEmail(req.body as GrantInstructorBody);
+  noContent(res);
+}
+
+// POST /api/v1/admin/admins
+export async function grantAdmin(req: Request, res: Response) {
+  await users.grantAdminByEmail(req.body as GrantAdminBody);
   noContent(res);
 }
 

@@ -203,6 +203,10 @@ export function CodeExerciseClient({
     setSubmitting(true);
     setError(null);
     try {
+      if (id.startsWith("preview-")) {
+        setResult({ isCorrect: null, explanation: "This gallery preview lets you edit code and reveal hints. Graded checks run in a published exercise." });
+        return;
+      }
       const body = await apiFetch<CheckResult>(`/api/v1/blocks/${id}/respond`, { method: "POST", json: { source } });
       setResult(body);
       if (body.isCorrect === true) playFeedback("success");
@@ -225,7 +229,7 @@ export function CodeExerciseClient({
 
   return (
     <div
-      {...checkpointAttrs(id, settled)}
+      {...(id.startsWith("preview-") ? {} : checkpointAttrs(id, settled))}
       className="not-prose my-10 scroll-mt-24 overflow-hidden rounded-2xl border border-border bg-card text-card-foreground shadow-sm"
       data-code-exercise
     >
@@ -304,7 +308,7 @@ export function CodeExerciseClient({
               )}
               <div className="min-w-0 text-sm">
                 <p className={cn("font-semibold", passed ? "text-emerald-900 dark:text-emerald-100" : "text-amber-900 dark:text-amber-100")}>
-                  {passed ? "All checks passed — well done!" : "Not quite yet — adjust and retry"}
+                  {passed ? "All checks passed — well done!" : id.startsWith("preview-") ? "Editor preview" : "Not quite yet — adjust and retry"}
                 </p>
                 {!passed && result.failedTestName ? (
                   <p className="mt-1.5 text-amber-900/90 dark:text-amber-100/90">
@@ -317,7 +321,7 @@ export function CodeExerciseClient({
                   </p>
                 ) : null}
                 {result.explanation ? (
-                  <p className="mt-2 leading-relaxed text-foreground/90">{result.explanation}</p>
+                  <p className="mt-2 leading-relaxed text-foreground">{result.explanation}</p>
                 ) : null}
               </div>
             </div>
@@ -343,11 +347,12 @@ export function CodeExerciseClient({
               <Button
                 size="sm"
                 onClick={submit}
+                loading={submitting}
                 disabled={!source.trim() || submitting}
                 className="h-9 gap-2 rounded-full bg-foreground px-5 text-sm font-medium text-background shadow-sm hover:bg-foreground/90"
               >
                 <CirclePlay className="size-4" />
-                {submitting ? "Running checks…" : "Check my code"}
+                {submitting ? "Running checks…" : id.startsWith("preview-") ? "Try editor" : "Check my code"}
               </Button>
               {hints.length > 0 && hintIndex < hints.length - 1 ? (
                 <Button

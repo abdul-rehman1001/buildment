@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { LayoutDashboard, LogOut, TrendingUp } from "lucide-react";
+import { useTransition } from "react";
+import { LayoutDashboard, Loader2, LogOut, TrendingUp } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { UserAvatar } from "@/components/user-avatar";
+import { ThemeMenuItems } from "@/components/theme-menu-items";
 
 type UserMenuDropdownProps = {
   user: { name?: string | null; email?: string | null; image?: string | null };
@@ -29,6 +31,7 @@ export function UserMenuDropdown({
   showProgress = true,
 }: UserMenuDropdownProps) {
   const router = useRouter();
+  const [pending, startTransition] = useTransition();
   const displayName = user.name ?? user.email ?? "Account";
 
   return (
@@ -39,36 +42,46 @@ export function UserMenuDropdown({
             type="button"
             className="rounded-full outline-none ring-offset-2 transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-neutral-300"
             aria-label="Open account menu"
+            disabled={pending}
+            aria-busy={pending || undefined}
           />
         }
       >
-        <UserAvatar user={user} compact={compact} />
+        <span className="relative inline-flex">
+          <span className={pending ? "opacity-0" : undefined}><UserAvatar user={user} compact={compact} /></span>
+          {pending && <span className="absolute inset-0 grid place-items-center" aria-hidden="true">
+            <Loader2 className="size-4 animate-spin motion-reduce:animate-none" />
+          </span>}
+        </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-52">
         <DropdownMenuGroup>
           <DropdownMenuLabel className="font-normal">
-            <p className="truncate text-sm font-medium text-neutral-950">{displayName}</p>
+            <p className="truncate text-sm font-medium text-foreground">{displayName}</p>
             {user.email && user.name && (
-              <p className="truncate text-xs text-neutral-500">{user.email}</p>
+              <p className="truncate text-xs text-muted-foreground">{user.email}</p>
             )}
           </DropdownMenuLabel>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => router.push(homeHref)}>
+        <DropdownMenuItem disabled={pending} onClick={() => startTransition(() => router.push(homeHref))}>
           <LayoutDashboard className="size-4" />
           Home
         </DropdownMenuItem>
         {showProgress && (
-          <DropdownMenuItem onClick={() => router.push("/progress")}>
+          <DropdownMenuItem disabled={pending} onClick={() => startTransition(() => router.push("/progress"))}>
             <TrendingUp className="size-4" />
             My progress
           </DropdownMenuItem>
         )}
         <DropdownMenuSeparator />
+        <ThemeMenuItems />
+        <DropdownMenuSeparator />
         <DropdownMenuItem
           variant="destructive"
+          disabled={pending}
           onClick={() => {
-            void signOutAction();
+            startTransition(async () => { await signOutAction(); });
           }}
         >
           <LogOut className="size-4" />

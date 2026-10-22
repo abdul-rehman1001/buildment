@@ -2,6 +2,7 @@ import type { JsxComponentDescriptor } from "@mdxeditor/editor";
 import { createFlowDescriptor, createTextDescriptor } from "./editor-descriptor-utils";
 
 export const contentBlockDescriptors: JsxComponentDescriptor[] = [
+  createFlowDescriptor("Step", [{ name: "title" }, { name: "description" }, { name: "content" }], true),
   createFlowDescriptor("MermaidDiagram", [{ name: "title" }, { name: "chart", required: true }, { name: "legend" }]),
   createFlowDescriptor("StateMachine", [{ name: "title" }, { name: "chart", required: true }, { name: "legend" }]),
   createFlowDescriptor("EntityDiagram", [{ name: "title" }, { name: "chart", required: true }, { name: "legend" }]),
@@ -42,6 +43,7 @@ export const contentBlockDescriptors: JsxComponentDescriptor[] = [
   createFlowDescriptor("ArchitectureDiagram", [{ name: "title" }], false),
   createFlowDescriptor("ArchNode", [{ name: "layer", required: true }, { name: "label" }], false),
   createFlowDescriptor("TraceRequest", [{ name: "title" }], false),
+  createFlowDescriptor("InteractiveCanvas", [{ name: "slug", required: true }]),
   createFlowDescriptor(
     "TraceStep",
     [

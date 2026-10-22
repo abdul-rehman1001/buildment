@@ -12,6 +12,8 @@ summary: "**Where the project is now:** Week 3 commerce works locally — browse
 
 Week 4 polish chapter. Gate: cache hit verified, invalidation after product PATCH, search uses index, app survives Redis stop.
 
+<LearningObjectives id="01M5EB39W679F4GAHJZKFK7Q99" />
+
 ## Bridge from last chapter
 
 You closed **Week 3** in Chapter 20 — full commerce in the browser: browse → cart → checkout → split confirmation → customer history → vendor inbox → status updates. The product **works**. Week 4 asks: *will it survive real traffic and feel fast?*
@@ -40,7 +42,7 @@ That second promise is the harder one. A fast response with yesterday's price is
 
 | Term | Simple meaning |
 |---|---|
-| **Redis** | A very fast in-memory database that sits beside MongoDB — like a sticky note the server checks before opening the filing cabinet |
+| **Redis** | Fast in-memory store beside MongoDB — check it before the filing cabinet |
 | **Cache** | A saved copy of a recent answer — so the server does not repeat the same expensive work |
 | **Cache hit** | The answer was already on the sticky note — instant return |
 | **Cache miss** | Sticky note empty — server fetches from MongoDB, then saves a copy for next time |
@@ -104,7 +106,7 @@ Estimated time: **two days**.
 - [ ] Chapter 20 gate cleared
 - [ ] `GET /products` public route from Ch 14
 
-<MustRead id="01M4THGEKP5NFEY3ZAAD6BCHPR" />
+<MustRead id="01M5CM5K8ABQZ7ZCP69FKW3N2J" />
 
 ## Next
 
