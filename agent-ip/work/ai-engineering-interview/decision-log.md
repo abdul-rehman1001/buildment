@@ -11,6 +11,8 @@
 | 2026-10-22 | One learner repository (`rag-agent-service`) extended by build chapters 1.4, 3.5, 5.5, 7.6 and 9.6 with fixed interfaces in `context-packs/writer-pack.md`, a deterministic fake model, and full acceptance test files in the chapters but no implementations | Separate throwaway exercises per chapter | Lets the capstone combine earlier work, keeps tests offline and free, and withholds solutions per `00-principles.md`. | Orchestrator |
 | 2026-10-22 | No MustRead, InterestingRead or RealWorldEvent blocks, and no links | One sourced read per module | Sponsor rule: no marketing links; the course is general. Recorded so the module-level read budget is not flagged as missing. | Zeeshan (sponsor) |
 | 2026-10-22 | Chapter briefs replaced by one writer pack; modules drafted by six parallel writers, then an independent blind answer-key review | One brief per chapter (G2C) | G2C skipped with G2B (first row). The pack fixes voice, rules, interfaces and canvas placement so parallel writers stay consistent. | Orchestrator |
+| 2026-10-22 | Rebuild the `agent-react-loop` canvas on the sequence renderer | Keep the state machine; change the shared renderer to offset labels of reverse edges | At 375px the six-state layout put edge labels on top of the states. A sequence shows the same loop over time and fits phones without a renderer change. | Orchestrator |
+| 2026-10-22 | Verify the scratch import on a portable PostgreSQL 16 instead of the Docker Postgres | Wait for Docker; skip the import | Docker Desktop failed to start with the same socket error on every launch, and the fixes left are system-level. The scratch database is throwaway either way. The import into `buildment_preview` still needs the Docker Postgres. | Orchestrator |
 
 ## Risks
 
