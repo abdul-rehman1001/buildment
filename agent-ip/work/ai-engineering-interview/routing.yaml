@@ -1,0 +1,27 @@
+---
+artifact: routing
+course: ai-engineering-interview
+version: 1
+owner: orchestrator
+---
+# Which model runs which role. Only one provider family (Anthropic) is
+# available in this environment, so drafting and critique cannot use
+# different families. Mitigation per 01-agent-system.md: separate subagent
+# runs with separate prompts and blind context, critics on a different
+# model (Sonnet) from the drafters (Opus), and human review before G5.
+# Recorded as risk R1 in decision-log.md.
+roles:
+  orchestrator: { model: claude-opus-5-5, family: anthropic }
+  research: { model: claude-opus-5-5, family: anthropic }
+  curriculum-architect: { model: claude-opus-5-5, family: anthropic }
+  prerequisites-timeline: { model: claude-sonnet, family: anthropic }
+  project-designer: { model: claude-opus-5-5, family: anthropic, note: "capstone section of the roadmap, run inside the architect pass" }
+  interaction-designer: { model: claude-opus-5-5, family: anthropic }
+  assessment-designer: { model: claude-opus-5-5, family: anthropic }
+  interactive-canvas-builder: { model: claude-opus-5-5, family: anthropic }
+  chapter-writer: { model: claude-opus-5-5, family: anthropic }
+  technical-validator: { model: claude-opus-5-5, family: anthropic, note: "execution-based: runs Python, imports, audits" }
+  answer-key-blind-check: { model: claude-sonnet, family: anthropic }
+  critic-pedagogy: { model: claude-sonnet, family: anthropic }
+  critic-slop-assessment: { model: claude-sonnet, family: anthropic }
+reduced_independence: true
