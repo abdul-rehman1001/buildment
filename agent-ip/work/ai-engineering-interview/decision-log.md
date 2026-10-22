@@ -18,7 +18,7 @@
 
 | # | Risk | Mitigation |
 |---|---|---|
-| R1 | Only one model family is available, so critique is not fully independent of drafting | Separate subagents with blind context; critics and the blind answer-key check run on a different model (Sonnet) from the drafters (Opus); human review before G5 is required |
+| R1 | Only one model family is available, so critique is not fully independent of drafting | Separate subagents with blind context; critics and the blind answer-key check run on a smaller review model, but from the same model family as the drafting model, so their agreement is not fully independent; a human key check and human review before G5 are required |
 | R2 | Chapters drafted before G2B may need rework if instructors change the roadmap | Roadmap kept short and explicit about open decisions; PR states the order of work |
 | R3 | No reference build exists for this course (`11-architect-requirements.md` section 11) | Python snippets and expected outputs verified by the technical validator in a scratch environment; a reference capstone build is listed as a gap |
 | R4 | Fast-moving APIs (LangGraph, MCP, provider free tiers) can change after writing | Research dossier records access dates; chapters date version-specific claims and point to current docs |

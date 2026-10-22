@@ -198,7 +198,7 @@ Shared interfaces (use these exact names and signatures so later chapters and th
 ```text
 rag-agent-service/
   pyproject.toml            1.4  [project] name, requires-python >= 3.11; [tool.pytest.ini_options] pythonpath = ["."], testpaths = ["tests"], markers = ["eval: quality regression tests"]
-  requirements.txt          1.4  pytest>=8 ; later lines added by 7.6 (langgraph>=1.0,<2) and 9.6 (fastapi>=0.115, httpx>=0.27, uvicorn>=0.30)
+  requirements.txt          1.4  pytest>=8 ; later lines added by 7.6 (langgraph>=1.2,<2) and 9.6 (fastapi>=0.115, httpx>=0.27, uvicorn>=0.30)
   app/__init__.py           1.4
   app/hello.py              1.4  def greet(name: str) -> str  (smoke test only)
   tests/test_hello.py       1.4
@@ -239,8 +239,8 @@ Each build chapter:
 7. Ends with the repo-link open question (section 5) and a `**Next:**` line.
 
 **You must verify every build chapter by running it.** A Python 3.12 virtual environment with pytest, fastapi, httpx, uvicorn, pydantic, langgraph and rank-bm25 already exists at:
-`C:\Users\Zeeshan\AppData\Local\Temp\claude\D--Projects---Community\33b80be1-7cee-435d-b5a1-7aef6dac8316\scratchpad\pyverify\.venv\Scripts\python.exe`
-Create your own reference implementation under `...\scratchpad\pyverify\ref-<your-modules>\rag-agent-service\` (copy forward from earlier modules' reference folders if they exist, otherwise write what you need). Run the exact test file from your chapter against it, confirm the expected pass count, confirm the failure mode output, and paste the real summary lines into the chapter. Never put the reference implementation in the course or the repo. Any Python snippet in a teaching chapter that claims to run must also be run there. Use `uv pip install --python <that python> <pkg>` only if you need another package, and say so in your report.
+`<scratch>/pyverify/.venv/Scripts/python.exe`, where `<scratch>` is the scratch folder the orchestrator names in your task.
+Create your own reference implementation under `<scratch>/pyverify/ref-<your-modules>/rag-agent-service/` (copy forward from earlier modules' reference folders if they exist, otherwise write what you need). Run the exact test file from your chapter against it, confirm the expected pass count, confirm the failure mode output, and paste the real summary lines into the chapter. Never put the reference implementation in the course or the repo. Any Python snippet in a teaching chapter that claims to run must also be run there. Use `uv pip install --python <that python> <pkg>` only if you need another package, and say so in your report.
 
 ## 8. Facts to get right (verified 2026-10-22)
 
@@ -273,10 +273,10 @@ In the chapter: a `predict` right before the canvas, then the canvas, then four 
 
 ## 11. Validate before you report
 
-From `D:\Projects - Community\buildment-aicourse\server`:
+From `server/` in your checkout, using pnpm 10:
 ```
-node C:/Users/Zeeshan/AppData/Local/pnpm/.tools/pnpm/10.32.1/node_modules/pnpm/bin/pnpm.cjs content:validate:source --course ai-engineering-interview
-node C:/Users/Zeeshan/AppData/Local/pnpm/.tools/pnpm/10.32.1/node_modules/pnpm/bin/pnpm.cjs content:audit --course ai-engineering-interview
+pnpm content:validate:source --course ai-engineering-interview
+pnpm content:audit --course ai-engineering-interview
 ```
 Other writers are working on other modules at the same time, so you will see "Planned lesson file does not exist" for their modules. Your own files must have zero errors and zero warnings. Also run, from the repo root, `grep -rnP "[\x{2013}\x{2014}]" content/import/ai-engineering-interview/<your module dirs>` and fix anything it prints, and grep your files for the banned company and model names.
 

@@ -15,7 +15,7 @@ date: 2026-10-22
 - No em or en dashes in the course, the work area or the canvas code. No company, cloud vendor or model product names. The only URLs in chapters are localhost addresses in build steps.
 
 ## Blind answer-key review
-All 119 graded items were extracted without their keys into three batches and re-answered by a separate reviewer on a different model from the drafters (routing.yaml). The reviewer saw only the question and options, not the chapter.
+All 119 graded items were extracted without their keys into three batches and re-answered by a separate review agent (routing.yaml). The reviewer saw only the question and options, not the chapter. It is a smaller model but from the same model family as the drafters, so its agreement is not a fully independent check: a human should still re-answer the keys, or a sample of them, before publishing.
 
 | Batch | Modules | Items | Matches with the key |
 |---|---|---|---|
