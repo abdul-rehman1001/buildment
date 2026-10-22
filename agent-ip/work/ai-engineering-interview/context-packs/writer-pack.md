@@ -19,7 +19,7 @@ Read this whole file before writing. It replaces the chapter briefs for this cou
 
 ## 2. Hard rules (any violation fails review)
 
-- **No em dashes or en dashes anywhere** (no `—`, no `–`). Use a colon, a comma, or two sentences. Ranges: "5 to 10". `content:audit` fails on them.
+- **No em dashes or en dashes anywhere** (no U+2014 em dash, no U+2013 en dash). Use a colon, a comma, or two sentences. Ranges: "5 to 10". `content:audit` fails on them.
 - **No company names.** No employers, cloud vendors, model vendors or model product names (no OpenAI, Anthropic, Google, Microsoft, Amazon, AWS, Azure, Meta, Databricks, LangChain Inc, GitHub, GitLab, Docker Inc, Pinecone, and so on; no AKS or EKS; no GPT, Claude, Gemini, Llama model names). Say "a model provider", "a cloud provider's managed Kubernetes", "a hosted vector database", "a large model", "a small model", "your Git host", "your CI service".
 - **Allowed tool names** (open-source tools named in the spec): Python, asyncio, FastAPI, Pydantic, pytest, httpx, uvicorn, LangGraph, MLflow, Kubernetes, MCP (Model Context Protocol), OpenTelemetry, BM25, HNSW, pgvector, FAISS, PostgreSQL, JSON Schema, Mermaid. You may say "LangSmith-style tracing" once in 10.3 as the name interviewers use for the pattern. Do not name other products.
 - **No links at all**, marketing or otherwise. Do not add `MustRead`, `InterestingRead` or `RealWorldEvent` (they need sourced URLs or events; this course uses none).
@@ -172,7 +172,7 @@ Model answer paragraph here.
 </FaqItem>
 </FaqGroup>
 <Steps title="...">
-<Step title="..." stepNumber={1}>
+<Step title="..." stepNumber="1">
 
 Markdown inside, including fenced code blocks, with a blank line after the opening tag and before the closing tag.
 
